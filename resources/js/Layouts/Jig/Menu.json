@@ -1,0 +1,52 @@
+{
+    "dashboard": {
+        "route": "admin.dashboard",
+        "routePattern": "admin.dashboard",
+        "permissionName": "dashboard",
+        "title": "Dashboard",
+        "faIcon": "fas fa-tv",
+        "isTitle": false,
+        "isParent": false,
+        "ignorePerm": true,
+        "children": []
+    },
+    "settings": {
+        "title": "Settings",
+        "faIcon": "fas fa-users-cog",
+        "isTitle": true,
+        "isParent": true,
+        "ignorePerm": true,
+        "children": {
+            "users": {
+                "route": "admin.users.index",
+                "title": "Users",
+                "routePattern": "admin.users.*",
+                "faIcon": "fas fa-users",
+                "isTitle": false,
+                "isParent": false,
+                "ignorePerm": false,
+                "children": []
+            },
+            "roles": {
+                "route": "admin.roles.index",
+                "title": "Roles",
+                "routePattern": "admin.roles.*",
+                "faIcon": "fas fa-user-graduate",
+                "isTitle": false,
+                "isParent": false,
+                "ignorePerm": false,
+                "children": []
+            },
+            "permissions": {
+                "route": "admin.permissions.index",
+                "title": "Permissions",
+                "routePattern": "admin.permissions.*",
+                "faIcon": "fas fa-user-tag",
+                "isTitle": false,
+                "isParent": false,
+                "ignorePerm": false,
+                "children": []
+            }
+        }
+    }
+}
