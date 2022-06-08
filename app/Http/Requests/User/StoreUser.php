@@ -29,12 +29,15 @@ class StoreUser extends FormRequest
             'email' => ['required', 'email', Rule::unique('users', 'email'), 'string'],
             'password' => ['required', 'confirmed', 'min:7', 'string'],
             'profile_photo_path' => ['nullable', 'string'],
+            'last_name' => ['nullable', 'string'],
+            'phone' => ['nullable', 'string'],
             'two_factor_secret' => ['nullable', 'string'],
             'two_factor_recovery_codes' => ['nullable', 'string'],
             'email_verified_at' => ['nullable', 'date'],
             'current_team_id' => ['nullable', 'integer'],
-                    
+            'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
             'assigned_roles' => ["nullable","array"],
+            'role' => ["nullable","integer"],
         ];
     }
     /**

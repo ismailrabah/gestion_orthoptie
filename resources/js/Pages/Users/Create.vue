@@ -10,7 +10,7 @@
         </template>
         <div class="flex flex-wrap px-4">
             <div class="z-10 flex-auto max-w-2xl p-4 mx-auto bg-white md:rounded-md md:shadow-md">
-                <create-users-form @success="onSuccess" @error="onError"/>
+                <create-users-form @success="onSuccess" @error="onError" :roles="roles"/>
             </div>
         </div>
     </jig-layout>
@@ -23,6 +23,10 @@
     import DisplayMixin from "@/Mixins/DisplayMixin.js";
     export default {
         name: "CreateUsers",
+        props: {
+            can: Object,
+            roles: Array,
+        },
         components: {
             InertiaButton,
             JigLayout,

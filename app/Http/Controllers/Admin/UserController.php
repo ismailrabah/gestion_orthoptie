@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Yajra\DataTables\Html\Column;
 use \Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Validator;
 
 class UserController  extends Controller
 {
@@ -71,6 +72,10 @@ class UserController  extends Controller
     {
         try {
             $data = $request->sanitizedObject();
+            Validator::make($request->toArray(), [
+                'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            ])->validateWithBag('updateProfileInformation');
+            $data->photo = $request['photo'];
             $user = $this->repo::store($data);
             return back()->with(['success' => "The User was created succesfully."]);
         } catch (\Throwable $exception) {
@@ -120,9 +125,7 @@ class UserController  extends Controller
                 return $role->only(['id','name','title', 'checked']);
             })->keyBy('name');
             //Fetch relationships
-            
-
-                        return Inertia::render("Users/Edit", ["model" => $user,"roles" => $roles]);
+            return Inertia::render("Users/Edit", ["model" => $user,"roles" => $roles]);
         } catch (\Throwable $exception) {
             \Log::error($exception);
             return back()->with([

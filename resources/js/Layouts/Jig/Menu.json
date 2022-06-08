@@ -10,6 +10,51 @@
         "ignorePerm": true,
         "children": []
     },
+    "patients": {
+        "route": "admin.patients.index",
+        "title": "Patients",
+        "routePattern": "admin.patients.*",
+        "faIcon": "fas fa-user-injured",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    },
+    "fichiers": {
+        "route": "admin.fichiers.index",
+        "title": "Fichiers",
+        "routePattern": "admin.fichiers.*",
+        "faIcon": "far fa-file-alt",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    },
+    "salle-d-attentes": {
+        "route": "admin.salle-d-attentes.index",
+        "title": "Salles d'attente",
+        "routePattern": "admin.salle-d-attentes.*",
+        "faIcon": "fas fa-person-booth",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    },
+    "rendez-vous": {
+        "route": "admin.rendez-vouses.index",
+        "title": "Rendez Vous",
+        "routePattern": "admin.rendez-vouses.*",
+        "faIcon": "fas fa-calendar-check",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    },
+    "rendez-vous-statuses": {
+        "route": "admin.rendez-vous-statuses.index",
+        "title": "Rendez Vous Status",
+        "routePattern": "admin.rendez-vous-statuses.*",
+        "faIcon": "fas fa-tag",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    },
     "settings": {
         "title": "Settings",
         "faIcon": "fas fa-users-cog",
@@ -21,7 +66,7 @@
                 "route": "admin.users.index",
                 "title": "Users",
                 "routePattern": "admin.users.*",
-                "faIcon": "fas fa-users",
+                "faIcon": "fas fa-user-md",
                 "isTitle": false,
                 "isParent": false,
                 "ignorePerm": false,

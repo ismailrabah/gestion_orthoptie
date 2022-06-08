@@ -37,7 +37,7 @@ class SeedOrthoptisteRoleAndUser extends Seeder
                 $user = DB::table('users')->where("email", "=", "orthoptiste@gestion-orthoptie.com")->first();
                 if (!$user) {
                     $userId = DB::table('users')->insertGetId([
-                        "name" => "orthoptiste",
+                        "name" => "Orthoptiste",
                         "email" => "orthoptiste@gestion-orthoptie.com",
                         "password" => Hash::make("password"),
                         "created_at" => now(),

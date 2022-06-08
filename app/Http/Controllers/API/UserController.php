@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Savannabits\JetstreamInertiaGenerator\Helpers\ApiResponse;
 use Savannabits\Pagetables\Column;
 use Savannabits\Pagetables\Pagetables;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
 class UserController  extends Controller
@@ -29,15 +30,25 @@ class UserController  extends Controller
      */
     public function index(IndexUser $request)
     {
+        
+        $role = $request->get('role');
         $query = User::query(); // You can extend this however you want.
+        if($role && $role != null){
+            $query->whereHas(
+                'roles', function($q) use($role){
+                    $q->where('name', $role);
+                }
+            );
+        }
         $cols = [
             Column::name('id')->title('Id')->sort()->searchable(),
             Column::name('name')->title('Name')->sort()->searchable(),
+            Column::name('last_name')->title('Last name')->sort()->searchable(),
             Column::name('email')->title('Email')->sort()->searchable(),
+            Column::name('phone')->title('Phone')->sort()->searchable(),
             Column::name('profile_photo_path')->title('Profile Photo Path')->sort()->searchable(),
             Column::name('email_verified_at')->title('Email Verified At')->sort()->searchable(),
             Column::name('updated_at')->title('Updated At')->sort()->searchable(),
-            
             Column::name('actions')->title('')->raw()
         ];
         $data = Pagetables::of($query)->columns($cols)->make(true);
@@ -117,11 +128,13 @@ class UserController  extends Controller
         $res = $this->repo::init($user)->destroy();
         return $this->api->success()->message("User has been deleted")->payload($res)->code(200)->send();
     }
+
     public function assignRole(Request $request, User $user): \Illuminate\Http\JsonResponse
     {
         $this->authorize('update',$user);
         $validated = $request->validate([
             'role' => ["required","array"],
+            'role.name' => ["required","string"],
             'role.id' =>['required','numeric'],
             'role.checked' =>['required','boolean']
         ]);
@@ -130,6 +143,30 @@ class UserController  extends Controller
         }
         $res = $this->repo::init($user)->assignRole($validated['role']);
         return $this->api->success()->message("Role assignment updated")->payload($res)->send();
+    }
+
+    /**
+    * photoUpdate the specified resource in storage.
+    *
+    * @param Request $request
+    * @param {$modelBaseName} $id
+    * @return \Illuminate\Http\RedirectResponse
+    */
+    public function photoUpdate(Request $request,$id)
+    {
+        try {
+            $user = User::where('id',$id)->first();
+            Validator::make($request->toArray(), [
+                'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            ])->validateWithBag('addUserPhoto');
+            if (isset($request['photo'])) {
+                $res = $this->repo::init($user)->updateProfilePhoto($request['photo']);
+                return $this->api->success()->message("The User photo was updated succesfully.")->payload($res)->code(200)->send();
+            }
+        } catch (\Throwable $exception) {
+            \Log::error($exception);
+            return $this->api->failed()->code(400)->message($exception->getMessage())->send();
+        }
     }
 
 }

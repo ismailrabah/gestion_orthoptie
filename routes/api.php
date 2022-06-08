@@ -24,6 +24,8 @@ Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], functi
     Route::post('/users/{user}/assign-role', [\App\Http\Controllers\API\UserController::class,'assignRole'])->name('users.assign-role');
     Route::get('/users/dt', [\App\Http\Controllers\API\UserController::class,'dt'])->name('users.dt');
     Route::apiResource('/users', \App\Http\Controllers\API\UserController::class)->parameters(["users" => "user"]);
+    Route::post('users-photo/{id}' ,[\App\Http\Controllers\API\UserController::class , 'photoUpdate'])->name('users-photo.update');
+
 });
 
 
@@ -39,4 +41,40 @@ Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], functi
     Route::post('/roles/{role}/assign-permission', [\App\Http\Controllers\API\RoleController::class,'assignPermission'])->name('roles.assign-permission');
     Route::get('/roles/dt', [\App\Http\Controllers\API\RoleController::class,'dt'])->name('roles.dt');
     Route::apiResource('/roles', \App\Http\Controllers\API\RoleController::class)->parameters(["roles" => "role"]);
+});
+
+
+/* Auto-generated salle-d-attentes api routes */
+Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], function () {
+    Route::get('/salle-d-attentes/dt', [\App\Http\Controllers\API\SalleDAttenteController::class,'dt'])->name('salle-d-attentes.dt');
+    Route::apiResource('/salle-d-attentes', \App\Http\Controllers\API\SalleDAttenteController::class)->parameters(["salle-d-attentes" => "salleDAttente"]);
+});
+
+
+/* Auto-generated rendez-vous-statuses api routes */
+Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], function () {
+    Route::get('/rendez-vous-statuses/dt', [\App\Http\Controllers\API\RendezVousStatusController::class,'dt'])->name('rendez-vous-statuses.dt');
+    Route::apiResource('/rendez-vous-statuses', \App\Http\Controllers\API\RendezVousStatusController::class)->parameters(["rendez-vous-statuses" => "rendezVousStatus"]);
+});
+
+
+/* Auto-generated patients api routes */
+Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], function () {
+    Route::get('/patients/dt', [\App\Http\Controllers\API\PatientController::class,'dt'])->name('patients.dt');
+    Route::apiResource('/patients', \App\Http\Controllers\API\PatientController::class)->parameters(["patients" => "patient"]);
+});
+
+
+
+/* Auto-generated rendez-vouses api routes */
+Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], function () {
+    Route::get('/rendez-vouses/dt', [\App\Http\Controllers\API\RendezVouController::class,'dt'])->name('rendez-vouses.dt');
+    Route::apiResource('/rendez-vouses', \App\Http\Controllers\API\RendezVouController::class)->parameters(["rendez-vouses" => "rendezVou"]);
+});
+
+
+/* Auto-generated fichiers api routes */
+Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], function () {
+    Route::get('/fichiers/dt', [\App\Http\Controllers\API\FichierController::class,'dt'])->name('fichiers.dt');
+    Route::apiResource('/fichiers', \App\Http\Controllers\API\FichierController::class)->parameters(["fichiers" => "fichier"]);
 });

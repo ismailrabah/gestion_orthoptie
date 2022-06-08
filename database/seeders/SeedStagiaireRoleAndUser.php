@@ -37,7 +37,7 @@ class SeedStagiaireRoleAndUser extends Seeder
                 $user = DB::table('users')->where("email", "=", "stagiaire@gestion-orthoptie.com")->first();
                 if (!$user) {
                     $userId = DB::table('users')->insertGetId([
-                        "name" => "stagiaire",
+                        "name" => "Stagiaire",
                         "email" => "stagiaire@gestion-orthoptie.com",
                         "password" => Hash::make("password"),
                         "created_at" => now(),

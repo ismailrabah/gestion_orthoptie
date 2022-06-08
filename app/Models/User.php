@@ -26,10 +26,11 @@ use HasRoles;
 
     protected $fillable = [
         'name',
+        'last_name',
         'email',
+        'phone',
         'profile_photo_path',
         'current_team_id',
-    
         'password',
     ];
     
@@ -38,7 +39,6 @@ use HasRoles;
         'remember_token',
         'two_factor_secret',
         'two_factor_recovery_codes',
-    
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
@@ -51,10 +51,10 @@ use HasRoles;
     */
     protected $casts = [
         'email_verified_at' => 'datetime',
-            ];
+    ];
 
     protected $dates = [
-            'email_verified_at',
+        'email_verified_at',
         'created_at',
         'updated_at',
     ];

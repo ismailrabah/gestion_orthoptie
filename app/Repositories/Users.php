@@ -26,13 +26,25 @@ class Users
             $model->password = \Hash::make($data->password);
         }
         $model->saveOrFail();
+
+        
+        if (isset($data->photo)) {
+            $model->updateProfilePhoto($data->photo);
+        }
+
+        if (isset($data->role)) {
+            $role = Role::whereId($data->role)->firstOrFail();
+            $model->assignRole([$role]);
+        }
+
         // $assignedRoles = collect($data->assigned_roles)->where("checked", true)->pluck('name');
         return $model;
     }
 
     public function show(Request $request): User {
         //Fetch relationships
-            return $this->model;
+        $this->model->load(['roles']);
+        return $this->model;
     }
     public function update(object $data): User
     {
@@ -44,6 +56,11 @@ class Users
         if (isset($data->password) && $data->password) {
             $this->model->password = \Hash::make($data->password);
         }
+        
+        // if (isset($data->photo)) {
+        //     $this->model->updateProfilePhoto($data->photo);
+        // }
+        
         $this->model->saveOrFail();
         return $this->model;
     }
@@ -55,18 +72,26 @@ class Users
     public static function dtColumns() {
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
+            Column::make("photo")->className('min-desktop-lg'),
             Column::make("name")->className('all'),
             Column::make("email")->className('min-desktop-lg'),
-            Column::make("profile_photo_path")->className('min-desktop-lg'),
-            Column::make("email_verified_at")->className('min-desktop-lg'),
-            Column::make("created_at")->className('min-tv'),
-            Column::make("updated_at")->className('min-tv'),
+            Column::make("phone")->className('min-desktop-lg'),
+            // Column::make("email_verified_at")->className('min-desktop-lg'),
+            // Column::make("created_at")->className('min-tv'),
+            // Column::make("updated_at")->className('min-tv'),
             Column::make('actions')->className('min-desktop text-right')->orderable(false)->searchable(false),
         ];
         return $columns;
     }
+
     public static function dt($query) {
         return DataTables::of($query)
+            ->editColumn('name', function(User $model) {
+                return $model->name ." ".$model->last_name;
+            })
+            ->editColumn('photo', function(User $model) {
+                return '<img src="'.$model->profile_photo_url.'"/ alt="'.$model->first_name.'" class="rounded-full h-10 w-10 object-cover">';
+            })
             ->editColumn('actions', function (User $model) {
                 $actions = '';
                 if (\Auth::user()->can('view',$model)) $actions .= '<button class="bg-primary hover:bg-primary-600 p-2 px-3 focus:ring-0 focus:outline-none text-white action-button" title="View Details" data-action="show-model" data-tag="button" data-id="'.$model->id.'"><i class="fas fa-eye"></i></button>';
@@ -74,9 +99,10 @@ class Users
                 if (\Auth::user()->can('delete',$model)) $actions .= '<button class="bg-danger hover:bg-danger-600 p-2 px-3 text-white focus:ring-0 focus:outline-none action-button" title="Delete Record" data-action="delete-model" data-tag="button" data-id="'.$model->id.'"><i class="fas fa-trash"></i></button>';
                 return "<div class='gap-x-1 flex w-full justify-end'>".$actions."</div>";
             })
-            ->rawColumns(['actions'])
+            ->rawColumns(['actions' , 'photo'])
             ->make();
     }
+
     public function assignRole(array $data): bool {
         $role = Role::whereName($data['name'])->firstOrFail();
         if ($data['checked']) {
@@ -88,4 +114,14 @@ class Users
         }
         return $this->model->hasRole($role->name);
     }
+    
+    public function updateProfilePhoto(object $photo): User
+    {
+        if (isset($photo)) {
+            $this->model->updateProfilePhoto($photo);
+        }
+        $this->model->saveOrFail();
+        return $this->model;
+    }
+
 }

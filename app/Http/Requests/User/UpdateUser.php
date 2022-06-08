@@ -35,7 +35,8 @@ class UpdateUser extends FormRequest
             'two_factor_recovery_codes' => ['nullable', 'string'],
             'email_verified_at' => ['nullable', 'date'],
             'current_team_id' => ['nullable', 'integer'],
-                    
+            'last_name' => ['nullable', 'string'],
+            'phone' => ['nullable', 'string'],
         ];
     }
 
