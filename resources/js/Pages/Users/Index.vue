@@ -4,8 +4,7 @@
             <div class="flex flex-wrap items-center justify-between w-full px-4">
                 <inertia-link :href="route('admin.dashboard')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Back</inertia-link>
                 <div class="flex gap-x-2">
-                    <inertia-button v-if="can.create" :href="route('admin.users.create')" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> New
-                        User</inertia-button>
+                    <inertia-button v-if="can.create" :href="route('admin.users.create')" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> New User</inertia-button>
                     <inertia-button @click.native="$refreshDt(tableId)" classes="bg-green-100 hover:bg-green-200 text-green"><i class="fas fa-redo"></i> Refresh</inertia-button>
                 </div>
 
@@ -13,8 +12,32 @@
         </template>
         <div v-if="can.viewAny" class="flex flex-wrap px-4">
             <div class="z-10 flex-auto bg-white md:rounded-md md:shadow-md">
-                <h3 class="w-full p-4 mb-2 text-lg font-black sm:rounded-t-lg bg-primary-100"><i class="mr-2 fas fa-bars"></i> List of All
-                    Users</h3>
+                <h3 class="w-full p-4 mb-2 text-lg font-black sm:rounded-t-lg bg-primary-100"><i class="mr-2 fas fa-bars"></i> 
+                    List of All Users
+                    <button style="margin-top: -5px;" type="button" @click="expandFilters()"
+                        class="float-right pl-2 pt-1 pb-1 pr-1 bg-primary 0 text-white rounded hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg active:bg-primary-800 active:shadow-lg transition duration-150 ease-in-out" >
+                        <i class="mr-2 fas fa-filter"></i> 
+                    </button>
+                </h3>
+                <div class="p-4 transition-all bg-indigo-50 " v-if="filters_expanded" >
+                    <form @submit.prevent="submmitFilters">
+                        <div class="flex">
+                            <div class="flex-1 mr-2">
+                                <div class=" w-full max-w-md">
+                                    <jet-label for="role" value="Role" />
+                                    <infinite-select :per-page="15" :api-url="route('api.roles.index')" @option:selected="selectedRoleFilter" @option:deselected="deselectedRoleFilter"
+                                                    id="role" name="role" v-model="tableParamsForm.role" label="name"
+                                    ></infinite-select>
+                                </div>
+                            </div>
+                            <!-- submmitFilters  reset-->
+                            <div class="flex-none">
+                                <inertia-button type="button" class="mt-4 mr-4 text-white font-semibold bg-success disabled:opacity-25" @click="ResetFillters()">Reset</inertia-button>
+                                <inertia-button type="submit" class="mt-4 mr-14 text-white font-semibold bg-primary disabled:opacity-25">Submit</inertia-button>
+                            </div>  
+                        </div>
+                    </form>
+                </div>
                 <div class="p-4">
                     <dt-component
                         :table-id="tableId"
@@ -69,6 +92,10 @@
     import DtComponent from "@/JigComponents/DtComponent.vue";
     import DisplayMixin from "@/Mixins/DisplayMixin.js";
     import ShowUsersForm from "@/Pages/Users/ShowForm.vue";
+    import {useForm} from "@inertiajs/inertia-vue3";
+    import JetLabel from "@/Jetstream/Label.vue";
+    import InfiniteSelect from '@/JigComponents/InfiniteSelect.vue';
+
     export default {
         name: "Index",
         components: {
@@ -80,6 +107,8 @@
             JigModal,
             JigLayout,
             ShowUsersForm,
+            JetLabel,
+            InfiniteSelect,
         },
         props: {
             can: Object,
@@ -89,12 +118,18 @@
         data() {
             return {
                 tableId: 'users-dt',
-                tableParams: {},
+                tableParams: {
+                    "role_id": null,
+                },
                 datatable: null,
                 confirmDelete: false,
                 currentModel: null,
                 withDisabled: false,
                 showModal: false,
+                filters_expanded: false,
+                tableParamsForm: useForm({
+                    "role": null,
+                }, {remember: false}),
             }
         },
         mixins: [
@@ -121,6 +156,9 @@
             },
             editModel(model) {
                 this.$inertia.visit(this.route('admin.users.edit',model.id));
+            },
+            expandFilters(){
+                this.filters_expanded = ! this.filters_expanded;
             },
             confirmDeletion(model) {
                 this.currentModel = model;
@@ -155,6 +193,24 @@
                     this.displayNotification('success', res.data.message);
                     this.$refreshDt(this.tableId);
                 })
+            },
+            selectedRoleFilter(){
+                console.log(this.tableParamsForm.role)
+                this.tableParams.role_id = this.tableParamsForm.role ? this.tableParamsForm.role.id : null;
+                this.$refreshDt(this.tableId);
+            },
+            deselectedRoleFilter(){
+                this.tableParams.role_id = this.tableParamsForm.role ? this.tableParamsForm.role.id : null;
+                this.$refreshDt(this.tableId);
+            },
+            submmitFilters(){
+                this.tableParams.role_id = this.tableParamsForm.role ? this.tableParamsForm.role.id : null;
+                this.$refreshDt(this.tableId);
+            },
+            ResetFillters(){
+                this.tableParams.role_id =  null;
+                this.tableParamsForm.role =  null;
+                this.$refreshDt(this.tableId);
             }
         }
     }

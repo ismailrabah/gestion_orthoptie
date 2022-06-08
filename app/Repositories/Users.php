@@ -72,10 +72,11 @@ class Users
     public static function dtColumns() {
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
-            Column::make("photo")->className('min-desktop-lg'),
-            Column::make("name")->className('all'),
+            Column::make("photo")->className('min-desktop-lg')->orderable(false)->searchable(false),
+            Column::make("name")->className('all')->orderable(true)->searchable(true),
             Column::make("email")->className('min-desktop-lg'),
             Column::make("phone")->className('min-desktop-lg'),
+            Column::make("roles")->className('min-desktop-lg')->orderable(false)->searchable(false),
             // Column::make("email_verified_at")->className('min-desktop-lg'),
             // Column::make("created_at")->className('min-tv'),
             // Column::make("updated_at")->className('min-tv'),
@@ -88,6 +89,9 @@ class Users
         return DataTables::of($query)
             ->editColumn('name', function(User $model) {
                 return $model->name ." ".$model->last_name;
+            })
+            ->editColumn('roles', function(User $model) {
+                return $model->roles->implode('name', ', ');
             })
             ->editColumn('photo', function(User $model) {
                 return '<img src="'.$model->profile_photo_url.'"/ alt="'.$model->first_name.'" class="rounded-full h-10 w-10 object-cover">';
@@ -122,6 +126,17 @@ class Users
         }
         $this->model->saveOrFail();
         return $this->model;
+    }
+    
+
+    public static function applayFiltters($query , $request){
+        $role_id = $request->get('role_id');
+        if($role_id){
+            $query->whereHas('roles', function($q)use($role_id){
+                $q->where('id', '=', $role_id);
+            });
+        }
+        return $query;
     }
 
 }

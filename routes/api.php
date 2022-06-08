@@ -78,3 +78,31 @@ Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], functi
     Route::get('/fichiers/dt', [\App\Http\Controllers\API\FichierController::class,'dt'])->name('fichiers.dt');
     Route::apiResource('/fichiers', \App\Http\Controllers\API\FichierController::class)->parameters(["fichiers" => "fichier"]);
 });
+
+
+/* Auto-generated prestations api routes */
+Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], function () {
+    Route::get('/prestations/dt', [\App\Http\Controllers\API\PrestationController::class,'dt'])->name('prestations.dt');
+    Route::apiResource('/prestations', \App\Http\Controllers\API\PrestationController::class)->parameters(["prestations" => "prestation"]);
+});
+
+
+/* Auto-generated salles-d-examens api routes */
+Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], function () {
+    Route::get('/salles-d-examens/dt', [\App\Http\Controllers\API\SallesDExamenController::class,'dt'])->name('salles-d-examens.dt');
+    Route::apiResource('/salles-d-examens', \App\Http\Controllers\API\SallesDExamenController::class)->parameters(["salles-d-examens" => "sallesDExaman"]);
+});
+
+
+/* Auto-generated taches api routes */
+Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], function () {
+    Route::get('/taches/dt', [\App\Http\Controllers\API\TachController::class,'dt'])->name('taches.dt');
+    Route::apiResource('/taches', \App\Http\Controllers\API\TachController::class)->parameters(["taches" => "tach"]);
+});
+
+
+/* Auto-generated consultations api routes */
+Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], function () {
+    Route::get('/consultations/dt', [\App\Http\Controllers\API\ConsultationController::class,'dt'])->name('consultations.dt');
+    Route::apiResource('/consultations', \App\Http\Controllers\API\ConsultationController::class)->parameters(["consultations" => "consultation"]);
+});

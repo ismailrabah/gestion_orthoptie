@@ -22,7 +22,15 @@
         </jig-dd>
         <jig-dd>
             <template #dt>Patient:</template>
-            {{ model.patient ? model.patient.adresse : '-' }}
+            {{ model.patient ? model.patient.title : '-' }}
+        </jig-dd>
+        <jig-dd>
+            <template #dt>Created at:</template>
+            {{ model.created_at }}
+        </jig-dd>
+        <jig-dd>
+            <template #dt>Updated at:</template>
+            {{ model.updated_at }}
         </jig-dd>
     </dl>
 </template>

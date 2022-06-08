@@ -60,7 +60,7 @@
             ></jet-input>
             <jet-input-error :message="form.errors.max_numbers" class="mt-2" />
         </div>
-                            <div class=" sm:col-span-4">
+        <div class=" sm:col-span-4">
             <jet-label for="assaistante" value="Assaistante" />
             <infinite-select :per-page="15" :api-url="route('api.users.index')" :queryParams="{'role' : 'assistante'}"
                              id="assaistante" name="assaistante"

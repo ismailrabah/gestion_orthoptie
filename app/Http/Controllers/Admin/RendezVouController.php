@@ -5,6 +5,7 @@ use App\Http\Requests\RendezVou\IndexRendezVou;
 use App\Http\Requests\RendezVou\StoreRendezVou;
 use App\Http\Requests\RendezVou\UpdateRendezVou;
 use App\Http\Requests\RendezVou\DestroyRendezVou;
+use App\Models\Patient;
 use App\Models\RendezVou;
 use App\Repositories\RendezVouses;
 use Illuminate\Http\Request;
@@ -29,6 +30,14 @@ class RendezVouController  extends Controller
     */
     public function index(Request $request): \Inertia\Response
     {
+        
+        $patient_id = $request->get('patient_id');
+        if($patient_id){
+            $patient = Patient::findOrFail($patient_id);
+        }else{
+            $patient = null; 
+        }
+
         $this->authorize('viewAny', RendezVou::class);
         return Inertia::render('RendezVous/Index',[
             "can" => [
@@ -36,6 +45,7 @@ class RendezVouController  extends Controller
                 "create" => \Auth::user()->can('create', RendezVou::class),
             ],
             "columns" => $this->repo::dtColumns(),
+            'patient' => $patient,
         ]);
     }
 

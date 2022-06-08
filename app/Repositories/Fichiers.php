@@ -88,7 +88,7 @@ class Fichiers
             })
             ->editColumn('patient' , function(Fichier $model){
                 if($model->patient){
-                    $link = '<a href="'.route('admin.patients.show', $model->patient).'" class="bg-primary-100 hover:bg-primary-200 focus:ring-0 focus:outline-none  action-button" >'.$model->patient->title.' </a>';
+                    $link = '<a href="'.route('admin.patients.show', $model->patient).'" class="bg-primary-100 hover:bg-primary-200 focus:ring-0 focus:outline-none action-button" >'.$model->patient->title.' </a>';
                 }else{
                     $link = "#";
                 }

@@ -21,7 +21,7 @@ class RendezVou extends Model
     
     
     protected $dates = [
-            'date',
+        'date',
         'created_at',
         'updated_at',
     ];

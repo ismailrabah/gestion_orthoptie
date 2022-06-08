@@ -85,12 +85,12 @@ class RendezVouses
     public static function dtColumns() {
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
-            Column::make("date")->className('min-desktop-lg'),
             Column::make("patient")->className('min-desktop-lg'),
+            Column::make("date")->className('min-desktop-lg'),
             Column::make("salle_d_attente")->className('min-desktop-lg')->title("salle d'attente"),
             Column::make("status")->className('min-desktop-lg'),
-            Column::make("created_at")->className('min-tv'),
-            Column::make("updated_at")->className('min-tv'),
+            // Column::make("created_at")->className('min-tv'),
+            // Column::make("updated_at")->className('min-tv'),
             Column::make('actions')->className('min-desktop text-right')->orderable(false)->searchable(false),
         ];
         return $columns;
@@ -101,7 +101,12 @@ class RendezVouses
                 return $model->status ? $model->status->name : "";
             })
             ->editColumn('patient' , function(RendezVou $model){
-                return $model->patient ? $model->patient->nom." ".$model->patient->prenom : "";
+                if($model->patient){
+                    $link = '<a href="'.route('admin.patients.show', $model->patient).'" class="bg-primary-100 hover:bg-primary-200 focus:ring-0 focus:outline-none action-button" >'.$model->patient->title.' </a>';
+                }else{
+                    $link = "#";
+                }
+                return $link;
             })
             ->editColumn('salle_d_attente' , function(RendezVou $model){
                 return $model->salleDAttente ? $model->salleDAttente->name : "";
@@ -113,7 +118,7 @@ class RendezVouses
                 if (\Auth::user()->can('delete',$model)) $actions .= '<button class="bg-danger hover:bg-danger-600 p-2 px-3 text-white focus:ring-0 focus:outline-none action-button" title="Delete Record" data-action="delete-model" data-tag="button" data-id="'.$model->id.'"><i class="fas fa-trash"></i></button>';
                 return "<div class='gap-x-1 flex w-full justify-end'>".$actions."</div>";
             })
-            ->rawColumns(['actions'])
+            ->rawColumns(['actions' , 'patient'])
             ->make();
     }
 }

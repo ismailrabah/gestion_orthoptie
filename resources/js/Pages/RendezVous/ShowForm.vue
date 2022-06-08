@@ -16,6 +16,14 @@
             <template #dt>Status:</template>
             {{ model.status ? model.status.name : '-' }}
         </jig-dd>
+        <jig-dd>
+            <template #dt>Created at:</template>
+            {{ model.created_at }}
+        </jig-dd>
+        <jig-dd>
+            <template #dt>Updated at:</template>
+            {{ model.updated_at }}
+        </jig-dd>
     </dl>
 </template>
 

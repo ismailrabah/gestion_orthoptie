@@ -45,7 +45,7 @@
             <jet-label for="patient" value="Patient" />
             <infinite-select class="w-full" :per-page="15" :api-url="route('api.patients.index')"
                                 id="patient" name="patient"
-                                v-model="form.patient" label="adresse"
+                                v-model="form.patient" label="title"
                                 :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.patient}"
             ></infinite-select>
             <jet-input-error :message="form.errors.patient" class="mt-2" />

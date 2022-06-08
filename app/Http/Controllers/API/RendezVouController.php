@@ -43,6 +43,9 @@ class RendezVouController  extends Controller
 
     public function dt(Request $request) {
         $query = RendezVou::query()->select(RendezVou::getModel()->getTable().'.*'); // You can extend this however you want.
+        $patient_id = $request->get('patient_id');
+        if($patient_id)
+            $query->where('patient_id' ,"=",$patient_id);
         return $this->repo::dt($query);
     }
     /**

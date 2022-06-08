@@ -28,12 +28,20 @@ class Patient extends Model
         'updated_at',
     ];
 
-    protected $appends = ["api_route", "can" , "title"];
+    protected $appends = ["api_route", "can" , "title" , "count_fichiers" , "count_rendez_vous"];
 
     /* ************************ ACCESSOR ************************* */
 
     public function getTitleAttribute() {
         return $this->nom .' '. $this->prenom;
+    }
+
+    public function getCountFichiersAttribute(){
+        return $this->fichiers->count();
+    }
+
+    public function getCountRendezVousAttribute(){
+        return $this->RendezVous->count();
     }
 
     public function getApiRouteAttribute() {
@@ -55,4 +63,13 @@ class Patient extends Model
     }
 
     /* ************************ RELATIONS ************************ */
+
+    public function fichiers(){
+        return $this->hasMany(\App\Models\Fichier::class , 'patient_id' , 'id');
+    }
+
+    public function RendezVous(){
+        return $this->hasMany(\App\Models\RendezVou::class , 'patient_id' , 'id');
+    }
+    
 }

@@ -56,8 +56,9 @@ class Patients
             Column::make("phone")->className('min-desktop-lg'),
             Column::make("email")->className('min-desktop-lg'),
             Column::make("ddn")->className('min-desktop-lg'),
-            Column::make("created_at")->className('min-tv'),
-            Column::make("updated_at")->className('min-tv'),
+            Column::make("count_fichiers")->className('min-desktop-lg')->title('Fichiers'),
+            // Column::make("created_at")->className('min-tv'),
+            // Column::make("updated_at")->className('min-tv'),
             Column::make('actions')->className('min-desktop text-right')->orderable(false)->searchable(false),
         ];
         return $columns;

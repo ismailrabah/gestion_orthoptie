@@ -57,6 +57,7 @@ class UserController  extends Controller
 
     public function dt(Request $request) {
         $query = User::query()->select(User::getModel()->getTable().'.*'); // You can extend this however you want.
+        $query = $this->repo::applayFiltters($query , $request);
         return $this->repo::dt($query);
     }
     /**
