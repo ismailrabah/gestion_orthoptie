@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use Yajra\DataTables\Html\Column;
+use Carbon\Carbon;
+
 
 class RendezVouses
 {
@@ -47,10 +49,9 @@ class RendezVouses
             'salleDAttente',
             'status',
         ]);
-    return $this->model;
+        return $this->model;
     }
-    public function update(object $data): RendezVou
-    {
+    public function update(object $data): RendezVou{
         $this->model->update((array) $data);
         
         // Save Relationships
@@ -120,5 +121,52 @@ class RendezVouses
             })
             ->rawColumns(['actions' , 'patient'])
             ->make();
+    }
+
+    
+    public static function agenda_event($start_date, $end_date){
+        $items = [];
+        $rendez_vouss = RendezVou::where(function($query) use ($start_date, $end_date){
+            $query->where('date' , '<' , $end_date)
+                ->where('date' , '>=' , $start_date);
+            
+        })->get();
+        foreach ($rendez_vouss as $rendz) {
+            $color = !$rendz->status ? 'bg-teal' : (!$rendz->status->name ? 'bg-teal' : $rendz->status->name);
+            $items[] = [
+                'id' => 's_'.$rendz->id,
+                'startDate' => $rendz->date,
+                'endDate' =>  $rendz->date,
+                'title' => $rendz->patient ? $rendz->patient->title  : "",
+                'classes' => [$color],
+                "sale" => $rendz->salleDAttente ? $rendz->salleDAttente->name : '',
+                "patient_id"=> $rendz->patient_id
+                // 'url' => "",
+                // 'style' => "",
+            ];
+        }
+        return $items;   
+    }
+
+    public static function handlerAgendaPeriod($displayPeriodUom , $displayPeriodCount , $start_date){
+        $end_date = Carbon::createFromFormat('m/d/Y',  $start_date);
+        if(!$displayPeriodCount)
+            $displayPeriodCount = 1;
+        switch ($displayPeriodUom){
+            case "month":
+                $end_date->addMonths($displayPeriodCount);
+                $end_date->addWeeks(3);
+                break;
+            case "week":
+                $end_date->addWeeks($displayPeriodCount);
+                $end_date->addWeeks(1);
+              break;
+            case "year":
+                $end_date->addYears($displayPeriodCount);
+              break;
+            default:
+              $end_date->addMonths(1);
+        }
+        return $end_date;
     }
 }

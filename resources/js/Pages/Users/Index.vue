@@ -199,10 +199,6 @@
                 this.tableParams.role_id = this.tableParamsForm.role ? this.tableParamsForm.role.id : null;
                 this.$refreshDt(this.tableId);
             },
-            deselectedRoleFilter(){
-                this.tableParams.role_id = this.tableParamsForm.role ? this.tableParamsForm.role.id : null;
-                this.$refreshDt(this.tableId);
-            },
             submmitFilters(){
                 this.tableParams.role_id = this.tableParamsForm.role ? this.tableParamsForm.role.id : null;
                 this.$refreshDt(this.tableId);

@@ -16,15 +16,15 @@
                             <stats-card class="h-full" bg-class="bg-success-100" icon-classes="bg-success text-white">
                                 <template #title>Today Rendez Vous </template>
                                 <template #icon><i class="fas fa-briefcase-medical fa-2x"></i></template>
-                                1,200.00
+                                8
                             </stats-card>
                         </div>
 
                         <div class="p-3">
                             <stats-card bg-class="bg-primary-100" class="h-full" icon-classes="bg-danger text-white">
-                                <template #title>Patients</template>
+                                <template #title>This week Patients</template>
                                 <template #icon><i class="fas fa-user-injured fa-2x"></i></template>
-                                1,300
+                                34
                             </stats-card>
                         </div>
 

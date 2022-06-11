@@ -76,7 +76,7 @@
                     </div>
                 </form>
                  <!-- Navigation -->
-               <ul class="flex flex-col list-none md:flex-col md:min-w-full">
+                <ul class="flex flex-col list-none md:flex-col md:min-w-full">
                     <li v-for="(menuItem, idx) of menuItems" :key="idx" class="items-center">
                         <sidebar-link v-if="!menuItem.isParent && ($page.props.menu_permissions[idx] || menuItem.ignorePerm)"
                             :href="route(menuItem.route)" :active="route().current(menuItem.route)">

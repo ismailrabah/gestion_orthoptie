@@ -46,6 +46,8 @@ Route::group(["prefix" => "admin","as" => "admin.","middleware"=>['auth:sanctum'
 /* Auto-generated rendez-vouses admin routes */
 Route::group(["prefix" => "admin","as" => "admin.","middleware"=>['auth:sanctum', 'verified']], function () {
     Route::resource('rendez-vouses', \App\Http\Controllers\Admin\RendezVouController::class)->parameters(["rendez-vouses" => "rendezVou"]);
+    Route::get('/agenda', [\App\Http\Controllers\Admin\RendezVouController::class,'agenda'])->name('rendez-vouses.agenda');
+
 });
 
 

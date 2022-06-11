@@ -22,6 +22,24 @@ class RendezVouController  extends Controller
     }
 
     /**
+    * Agenda
+    *
+    * @param  Request $request
+    * @return    \Inertia\Response
+    * @throws  \Illuminate\Auth\Access\AuthorizationException
+    */
+    public function agenda(Request $request): \Inertia\Response
+    {
+        $this->authorize('viewAny', RendezVou::class);
+        return Inertia::render('RendezVous/Agenda',[
+            "can" => [
+                "viewAny" => \Auth::user()->can('viewAny', RendezVou::class),
+                "create" => \Auth::user()->can('create', RendezVou::class),
+            ],
+        ]);
+    }
+
+    /**
     * Display a listing of the resource.
     *
     * @param  Request $request
@@ -118,16 +136,12 @@ class RendezVouController  extends Controller
         try {
             $this->authorize('update', $rendezVou);
             //Fetch relationships
-            
-
-
-
-        $rendezVou->load([
-            'patient',
-            'salleDAttente',
-            'status',
-        ]);
-                        return Inertia::render("RendezVous/Edit", ["model" => $rendezVou]);
+            $rendezVou->load([
+                'patient',
+                'salleDAttente',
+                'status',
+            ]);
+            return Inertia::render("RendezVous/Edit", ["model" => $rendezVou]);
         } catch (\Throwable $exception) {
             \Log::error($exception);
             return back()->with([

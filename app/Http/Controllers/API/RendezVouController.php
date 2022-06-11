@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Savannabits\JetstreamInertiaGenerator\Helpers\ApiResponse;
 use Savannabits\Pagetables\Column;
 use Savannabits\Pagetables\Pagetables;
+use Carbon\Carbon;
 use Yajra\DataTables\DataTables;
 
 class RendezVouController  extends Controller
@@ -22,6 +23,27 @@ class RendezVouController  extends Controller
         $this->api = $apiResponse;
         $this->repo = $repo;
     }
+
+    
+    /**
+     * Display a listing of the resource (paginated).
+     * @return columnsToQuery \Illuminate\Http\JsonResponse
+     */
+    public function agenda(Request $request)
+    {
+        $displayPeriodUom = $request->get('displayPeriodUom');
+        $displayPeriodCount = $request->get('displayPeriodCount');
+        $start_date = $request->get('start_date');
+
+        $end_date = $this->repo::handlerAgendaPeriod($displayPeriodUom , $displayPeriodCount , $start_date );
+        $start_date = Carbon::createFromFormat('m/d/Y',  $start_date);
+
+        $data['items'] = $this->repo::agenda_event( $start_date , $end_date );
+
+        return $this->api->success()->message("List of Sessions")->payload($data)->send();
+       
+    }
+
 
     /**
      * Display a listing of the resource (paginated).

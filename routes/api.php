@@ -25,7 +25,6 @@ Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], functi
     Route::get('/users/dt', [\App\Http\Controllers\API\UserController::class,'dt'])->name('users.dt');
     Route::apiResource('/users', \App\Http\Controllers\API\UserController::class)->parameters(["users" => "user"]);
     Route::post('users-photo/{id}' ,[\App\Http\Controllers\API\UserController::class , 'photoUpdate'])->name('users-photo.update');
-
 });
 
 
@@ -70,6 +69,7 @@ Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], functi
 Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], function () {
     Route::get('/rendez-vouses/dt', [\App\Http\Controllers\API\RendezVouController::class,'dt'])->name('rendez-vouses.dt');
     Route::apiResource('/rendez-vouses', \App\Http\Controllers\API\RendezVouController::class)->parameters(["rendez-vouses" => "rendezVou"]);
+    Route::get('/agenda', [\App\Http\Controllers\API\RendezVouController::class , 'agenda' ] )->name('rendez-vouses.agenda');
 });
 
 

@@ -10,7 +10,7 @@
         </div>
 
         <div class=" sm:col-span-4">
-            <jet-label for="last_name" value="First Name" />
+            <jet-label for="last_name" value="Last Name" />
             <jet-input class="w-full" type="text" id="last_name" name="last_name" v-model="form.last_name"
                        :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.last_name}"
             ></jet-input>

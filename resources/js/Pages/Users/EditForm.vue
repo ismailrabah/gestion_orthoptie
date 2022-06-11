@@ -13,7 +13,7 @@
                 <form @submit.prevent="updateModel">
                  
                     <div class=" sm:col-span-4">
-                        <jet-label for="name" value="Name" />
+                        <jet-label for="name" value="First Name" />
                         <jet-input class="w-full" type="text" id="name" name="name" v-model="form.name"
                                    :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.name}"
                         ></jet-input>

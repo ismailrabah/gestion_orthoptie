@@ -15,7 +15,6 @@ class RendezVou extends Model
         'patient_id',
         'salle_d_attente_id',
         'status_id',
-    
     ];
     
     

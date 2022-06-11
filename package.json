@@ -40,5 +40,10 @@
         "vue-select": "^4.0.0-beta.1",
         "vue3-vt-notifications": "^1.0.1",
         "vue-final-modal": "^3.4.3"
+    },
+    "dependencies": {
+        "moment": "^2.29.3",
+        "vue-final-modal": "^3.4.3",
+        "vue-simple-calendar": "^6.0.4"
     }
 }

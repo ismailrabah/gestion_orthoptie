@@ -10,6 +10,16 @@
         "ignorePerm": true,
         "children": []
     },
+    "agenda": {
+        "route": "admin.rendez-vouses.agenda",
+        "title": "Agenda",
+        "routePattern": "admin.rendez-vouses.agenda",
+        "faIcon": "fas fa-calendar-alt",
+        "isTitle": false,
+        "isParent": false,
+        "ignorePerm": true,
+        "children": []
+    },
     "patients": {
         "route": "admin.patients.index",
         "title": "Patients",
