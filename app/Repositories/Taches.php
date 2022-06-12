@@ -50,7 +50,7 @@ class Taches
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
             Column::make("name")->className('all'),
-            Column::make("price")->className('min-desktop-lg'),
+            Column::make("price")->className('all min-desktop-lg'),
             Column::make('actions')->className('min-desktop text-right')->orderable(false)->searchable(false),
         ];
         return $columns;

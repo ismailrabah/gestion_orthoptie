@@ -49,9 +49,9 @@ class Prestations
     public static function dtColumns() {
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
-            Column::make("note")->className('min-desktop-lg'),
+            Column::make("note")->className('all  min-desktop-lg'),
             Column::make("traitement")->className('min-desktop-lg'),
-            Column::make("montant")->className('min-desktop-lg'),
+            Column::make("montant")->className('all  min-desktop-lg'),
             Column::make('actions')->className('min-desktop text-right')->orderable(false)->searchable(false),
         ];
         return $columns;
