@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use Yajra\DataTables\Html\Column;
+use Carbon\Carbon;
 
 class Patients
 {
@@ -48,14 +49,14 @@ class Patients
     }
     public static function dtColumns() {
         $columns = [
-            Column::make('id')->title('ID')->className('all text-right'),
-            Column::make("nom")->className('min-desktop-lg'),
-            Column::make("prenom")->className('min-desktop-lg'),
+            Column::make('id')->title('ID')->className('min-desktop-lg text-right'),
+            Column::make("nom")->className('all min-desktop-lg'),
+            Column::make("prenom")->className('all min-desktop-lg'),
             Column::make("adresse")->className('min-desktop-lg'),
-            Column::make("cin")->className('min-desktop-lg'),
-            Column::make("phone")->className('min-desktop-lg'),
-            Column::make("email")->className('min-desktop-lg'),
-            Column::make("ddn")->className('min-desktop-lg'),
+            Column::make("cin")->className(' min-desktop-lg'),
+            Column::make("phone")->className('all min-desktop-lg'),
+            Column::make("email")->className(' min-desktop-lg'),
+            Column::make("ddn")->className('all min-desktop-lg')->title("Age"),
             Column::make("count_fichiers")->className('min-desktop-lg')->title('Fichiers'),
             // Column::make("created_at")->className('min-tv'),
             // Column::make("updated_at")->className('min-tv'),
@@ -65,6 +66,9 @@ class Patients
     }
     public static function dt($query) {
         return DataTables::of($query)
+            ->editColumn('ddn' , function(Patient $model){
+                return Carbon::parse($model->ddn)->age;
+            })
             ->editColumn('actions', function (Patient $model) {
                 $actions = '';
                 if (\Auth::user()->can('view',$model)) $actions .= '<button class="bg-purple-500 hover:bg-purple-500 p-2 px-3 focus:ring-0 focus:outline-none text-white action-button" title="Fichiers" data-action="show-fichiers" data-tag="button" data-id="'.$model->id.'"><i class="fas fa-folder-open"></i></button>';
