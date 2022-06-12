@@ -86,11 +86,11 @@ class Consultations
     public static function dtColumns() {
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
-            Column::make("patient")->className('min-desktop-lg'),
+            Column::make("patient")->className('all min-desktop-lg'),
             Column::make("orthoptiste")->className('min-desktop-lg'),
-            Column::make("note")->className('min-desktop-lg'),
-            Column::make("date")->className('min-desktop-lg'),
-            Column::make("salle")->className('min-desktop-lg'),
+            Column::make("note")->className('all min-desktop-lg'),
+            Column::make("date")->className('all min-desktop-lg'),
+            Column::make("salle")->className('all min-desktop-lg'),
             // Column::make("created_at")->className('min-tv'),
             // Column::make("updated_at")->className('min-tv'),
             Column::make('actions')->className('min-desktop text-right')->orderable(false)->searchable(false),

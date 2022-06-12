@@ -49,12 +49,12 @@ class Patients
     public static function dtColumns() {
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
-            Column::make("nom")->className('min-desktop-lg'),
-            Column::make("prenom")->className('min-desktop-lg'),
+            Column::make("nom")->className('all min-desktop-lg'),
+            Column::make("prenom")->className('all min-desktop-lg'),
             Column::make("adresse")->className('min-desktop-lg'),
-            Column::make("cin")->className('min-desktop-lg'),
+            Column::make("cin")->className('all min-desktop-lg'),
             Column::make("phone")->className('min-desktop-lg'),
-            Column::make("email")->className('min-desktop-lg'),
+            Column::make("email")->className('all min-desktop-lg'),
             Column::make("ddn")->className('min-desktop-lg'),
             Column::make("count_fichiers")->className('min-desktop-lg')->title('Fichiers'),
             // Column::make("created_at")->className('min-tv'),

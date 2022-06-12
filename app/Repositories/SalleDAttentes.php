@@ -62,11 +62,11 @@ class SalleDAttentes
     public static function dtColumns() {
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
-            Column::make("name")->className('min-desktop-lg'),
-            Column::make("status")->className('min-desktop-lg'),
-            Column::make("start_time")->className('min-desktop-lg'),
-            Column::make("end_time")->className('min-desktop-lg'),
-            Column::make("max_numbers")->className('min-desktop-lg'),
+            Column::make("name")->className('all min-desktop-lg'),
+            Column::make("status")->className('all min-desktop-lg'),
+            Column::make("start_time")->className('all min-desktop-lg'),
+            Column::make("end_time")->className('all min-desktop-lg'),
+            Column::make("max_numbers")->className('all min-desktop-lg'),
             Column::make('actions')->className('min-desktop text-right')->orderable(false)->searchable(false),
         ];
         return $columns;

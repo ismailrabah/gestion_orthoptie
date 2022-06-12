@@ -50,7 +50,7 @@ class RendezVousStatuses
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
             Column::make("name")->className('all'),
-            Column::make("is_default")->className('min-desktop-lg'),
+            Column::make("is_default")->className('all min-desktop-lg'),
             Column::make('actions')->className('min-desktop text-right')->orderable(false)->searchable(false),
         ];
         return $columns;

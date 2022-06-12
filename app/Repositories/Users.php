@@ -72,11 +72,11 @@ class Users
     public static function dtColumns() {
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
-            Column::make("photo")->className('min-desktop-lg')->orderable(false)->searchable(false),
+            Column::make("photo")->className('all min-desktop-lg')->orderable(false)->searchable(false),
             Column::make("name")->className('all')->orderable(true)->searchable(true),
-            Column::make("email")->className('min-desktop-lg'),
-            Column::make("phone")->className('min-desktop-lg'),
-            Column::make("roles")->className('min-desktop-lg')->orderable(false)->searchable(false),
+            Column::make("email")->className('all min-desktop-lg'),
+            Column::make("phone")->className('all min-desktop-lg'),
+            Column::make("roles")->className('all min-desktop-lg')->orderable(false)->searchable(false),
             // Column::make("email_verified_at")->className('min-desktop-lg'),
             // Column::make("created_at")->className('min-tv'),
             // Column::make("updated_at")->className('min-tv'),

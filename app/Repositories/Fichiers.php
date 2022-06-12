@@ -60,8 +60,8 @@ class Fichiers
     public static function dtColumns() {
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
-            Column::make("patient")->className('min-desktop-lg'),
-            Column::make("titre")->className('min-desktop-lg'),
+            Column::make("patient")->className('all min-desktop-lg'),
+            Column::make("titre")->className('all min-desktop-lg'),
             Column::make("medcin_traitant")->className('min-desktop-lg'),
             Column::make("atcd")->className('min-desktop-lg'),
             Column::make("commentaire")->className('min-desktop-lg'),
