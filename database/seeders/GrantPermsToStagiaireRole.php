@@ -15,12 +15,11 @@ class GrantPermsToStagiaireRole extends Seeder
      */
     public function run()
     {
-        $admin = Role::query()->where("name","=", "stagiaire")->first();
-        if ($admin) {
-            $admin->givePermissionTo(Permission::where('id' ,'>' , 18)->whereNotIn('id' , 
+        $stage = Role::query()->where("name","=", "stagiaire")->first();
+        if ($stage) {
+            $stage->givePermissionTo(Permission::where('id' ,'>' , 18)->whereNotIn('id' , 
             [
-               
-            ]
+               19,20,21,22,23,24,25            ]
             )->get());
         }
     }

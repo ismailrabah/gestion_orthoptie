@@ -31,7 +31,7 @@
             <jet-label for="salle_d_attente" value="Salle d'attente" />
             <infinite-select class="w-full" :per-page="15" :api-url="route('api.salle-d-attentes.index')"
                                 id="salle_d_attente" name="salle_d_attente"
-                                v-model="form.salle_d_attente" label="status"
+                                v-model="form.salle_d_attente" label="name"
                                 :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.salle_d_attente}"
             ></infinite-select>
             <jet-input-error :message="form.errors.salle_d_attente" class="mt-2" />

@@ -85,7 +85,9 @@
             InertiaButton,
             JetInputError,
             JetLabel,
-             JigDatepicker,             JetInput,                                    
+             JigDatepicker,
+             JetInput,
+                                    
         },
         data() {
             return {

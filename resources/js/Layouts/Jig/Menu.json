@@ -47,6 +47,15 @@
         "isParent": false,
         "children": []
     },
+    "rendez-vous": {
+        "route": "admin.rendez-vouses.index",
+        "title": "Rendez Vous",
+        "routePattern": "admin.rendez-vouses.*",
+        "faIcon": "fas fa-calendar-check",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    },
     "prestations": {
         "route": "admin.prestations.index",
         "title": "Prestations",
@@ -79,15 +88,6 @@
         "title": "Salles d'attente",
         "routePattern": "admin.salle-d-attentes.*",
         "faIcon": "fas fa-person-booth",
-        "isTitle": false,
-        "isParent": false,
-        "children": []
-    },
-    "rendez-vous": {
-        "route": "admin.rendez-vouses.index",
-        "title": "Rendez Vous",
-        "routePattern": "admin.rendez-vouses.*",
-        "faIcon": "fas fa-calendar-check",
         "isTitle": false,
         "isParent": false,
         "children": []

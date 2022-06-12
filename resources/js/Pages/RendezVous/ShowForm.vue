@@ -10,7 +10,7 @@
         </jig-dd>
         <jig-dd>
             <template #dt>Salle d'attente:</template>
-            {{ model.salle_d_attente ? model.salle_d_attente.status : '-' }}
+            {{ model.salle_d_attente ? model.salle_d_attente.name : '-' }}
         </jig-dd>
         <jig-dd>
             <template #dt>Status:</template>
