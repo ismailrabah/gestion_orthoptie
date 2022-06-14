@@ -102,7 +102,6 @@ export default defineComponent({
     mounted() {
         const vm = this;
         let columns = vm.columns;
-        console.log(columns , vm.columnDefs);
         vm.allColumns = columns;
         let colDefs = columns.map((col, idx) => {
             return {
@@ -110,7 +109,6 @@ export default defineComponent({
                 targets: idx,
             };
         });
-        console.log(colDefs);
         $(document).ready(function () {
             vm.table = $(`#${vm.tableId}`).DataTable({
                 processing: true,

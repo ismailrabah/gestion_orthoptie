@@ -128,7 +128,7 @@ class Consultations
             })
             ->editColumn('actions', function (Consultation $model) {
                 $actions = '';
-                if (\Auth::user()->can('update',$model)) $actions .= '<button class="bg-purple-500 hover:bg-purple-500 p-2 px-3 focus:ring-0 text-white focus:outline-none action-button" title="Gérer les taches et prestations" data-action="manage-model" data-tag="button" data-id="'.$model->id.'"><i class="fas fa-hand-holding-heart"></i></button>';
+                if (\Auth::user()->can('update',$model)) $actions .= '<button class="bg-purple-500 hover:bg-purple-500 p-2 px-3 focus:ring-0 text-white focus:outline-none action-button" title="Gérer les taches et prestations" data-action="manage-model" data-tag="button" data-id="'.$model->id.'"><i class="fas fa-briefcase-medical"></i></button>';
                 if (\Auth::user()->can('view',$model)) $actions .= '<button class="bg-primary hover:bg-primary-600 p-2 px-3 focus:ring-0 focus:outline-none text-white action-button" title="View Details" data-action="show-model" data-tag="button" data-id="'.$model->id.'"><i class="fas fa-eye"></i></button>';
                 if (\Auth::user()->can('update',$model)) $actions .= '<button class="bg-secondary hover:bg-secondary-600 p-2 px-3 focus:ring-0 focus:outline-none action-button text-white" title="Edit Record" data-action="edit-model" data-tag="button" data-id="'.$model->id.'"><i class="fas fa-edit"></i></button>';
                 if (\Auth::user()->can('delete',$model)) $actions .= '<button class="bg-danger hover:bg-danger-600 p-2 px-3 text-white focus:ring-0 focus:outline-none action-button" title="Delete Record" data-action="delete-model" data-tag="button" data-id="'.$model->id.'"><i class="fas fa-trash"></i></button>';

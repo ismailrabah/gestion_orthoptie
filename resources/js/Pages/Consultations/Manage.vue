@@ -4,65 +4,35 @@
             <div class="flex flex-wrap items-center justify-between w-full px-4">
                 <inertia-link :href="route('admin.consultations.index')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Retour</inertia-link>
                 <div class="flex gap-x-2">
-                    <inertia-button v-if="can.create" @click="AddTache" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i>Ajouter une tâche</inertia-button>
-                    <inertia-button v-if="can.create" @click="AddPrestation" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i>Ajouter une prestation</inertia-button>
+                    <inertia-button v-if="can.create" @click="AddTache" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Ajouter une tâche </inertia-button>
+                    <inertia-button v-if="can.create" @click="AddPrestation" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Ajouter une prestation </inertia-button>
                     <!-- <inertia-button @click.native="$refreshDt(tableId)" classes="bg-indigo-100 hover:bg-green-200 text-indigo"><i class="fas fa-redo"></i> Refresh</inertia-button> -->
                 </div>
             </div>
         </template>
         <div v-if="can.viewAny" class="flex flex-wrap px-4">
             <div class="z-10 flex-auto bg-white md:rounded-md md:shadow-md">
-                <h3 class="w-full p-4 mb-2 text-lg font-black sm:rounded-t-lg bg-primary-100"><i class="mr-2 fas fa-bars"></i> List Des Taches
-                    <inertia-link v-if="patient" :href="route('admin.patients.show' , patient.id)"  class="text-xl font-black text-primary"> : {{patient.title}}</inertia-link>
-                    <button  v-if="patient" style="margin-top: -5px;" type="button" @click="expandInfo()"
+                <h3 class="w-full p-4 text-lg font-black sm:rounded-t-lg bg-primary-200"><i class="mr-2 fas fa-briefcase-medical text-black"></i>
+                    <inertia-link v-if="consultation" :href="route('admin.consultations.show' , consultation.id)"  class="text-xl font-black text-primary">Gestion de Consultation </inertia-link>
+                    <button  v-if="consultation" style="margin-top: -5px;" type="button" @click="expandInfo()"
                         class="pl-2 pt-1 pb-1 pr-1  transition duration-150 ease-in-out" >
                         <i v-if="!extends_info" class="fas fa-angle-down"></i>
                         <i v-if="extends_info" class="fas fa-angle-up"></i>
                     </button>
                 </h3>
-                <dl class="gap-4 p-4 " v-if="patient && extends_info">
-                    <div class="flex">
-                        <jig-dd class="flex-1">
-                            <template #dt>Nom:</template>
-                            {{ patient.nom }}
-                        </jig-dd>
-                        <jig-dd class="flex-1">
-                            <template #dt>Prenom:</template>
-                            {{ patient.prenom }}
-                        </jig-dd>
-                    </div>
-                    <div class="flex">
-                        <jig-dd class="flex-1">
-                            <template #dt>Phone:</template>
-                            {{ patient.phone }}
-                        </jig-dd>
-                        <jig-dd class="flex-1">
-                            <template #dt>Email:</template>
-                            {{ patient.email }}
-                        </jig-dd>
-                    </div>
-                    <div class="flex">
-                        <jig-dd class="flex-1">
-                            <template #dt>Cin:</template>
-                            {{ patient.cin }}
-                        </jig-dd>
-                        <jig-dd class="flex-1">
-                            <template #dt>Ddn:</template>
-                            {{ patient.ddn }}
-                        </jig-dd>
-                    </div>
-                    <div class="flex">
-                        <jig-dd class="flex-1">
-                            <template #dt>Adresse:</template>
-                            {{ patient.adresse }}
-                        </jig-dd>
-                        <jig-dd class="flex-1">
-                            <template #dt>Fichiers:</template>
-                            {{ patient.count_fichiers }}
-                        </jig-dd>
-                    </div>
+                <dl class="gap-4 p-4 " v-if="consultation && extends_info">
+                    <show-consultations-form :model="consultation"></show-consultations-form>
                 </dl>
-                <div class="p-4">
+                <h3 class="w-full p-4 text-lg font-black sm:rounded-t-lg bg-primary-100">
+                    <i class="mr-2 fas fa-tasks"></i> 
+                    List des tâches
+                    <button @click="extends_taches = !extends_taches"
+                        class="pl-2 pt-1 pb-1 pr-1  transition duration-150 ease-in-out" >
+                        <i v-if="!extends_taches" class="fas fa-angle-down"></i>
+                        <i v-if="extends_taches" class="fas fa-angle-up"></i>
+                    </button>
+                </h3>
+                <div class="p-4" v-if="extends_taches">
                     <dt-component
                         :table-id="tachesTableId"
                         :ajax-url="tachesAjaxUrl"
@@ -92,13 +62,47 @@
                         position-class="align-middle"
                         @close="currentTacheModel = null; showTacheModal = false">
 
-                        <template #title>Show Consultation #{{currentTacheModel.id}}</template>
-                        <show-consultations-form :model="currentTacheModel"></show-consultations-form>
+                        <template #title>Show Consultation Tach #{{currentTacheModel.id}}</template>
+                        <show-consultation-taches-form :model="currentTacheModel"></show-consultation-taches-form>
                         <template #footer>
                             <inertia-button class="px-4 text-white bg-primary" @click="showTacheModal = false; currentTacheModel = null">Close</inertia-button>
                         </template>
                     </jig-modal>
                 </div>
+                
+                <div v-if="showEditTacheModal && currentTacheModel">
+                    <jig-modal
+                        :show="showEditTacheModal"
+                        corner-class="rounded-lg"
+                        position-class="align-middle"
+                        @close="currentTacheModel = null; showEditTacheModal = false">
+                        <template #title>Edit Consultation Tach #{{currentTacheModel.consultation_id}} / {{currentTacheModel.tache_id}}</template>
+                        <edit-consultation-tach-form :model="currentTacheModel"></edit-consultation-tach-form>
+                        <template #footer>
+                            <inertia-button class="px-4 text-white bg-primary" style="display: inline;top: -55px;right: 80px;position: relative;" @click="showEditTacheModal = false; currentTacheModel = null">Close</inertia-button>
+                        </template>
+                    </jig-modal>
+                </div>
+
+                <div v-if="showAddTacheModal && consultation">
+                    <jig-modal
+                        :show="showAddTacheModal"
+                        corner-class="rounded-lg"
+                        position-class="align-middle"
+                        @close="showAddTacheModal = false">
+                        <template #title>Ajouter une tâche </template>
+                        <create-consultation-taches-form :consultation="consultation"  @success="onAddTacheSuccess" @error="onAddTacheError"></create-consultation-taches-form>
+                        <template #footer>
+                            <inertia-button class="px-4 text-white bg-warning" style="display: inline;top: -55px;right: 80px;position: relative;" @click="showAddTacheModal = false; currentTacheModel = null">Close</inertia-button>
+                        </template>
+                    </jig-modal>
+                </div>
+                
+                <h3 class="w-full p-4 mb-2 text-lg font-black sm:rounded-t-lg bg-primary-100">
+                    <i class="mr-2 fas fa-hand-holding-heart"></i> 
+                    List des prestations
+                </h3>
+
             </div>
         </div>
         <div v-else class="p-4 font-bold text-red-500 bg-red-100 rounded-md shadow-md ">
@@ -116,9 +120,12 @@
     import JigModal from "@/JigComponents/JigModal.vue";
     import DtComponent from "@/JigComponents/DtComponent.vue";
     import DisplayMixin from "@/Mixins/DisplayMixin.js";
-    import ShowConsultationsForm from "@/Pages/Consultations/ShowForm.vue";
+    import ShowConsultationTachesForm from "@/Pages/ConsultationTaches/ShowForm.vue";
     import { defineComponent } from "vue";
     import JigDd from "@/JigComponents/JigDd.vue";
+    import ShowConsultationsForm from "@/Pages/Consultations/ShowForm.vue";
+    import CreateConsultationTachesForm from "@/Pages/ConsultationTaches/CreateForm.vue";
+    import EditConsultationTachForm from "@/Pages/ConsultationTaches/EditForm.vue";
 
     export default defineComponent({
         name: "Manage",
@@ -130,13 +137,16 @@
             JetDialogModal,
             JigModal,
             JigLayout,
-            ShowConsultationsForm,
+            ShowConsultationTachesForm,
             JigDd,
+            ShowConsultationsForm,
+            CreateConsultationTachesForm,
+            EditConsultationTachForm,
         },
         props: {
             can: Object,
             tachesColumns: Array,
-            patient: Object,
+            consultation: Object,
         },
         inject: ["$refreshDt","$dayjs"],
         data() {
@@ -148,7 +158,11 @@
                 currentTacheModel: null,
                 withDisabled: false,
                 showTacheModal: false,
+                showAddTacheModal: false,
+                showEditTacheModal: false,
                 extends_info: false,
+                extends_taches: true,
+                extends_prestations: false,
             }
         },
         mixins: [
@@ -158,29 +172,39 @@
         },
         computed: {
             tachesAjaxUrl() {
-                const url = new URL(this.route('api.consultations.dt'));
+                const url = new URL(this.route('api.consultation-taches.dt'));
                 /*if (this.withDisabled) {
                     url.searchParams.append('include-disabled',true);
                 }*/
-                if (this.patient) {
-                    url.searchParams.append('patient_id',this.patient.id);
+                if (this.consultation) {
+                    url.searchParams.append('consultation_id',this.consultation.id);
                 }
                 return url.href;
             }
         },
         methods: {
             showTacheModel(model) {
-                axios.get(route('api.consultations.show',model)).then(res => {
+                let arr = model['id'].split(',');
+                let consultation_id = arr[0];
+                let tache_id = arr[1];
+                axios.get(route('api.consultation-taches.show',{consultation : consultation_id , tache : tache_id})).then(res => {
                     this.currentTacheModel = res.data.payload;
                     this.showTacheModal = true;
                 })
                 // this.$inertia.visit(this.route('admin.consultations.show',model.id));
             },
             editTacheModel(model) {
-                this.$inertia.visit(this.route('admin.consultations.edit',model.id));
+                let arr = model['id'].split(',');
+                let consultation_id = arr[0];
+                let tache_id = arr[1];
+                axios.get(route('api.consultation-taches.show',{consultation : consultation_id , tache : tache_id})).then(res => {
+                    this.currentTacheModel = res.data.payload;
+                    this.showEditTacheModal = true;
+                })
+                // this.$inertia.visit(this.route('admin.consultation-taches.edit',model.id));
             },
-            AddTache(model){
-               
+            AddTache(){
+                this.showAddTacheModal = true;
             },
             AddPrestation(model){
                 
@@ -200,7 +224,7 @@
                 const vm = this;
                 this.confirmTacheDelete = false;
                 if (this.currentTacheModel) {
-                    this.$inertia.delete(route('admin.consultations.destroy', vm.currentTacheModel),{
+                    this.$inertia.delete(route('admin.consultation-taches.destroy', vm.currentTacheModel),{
                         onFinish: res => {
                             this.displayNotification('success', "Item deleted.");
                             vm.$refreshDt(vm.tachesTableId);
@@ -214,13 +238,20 @@
             },
             async toggleActivation(enabled,model) {
                 const vm = this;
-                console.log(enabled);
-                axios.put(route(`api.consultations.update`,model.id),{
+                axios.put(route(`api.consultation-taches.update`,model.id),{
                     enabled: enabled
                 }).then(res => {
                     this.displayNotification('success', res.data.message);
                     this.$refreshDt(this.tachesTableId);
                 })
+            },
+            onAddTacheSuccess(msg) {
+                this.displayNotification('success',msg);
+                this.showAddTacheModal = false;
+                this.$refreshDt(this.tachesTableId);
+            },
+            onAddTacheError(msg) {
+                this.displayNotification('error',msg);
             }
         }
     });

@@ -8,6 +8,7 @@ use App\Http\Requests\Consultation\DestroyConsultation;
 use App\Models\Consultation;
 use App\Models\Patient;
 use App\Repositories\Consultations;
+use App\Repositories\ConsultationTaches;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -16,9 +17,11 @@ use Yajra\DataTables\Html\Column;
 class ConsultationController  extends Controller
 {
     private Consultations $repo;
-    public function __construct(Consultations $repo)
+    private ConsultationTaches $consultation_taches;
+    public function __construct(Consultations $repo , ConsultationTaches $consultation_taches)
     {
         $this->repo = $repo;
+        $this->consultation_taches = $consultation_taches;
     }
 
     /**
@@ -54,22 +57,22 @@ class ConsultationController  extends Controller
     * @return    \Inertia\Response
     * @throws  \Illuminate\Auth\Access\AuthorizationException
     */
-    public function manage(Request $request): \Inertia\Response
+    public function manage(Request $request , Consultation $consultation): \Inertia\Response
     {
-        $patient_id = $request->get('patient_id');
-        if($patient_id){
-            $patient = Patient::findOrFail($patient_id);
-        }else{
-            $patient = null; 
-        }
+        $consultation->load([
+            'orthoptiste',
+            'fichier',
+            'fichier.patient',
+            'salle',
+        ]);
         $this->authorize('viewAny', Consultation::class);
         return Inertia::render('Consultations/Manage',[
             "can" => [
                 "viewAny" => \Auth::user()->can('viewAny', Consultation::class),
                 "create" => \Auth::user()->can('create', Consultation::class),
             ],
-            "columns" => $this->repo::dtColumns($patient_id),
-            "patient" => $patient
+            "tachesColumns" => $this->consultation_taches::dtColumns(),
+            "consultation" => $consultation
         ]);
     }
 

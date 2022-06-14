@@ -13,22 +13,23 @@ class Tach extends Model
     protected $fillable = [
         'name',
         'price',
-    
     ];
     
+    protected $dates = [];
+    public $timestamps = false;
     
-    
-    protected $dates = [
-        ];
-public $timestamps = false;
-    
-    protected $appends = ["api_route", "can"];
+    protected $appends = ["api_route", "can" , "title"];
 
     /* ************************ ACCESSOR ************************* */
+
+    public function getTitleAttribute() {
+        return $this->name ." ".$this->price;
+    }
 
     public function getApiRouteAttribute() {
         return route("api.taches.index");
     }
+    
     public function getCanAttribute() {
         return [
             "view" => \Auth::check() && \Auth::user()->can("view", $this),
