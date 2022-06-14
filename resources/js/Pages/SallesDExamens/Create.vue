@@ -4,7 +4,7 @@
             <div class="flex flex-wrap items-center justify-between w-full px-4">
                 <inertia-link :href="route('admin.salles-d-examens.index')"
                               class="text-xl font-black text-white"><i
-                        class="fas fa-arrow-left"></i> Back | New Salle d'examen
+                        class="fas fa-arrow-left"></i> Retour| Nouveau Salle d'examen
                 </inertia-link>
             </div>
         </template>

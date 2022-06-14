@@ -102,7 +102,7 @@ export default defineComponent({
     mounted() {
         const vm = this;
         let columns = vm.columns;
-        console.log(columns);
+        console.log(columns , vm.columnDefs);
         vm.allColumns = columns;
         let colDefs = columns.map((col, idx) => {
             return {
@@ -268,7 +268,7 @@ table.dataTable.no-footer {
 /*Change colour of responsive icon*/
 table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
 table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
-    background-color: rgba(220, 252, 231, var(--tw-bg-opacity)) !important; /*bg-indigo-500*/
+    background-color: rgb(16 185 129)!important; /*bg-indigo-500*/
 }
 .action-button {
     @apply p-2 shadow rounded;

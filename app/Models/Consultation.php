@@ -2,6 +2,8 @@
 
 namespace App\Models;
 /* Imports */
+
+use App\Repositories\Taches;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,8 +16,9 @@ class Consultation extends Model
         'note',
         'date',
         'orthoptiste_id',
-        'patient_id',
+        'fichier_id',
         'salle_id',
+        'commentaire',
     ];
     
     
@@ -32,6 +35,7 @@ class Consultation extends Model
     public function getApiRouteAttribute() {
         return route("api.consultations.index");
     }
+
     public function getCanAttribute() {
         return [
             "view" => \Auth::check() && \Auth::user()->can("view", $this),
@@ -54,13 +58,15 @@ class Consultation extends Model
     public function orthoptiste() {
         return $this->belongsTo(\App\Models\User::class,"orthoptiste_id","id");
     }
+
     /**
-    * Many to One Relationship to \App\Models\Patient::class
+    * Many to One Relationship to \App\Models\Fichier::class
     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
     */
-    public function patient() {
-        return $this->belongsTo(\App\Models\Patient::class,"patient_id","id");
+    public function fichier() {
+        return $this->belongsTo(\App\Models\Fichier::class,"fichier_id","id");
     }
+
     /**
     * Many to One Relationship to \App\Models\SallesDExamen::class
     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -68,4 +74,13 @@ class Consultation extends Model
     public function salle() {
         return $this->belongsTo(\App\Models\SallesDExamen::class,"salle_id","id");
     }
+
+    public function taches(){
+        return $this->belongsToMany(Taches::class, 'consultation_taches', 'tache_id', 'consultation_id')->withPivot('commentaire' , 'remises' , 'pourcentage_remises');
+    }
+
+    public function prestations(){
+        return $this->belongsToMany(Prestation::class, 'consultation_prestations', 'prestation_id', 'consultation_id')->withPivot('commentaire');
+    }
+
 }

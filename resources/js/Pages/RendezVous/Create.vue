@@ -4,7 +4,7 @@
             <div class="flex flex-wrap items-center justify-between w-full px-4">
                 <inertia-link :href="route('admin.rendez-vouses.index')"
                               class="text-xl font-black text-white"><i
-                        class="fas fa-arrow-left"></i> Back | New Rendez Vou
+                        class="fas fa-arrow-left"></i> Retour| Nouveau Rendez Vou
                 </inertia-link>
             </div>
         </template>

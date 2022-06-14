@@ -7,7 +7,7 @@
                 <inertia-link
                     :href="route('admin.rendez-vouses.index')"
                     class="text-2xl font-black text-white"
-                ><i class="fas fa-arrow-left"></i> Back | Details of Rendez Vou
+                ><i class="fas fa-arrow-left"></i> Retour| Details Du Rendez Vou
                     #{{ model.id }}</inertia-link>
             </div>
         </template>

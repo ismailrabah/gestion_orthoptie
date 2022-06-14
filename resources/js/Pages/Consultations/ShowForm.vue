@@ -1,9 +1,22 @@
 <template>
     <dl class="gap-4">
-        <jig-dd>
-            <template #dt>Patient:</template>
-            {{ model.patient ? model.patient.title : '-' }}
-        </jig-dd>
+        <div class="flex">
+            <div class="flex-1">
+                <div class="w-full p-3  text-lg font-black border-r bg-primary-100">
+                    <span>Détails du patient :</span>
+                </div>
+                <show-patients-form  v-if="model.fichier" :model="model.fichier.patient" :is_consul="true" ></show-patients-form>
+            </div>
+            <div class="flex-1">
+                <div class="w-full p-3  text-lg font-black bg-primary-100">
+                    <span>Détails du fichier :</span>
+                </div>
+                <show-fichiers-form  v-if="model.fichier" :model="model.fichier" :is_consul="true" ></show-fichiers-form>
+            </div>
+        </div>
+        <div class="w-full p-3  text-lg font-black bg-primary-100">
+            <span>Details Du Consultation :</span>
+        </div>
         <jig-dd>
             <template #dt>Orthoptiste:</template>
             {{ model.orthoptiste ? model.orthoptiste.name : '-' }} {{ model.orthoptiste ? model.orthoptiste.last_name : '-' }}
@@ -20,6 +33,10 @@
             <template #dt>Salle:</template>
             {{ model.salle ? model.salle.name : '-' }}
         </jig-dd>
+        <jig-dd>
+            <template #dt>Commentaire:</template>
+            {{ model.commentaire }}
+        </jig-dd>
     </dl>
 </template>
 
@@ -28,6 +45,8 @@
     import InertiaButton from "@/JigComponents/InertiaButton.vue";
 
     import { defineComponent } from "vue";
+    import ShowFichiersForm from "@/Pages/Fichiers/ShowForm.vue";
+    import ShowPatientsForm from "@/Pages/Patients/ShowForm.vue";
 
     export default defineComponent({
         name: "ShowConsultationsForm",
@@ -37,6 +56,8 @@
         components: {
             InertiaButton,
             JigDd,
+            ShowFichiersForm,
+            ShowPatientsForm,
         },
         data() {
             return {}

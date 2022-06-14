@@ -29,7 +29,7 @@ class UpdateRendezVousStatus extends FormRequest
         return [
             'name' => ['sometimes', 'string'],
             'is_default' => ['sometimes', 'boolean'],
-                    
+            'color' => [ 'sometimes','string'],
         ];
     }
 

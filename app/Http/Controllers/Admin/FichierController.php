@@ -42,7 +42,7 @@ class FichierController  extends Controller
                 "viewAny" => \Auth::user()->can('viewAny', Fichier::class),
                 "create" => \Auth::user()->can('create', Fichier::class),
             ],
-            "columns" => $this->repo::dtColumns(),
+            "columns" => $this->repo::dtColumns($patient_id),
             "patient" => $patient
         ]);
     }

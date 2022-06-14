@@ -7,14 +7,12 @@
                 <inertia-link
                     :href="route('admin.consultations.index')"
                     class="text-2xl font-black text-white"
-                ><i class="fas fa-arrow-left"></i> Back | Details of Consultation
+                ><i class="fas fa-arrow-left"></i> Retour| Details Du Consultation
                     #{{ model.id }}</inertia-link>
             </div>
         </template>
         <div v-if="model.can.view" class="flex flex-wrap px-4">
-            <div
-                class="z-10 flex-auto max-w-5xl p-4 mx-auto bg-white md:rounded-md md:shadow-md"
-            >
+            <div class="z-10 flex-auto max-w-5xl p-4 mx-auto bg-white md:rounded-md md:shadow-md" >
                 <show-consultations-form :model="model"></show-consultations-form>
             </div>
         </div>

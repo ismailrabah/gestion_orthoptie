@@ -2,6 +2,13 @@
     <form @submit.prevent="updateModel">
          
         <div class=" sm:col-span-4">
+            <jet-label for="patient" value="Patient" class="mb-2" />
+            <inertia-button :href="route('admin.patients.show', form.patient.id)" classes=" mb-6 bg-green-100 hover:bg-green-200 text-primary"><i class="mr-2 fas fa-user-injured"></i>{{form.patient.title}}</inertia-button>
+            <jet-input class="w-full" type="hidden" id="patient" name="patient" v-model="form.patient"></jet-input>
+            <jet-input-error :message="form.errors.patient" class="mt-2" />
+        </div>
+               
+        <div class=" sm:col-span-4 mt-2">
             <jet-label for="titre" value="Titre" />
             <jet-input class="w-full" type="text" id="titre" name="titre" v-model="form.titre"
                        :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.titre}"
@@ -26,31 +33,21 @@
         </div>
 
         <div class=" sm:col-span-4">
-            <jet-label for="commentaire" value="Commentaire" />
-            <jig-textarea class="w-full" id="commentaire" name="commentaire" v-model="form.commentaire"
-                          :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.commentaire}"
-            ></jig-textarea>
-            <jet-input-error :message="form.errors.commentaire" class="mt-2" />
-        </div>
-
-        <div class=" sm:col-span-4">
             <jet-label for="medcin_traitant" value="Medcin Traitant" />
             <jet-input class="w-full" type="text" id="medcin_traitant" name="medcin_traitant" v-model="form.medcin_traitant"
                        :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.medcin_traitant}"
             ></jet-input>
             <jet-input-error :message="form.errors.medcin_traitant" class="mt-2" />
         </div>
-        
+
         <div class=" sm:col-span-4">
-            <jet-label for="patient" value="Patient" />
-            <infinite-select class="w-full" :per-page="15" :api-url="route('api.patients.index')"
-                                id="patient" name="patient"
-                                v-model="form.patient" label="title"
-                                :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.patient}"
-            ></infinite-select>
-            <jet-input-error :message="form.errors.patient" class="mt-2" />
+            <jet-label for="commentaire" value="Commentaire" />
+            <jig-textarea class="w-full" id="commentaire" name="commentaire" v-model="form.commentaire"
+                          :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.commentaire}"
+            ></jig-textarea>
+            <jet-input-error :message="form.errors.commentaire" class="mt-2" />
         </div>
-                                    
+           
         <div class="mt-2 text-right">
             <inertia-button type="submit" class="font-semibold text-white bg-primary" :disabled="form.processing">Submit</inertia-button>
         </div>
@@ -62,7 +59,7 @@
     import InertiaButton from "@/JigComponents/InertiaButton.vue";
     import JetInputError from "@/Jetstream/InputError.vue";
     import {useForm} from "@inertiajs/inertia-vue3";
-        import JetInput from "@/Jetstream/Input.vue";
+    import JetInput from "@/Jetstream/Input.vue";
     import JigTextarea from "@/JigComponents/JigTextarea.vue";
     import InfiniteSelect from '@/JigComponents/InfiniteSelect.vue';
 
@@ -78,9 +75,8 @@
             JetLabel,
             JetInputError,
             JetInput,
-                                    JigTextarea,
+            JigTextarea,
             InfiniteSelect,
-
         },
         data() {
             return {

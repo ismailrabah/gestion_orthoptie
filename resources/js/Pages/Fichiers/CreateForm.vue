@@ -2,6 +2,16 @@
     <form class="w-full" @submit.prevent="storeModel">
             
         <div class=" sm:col-span-4">
+            <jet-label for="patient" value="Patient" />
+            <infinite-select :per-page="15" :api-url="route('api.patients.index')"
+                             id="patient" name="patient"
+                             v-model="form.patient" label="title"
+                             :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.patient}"
+            ></infinite-select>
+            <jet-input-error :message="form.errors.patient" class="mt-2" />
+        </div>
+
+        <div class=" sm:col-span-4">
             <jet-label for="titre" value="Titre" />
             <jet-input class="w-full" type="text" id="titre" name="titre" v-model="form.titre"
                        :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.titre}"
@@ -26,29 +36,19 @@
         </div>
 
         <div class=" sm:col-span-4">
-            <jet-label for="commentaire" value="Commentaire" />
-            <jig-textarea class="w-full" id="commentaire" name="commentaire" v-model="form.commentaire"
-                          :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.commentaire}"
-            ></jig-textarea>
-            <jet-input-error :message="form.errors.commentaire" class="mt-2" />
-        </div>
-
-        <div class=" sm:col-span-4">
             <jet-label for="medcin_traitant" value="Medcin Traitant" />
             <jet-input class="w-full" type="text" id="medcin_traitant" name="medcin_traitant" v-model="form.medcin_traitant"
                        :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.medcin_traitant}"
             ></jet-input>
             <jet-input-error :message="form.errors.medcin_traitant" class="mt-2" />
         </div>
-            
+
         <div class=" sm:col-span-4">
-            <jet-label for="patient" value="Patient" />
-            <infinite-select :per-page="15" :api-url="route('api.patients.index')"
-                             id="patient" name="patient"
-                             v-model="form.patient" label="title"
-                             :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.patient}"
-            ></infinite-select>
-            <jet-input-error :message="form.errors.patient" class="mt-2" />
+            <jet-label for="commentaire" value="Commentaire" />
+            <jig-textarea class="w-full" id="commentaire" name="commentaire" v-model="form.commentaire"
+                          :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.commentaire}"
+            ></jig-textarea>
+            <jet-input-error :message="form.errors.commentaire" class="mt-2" />
         </div>
 
         <div class="mt-2 text-right">
@@ -73,9 +73,9 @@
             InertiaButton,
             JetInputError,
             JetLabel,
-                         JetInput,
-                         JigTextarea,
-             InfiniteSelect,
+            JetInput,
+            JigTextarea,
+            InfiniteSelect,
         },
         data() {
             return {
@@ -85,8 +85,7 @@
                     atcd: null,
                     commentaire: null,
                     motif_de_bilan: null,
-                                        "patient": null,
-                    
+                    "patient": null,
                 }, {remember: false}),
             }
         },

@@ -27,6 +27,7 @@ class StoreRendezVousStatus extends FormRequest
         return [
             'name' => ['required', 'string'],
             'is_default' => ['required', 'boolean'],
+            'color' => [ 'string'],
                     
         ];
     }

@@ -30,6 +30,10 @@ class ConsultationController  extends Controller
     public function index(IndexConsultation $request)
     {
         $query = Consultation::query(); // You can extend this however you want.
+        $patient = $request->get('patient');
+        if($patient){
+            $query->with('fichier')->where('fichier.patient_id' ,"=",$patient);
+        }
         $cols = [
             Column::name('id')->title('Id')->sort()->searchable(),
             Column::name('note')->title('Note')->sort()->searchable(),
@@ -44,6 +48,10 @@ class ConsultationController  extends Controller
 
     public function dt(Request $request) {
         $query = Consultation::query()->select(Consultation::getModel()->getTable().'.*'); // You can extend this however you want.
+        $patient_id = $request->get('patient_id');
+        if($patient_id){
+            $query->join('fichiers' , "consultations.fichier_id" , "fichiers.id")->where('fichiers.patient_id' ,"=",$patient_id);
+        }
         return $this->repo::dt($query);
     }
     /**

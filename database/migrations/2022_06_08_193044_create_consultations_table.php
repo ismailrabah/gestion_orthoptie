@@ -16,11 +16,12 @@ return new class extends Migration
         Schema::create('consultations', function (Blueprint $table) {
             $table->id();
 
-            $table->string('note' , 255)->nullable();
+            $table->string('note' , 500)->nullable();
+            $table->text('commentaire')->nullable();
             $table->date('date')->require();
             
-            $table->unsignedBigInteger('patient_id')->nullable();
-            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('set null');
+            $table->unsignedBigInteger('fichier_id')->nullable();
+            $table->foreign('fichier_id')->references('id')->on('fichiers')->onDelete('set null');
             
             $table->unsignedBigInteger('orthoptiste_id')->nullable();
             $table->foreign('orthoptiste_id')->references('id')->on('users')->onDelete('set null');

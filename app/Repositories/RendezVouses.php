@@ -138,11 +138,11 @@ class RendezVouses
                 'startDate' => $rendz->date,
                 'endDate' =>  $rendz->date,
                 'title' => $rendz->patient ? $rendz->patient->title  : "",
-                'classes' => [$color],
+                'classes' => [],
                 "sale" => $rendz->salleDAttente ? $rendz->salleDAttente->name : '',
-                "patient_id"=> $rendz->patient_id
+                "patient_id"=> $rendz->patient_id,
                 // 'url' => "",
-                // 'style' => "",
+                'style' => 'background-color:'.$rendz->status->color.' ; ',
             ];
         }
         return $items;   

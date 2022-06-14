@@ -2,10 +2,9 @@
     <jig-layout>
         <template #header>
             <div class="flex flex-wrap items-center justify-between w-full px-4">
-                <inertia-link :href="route('admin.dashboard')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Back</inertia-link>
+                <inertia-link :href="route('admin.dashboard')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Retour</inertia-link>
                 <div class="flex gap-x-2">
-                    <inertia-button v-if="can.create" :href="route('admin.consultations.create')" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> New
-                        Consultation</inertia-button>
+                    <inertia-button v-if="can.create" :href="route('admin.consultations.create')" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Nouveau Consultation</inertia-button>
                     <inertia-button @click.native="$refreshDt(tableId)" classes="bg-indigo-100 hover:bg-green-200 text-indigo"><i class="fas fa-redo"></i> Refresh</inertia-button>
                 </div>
 
@@ -13,8 +12,56 @@
         </template>
         <div v-if="can.viewAny" class="flex flex-wrap px-4">
             <div class="z-10 flex-auto bg-white md:rounded-md md:shadow-md">
-                <h3 class="w-full p-4 mb-2 text-lg font-black sm:rounded-t-lg bg-primary-100"><i class="mr-2 fas fa-bars"></i> List of All
-                    Consultations</h3>
+                <h3 class="w-full p-4 mb-2 text-lg font-black sm:rounded-t-lg bg-primary-100"><i class="mr-2 fas fa-bars"></i> List Des Consultations
+                    <inertia-link v-if="patient" :href="route('admin.patients.show' , patient.id)"  class="text-xl font-black text-primary"> : {{patient.title}}</inertia-link>
+                    <button  v-if="patient" style="margin-top: -5px;"     type="button" @click="expandInfo()"
+                        class="pl-2 pt-1 pb-1 pr-1  transition duration-150 ease-in-out" >
+                        <i v-if="!extends_info" class="fas fa-angle-down"></i>
+                        <i v-if="extends_info" class="fas fa-angle-up"></i>
+                    </button>
+                </h3>
+                <dl class="gap-4 p-4 " v-if="patient && extends_info">
+                    <div class="flex">
+                        <jig-dd class="flex-1">
+                            <template #dt>Nom:</template>
+                            {{ patient.nom }}
+                        </jig-dd>
+                        <jig-dd class="flex-1">
+                            <template #dt>Prenom:</template>
+                            {{ patient.prenom }}
+                        </jig-dd>
+                    </div>
+                    <div class="flex">
+                        <jig-dd class="flex-1">
+                            <template #dt>Phone:</template>
+                            {{ patient.phone }}
+                        </jig-dd>
+                        <jig-dd class="flex-1">
+                            <template #dt>Email:</template>
+                            {{ patient.email }}
+                        </jig-dd>
+                    </div>
+                    <div class="flex">
+                        <jig-dd class="flex-1">
+                            <template #dt>Cin:</template>
+                            {{ patient.cin }}
+                        </jig-dd>
+                        <jig-dd class="flex-1">
+                            <template #dt>Ddn:</template>
+                            {{ patient.ddn }}
+                        </jig-dd>
+                    </div>
+                    <div class="flex">
+                        <jig-dd class="flex-1">
+                            <template #dt>Adresse:</template>
+                            {{ patient.adresse }}
+                        </jig-dd>
+                        <jig-dd class="flex-1">
+                            <template #dt>Fichiers:</template>
+                            {{ patient.count_fichiers }}
+                        </jig-dd>
+                    </div>
+                </dl>
                 <div class="p-4">
                     <dt-component
                         :table-id="tableId"
@@ -24,6 +71,7 @@
                         @show-model="showModel"
                         @edit-model="editModel"
                         @delete-model="confirmDeletion"
+                        @manage-model="manageModel"
                     />
                 </div>
                 <jet-confirmation-modal title="Confirm Deletion" :show="confirmDelete">
@@ -40,6 +88,7 @@
                 <div v-if="showModal && currentModel">
                     <jig-modal
                         :show="showModal"
+                        maxWidthClass="max-w-7xl"
                         corner-class="rounded-lg"
                         position-class="align-middle"
                         @close="currentModel = null; showModal = false">
@@ -70,6 +119,7 @@
     import DisplayMixin from "@/Mixins/DisplayMixin.js";
     import ShowConsultationsForm from "@/Pages/Consultations/ShowForm.vue";
     import { defineComponent } from "vue";
+    import JigDd from "@/JigComponents/JigDd.vue";
 
     export default defineComponent({
         name: "Index",
@@ -82,10 +132,12 @@
             JigModal,
             JigLayout,
             ShowConsultationsForm,
+            JigDd,
         },
         props: {
             can: Object,
             columns: Array,
+            patient: Object,
         },
         inject: ["$refreshDt","$dayjs"],
         data() {
@@ -97,6 +149,7 @@
                 currentModel: null,
                 withDisabled: false,
                 showModal: false,
+                extends_info: false,
             }
         },
         mixins: [
@@ -110,6 +163,9 @@
                 /*if (this.withDisabled) {
                     url.searchParams.append('include-disabled',true);
                 }*/
+                if (this.patient) {
+                    url.searchParams.append('patient_id',this.patient.id);
+                }
                 return url.href;
             }
         },
@@ -123,6 +179,12 @@
             },
             editModel(model) {
                 this.$inertia.visit(this.route('admin.consultations.edit',model.id));
+            },
+            manageModel(model){
+                this.$inertia.visit(this.route('admin.consultations.manage',model.id));
+            },
+            expandInfo(){
+                this.extends_info = ! this.extends_info;
             },
             confirmDeletion(model) {
                 this.currentModel = model;

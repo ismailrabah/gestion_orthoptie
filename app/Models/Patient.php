@@ -18,7 +18,6 @@ class Patient extends Model
         'phone',
         'email',
         'ddn',
-    
     ];
     
     

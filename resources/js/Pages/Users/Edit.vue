@@ -2,7 +2,7 @@
     <jig-layout>
         <template #header>
             <div class="flex flex-wrap items-center justify-between w-full px-4">
-                <inertia-link :href="route('admin.users.index')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Back | Edit
+                <inertia-link :href="route('admin.users.index')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Retour| Edit
                     User #{{model.id}}</inertia-link>
             </div>
         </template>

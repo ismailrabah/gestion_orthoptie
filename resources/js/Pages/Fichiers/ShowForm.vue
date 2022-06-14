@@ -1,5 +1,9 @@
 <template>
     <dl class="gap-4">
+        <jig-dd v-if="model.patient && !is_consul">
+            <template #dt>Patient:</template>
+            <inertia-button :href="route('admin.patients.show', model.patient.id)" classes=" mb-6 bg-green-100 hover:bg-green-200 text-primary"><i class="mr-2 fas fa-user-injured"></i>{{model.patient.title}}</inertia-button>
+        </jig-dd>
         <jig-dd>
             <template #dt>Titre:</template>
             {{ model.titre }}
@@ -13,22 +17,18 @@
             {{ model.atcd }}
         </jig-dd>
         <jig-dd>
-            <template #dt>Commentaire:</template>
-            {{ model.commentaire }}
-        </jig-dd>
-        <jig-dd>
             <template #dt>Medcin Traitant:</template>
             {{ model.medcin_traitant }}
         </jig-dd>
         <jig-dd>
-            <template #dt>Patient:</template>
-            {{ model.patient ? model.patient.title : '-' }}
+            <template #dt>Commentaire:</template>
+            {{ model.commentaire }}
         </jig-dd>
-        <jig-dd>
+        <jig-dd v-if="!is_consul">
             <template #dt>Created at:</template>
             {{ model.created_at }}
         </jig-dd>
-        <jig-dd>
+        <jig-dd v-if="!is_consul">
             <template #dt>Updated at:</template>
             {{ model.updated_at }}
         </jig-dd>
@@ -45,6 +45,7 @@
         name: "ShowFichiersForm",
         props: {
             model: Object,
+            is_consul: false,
         },
         components: {
             InertiaButton,

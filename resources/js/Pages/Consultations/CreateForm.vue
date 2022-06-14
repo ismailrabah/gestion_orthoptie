@@ -11,6 +11,16 @@
             <jet-input-error :message="form.errors.patient" class="mt-2" />
         </div>
         
+        <div class=" sm:col-span-4" v-if="form.patient">
+            <jet-label for="fichier" value="Fichier De Patient" />
+            <infinite-select :per-page="15" :api-url="route('api.fichiers.index')" :queryParams="{'patient' : form.patient.id}"
+                             id="fichier" name="fichier"
+                             v-model="form.fichier" label="titre"
+                             :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.fichier}"
+            ></infinite-select>
+            <jet-input-error :message="form.errors.fichier" class="mt-2" />
+        </div>
+
         <div class=" sm:col-span-4">
             <jet-label for="orthoptiste" value="Orthoptiste" />
             <infinite-select :per-page="15" :api-url="route('api.users.index')" :queryParams="{'role' : 'orthoptiste'}"
@@ -54,6 +64,14 @@
             <jet-input-error :message="form.errors.salle" class="mt-2" />
         </div>
 
+        <div class=" sm:col-span-4">
+            <jet-label for="commentaire" value="Commentaire" />
+            <jig-textarea class="w-full" id="commentaire" name="commentaire" v-model="form.commentaire"
+                          :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.commentaire}"
+            ></jig-textarea>
+            <jet-input-error :message="form.errors.commentaire" class="mt-2" />
+        </div>
+
         <div class="mt-2 text-right">
             <inertia-button type="submit" class="font-semibold bg-success disabled:opacity-25" :disabled="form.processing">Submit</inertia-button>
         </div>
@@ -68,6 +86,7 @@
     import InertiaButton from "@/JigComponents/InertiaButton.vue";
     import JetInputError from "@/Jetstream/InputError.vue"
     import {useForm} from "@inertiajs/inertia-vue3";
+    import JigTextarea from "@/JigComponents/JigTextarea.vue";
     import { defineComponent } from "vue";
 
     export default defineComponent({
@@ -76,19 +95,21 @@
             InertiaButton,
             JetInputError,
             JetLabel,
-             JigDatepicker,
-             JetInput,
-                                     InfiniteSelect,
+            JigDatepicker,
+            JetInput,
+            InfiniteSelect,
+            JigTextarea,
         },
         data() {
             return {
                 form: useForm({
                     note: null,
                     date: null,
-                                        "orthoptiste": null,
-"patient": null,
-"salle": null,
-                    
+                    "orthoptiste": null,
+                    "patient": null,
+                    "fichier": null,
+                    "salle": null,
+                    commentaire: null,
                 }, {remember: false}),
             }
         },

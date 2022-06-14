@@ -6,6 +6,7 @@ use App\Http\Requests\Consultation\StoreConsultation;
 use App\Http\Requests\Consultation\UpdateConsultation;
 use App\Http\Requests\Consultation\DestroyConsultation;
 use App\Models\Consultation;
+use App\Models\Patient;
 use App\Repositories\Consultations;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -29,13 +30,46 @@ class ConsultationController  extends Controller
     */
     public function index(Request $request): \Inertia\Response
     {
+        $patient_id = $request->get('patient_id');
+        if($patient_id){
+            $patient = Patient::findOrFail($patient_id);
+        }else{
+            $patient = null; 
+        }
         $this->authorize('viewAny', Consultation::class);
         return Inertia::render('Consultations/Index',[
             "can" => [
                 "viewAny" => \Auth::user()->can('viewAny', Consultation::class),
                 "create" => \Auth::user()->can('create', Consultation::class),
             ],
-            "columns" => $this->repo::dtColumns(),
+            "columns" => $this->repo::dtColumns($patient_id),
+            "patient" => $patient
+        ]);
+    }
+
+    /**
+    * Display a listing of the resource.
+    *
+    * @param  Request $request
+    * @return    \Inertia\Response
+    * @throws  \Illuminate\Auth\Access\AuthorizationException
+    */
+    public function manage(Request $request): \Inertia\Response
+    {
+        $patient_id = $request->get('patient_id');
+        if($patient_id){
+            $patient = Patient::findOrFail($patient_id);
+        }else{
+            $patient = null; 
+        }
+        $this->authorize('viewAny', Consultation::class);
+        return Inertia::render('Consultations/Manage',[
+            "can" => [
+                "viewAny" => \Auth::user()->can('viewAny', Consultation::class),
+                "create" => \Auth::user()->can('create', Consultation::class),
+            ],
+            "columns" => $this->repo::dtColumns($patient_id),
+            "patient" => $patient
         ]);
     }
 
@@ -108,16 +142,14 @@ class ConsultationController  extends Controller
         try {
             $this->authorize('update', $consultation);
             //Fetch relationships
-            
 
-
-
-        $consultation->load([
-            'orthoptiste',
-            'patient',
-            'salle',
-        ]);
-                        return Inertia::render("Consultations/Edit", ["model" => $consultation]);
+            $consultation->load([
+                'orthoptiste',
+                'fichier',
+                'fichier.patient',
+                'salle',
+            ]);
+            return Inertia::render("Consultations/Edit", ["model" => $consultation]);
         } catch (\Throwable $exception) {
             \Log::error($exception);
             return back()->with([

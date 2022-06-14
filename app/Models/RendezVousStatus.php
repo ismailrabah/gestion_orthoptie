@@ -14,6 +14,7 @@ protected $table = 'rendez_vous_status';
     protected $fillable = [
         'name',
         'is_default',
+        'color',
     ];
     
     protected $casts = [

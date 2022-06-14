@@ -4,7 +4,7 @@
             <div class="flex flex-wrap items-center justify-between w-full px-4">
                 <inertia-link :href="route('admin.salle-d-attentes.index')"
                               class="text-xl font-black text-white"><i
-                        class="fas fa-arrow-left"></i> Back | New Salle d'attente
+                        class="fas fa-arrow-left"></i> Retour| Nouveau Salle d'attente
                 </inertia-link>
             </div>
         </template>

@@ -1,18 +1,26 @@
 <template>
     <form @submit.prevent="updateModel">
-                 <div class=" sm:col-span-4">
+         
+        <div class=" sm:col-span-4">
             <jet-label for="name" value="Name" />
             <jet-input class="w-full" type="text" id="name" name="name" v-model="form.name"
                        :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.name}"
             ></jet-input>
             <jet-input-error :message="form.errors.name" class="mt-2" />
         </div>
-                <div class=" sm:col-span-4">
+        
+        <div class=" sm:col-span-4">
             <jet-label for="is_default" value="Is Default" />
             <jet-checkbox class="p-2" type="checkbox" id="is_default" name="is_default" :checked="form.is_default" v-model="form.is_default"
                           :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.is_default}"
             ></jet-checkbox>
             <jet-input-error :message="form.errors.is_default" class="mt-2" />
+        </div>
+        
+        <div class=" sm:col-span-4">
+            <jet-label for="color" value="Color" />
+            <color-picker v-model:pureColor="form.color" format="hex" />
+            <jet-input-error :message="form.errors.color" class="mt-2" />
         </div>
                                     
         <div class="mt-2 text-right">
@@ -30,6 +38,8 @@
     import JetInput from "@/Jetstream/Input.vue";
         
     import { defineComponent } from "vue";
+    import { ColorPicker } from "vue3-colorpicker";
+    import "vue3-colorpicker/style.css"
 
     export default defineComponent({
         name: "EditRendezVousStatusForm",
@@ -41,8 +51,8 @@
             JetLabel,
             JetInputError,
             JetInput,
-                        JetCheckbox,
-                        
+            JetCheckbox,
+            ColorPicker,
         },
         data() {
             return {

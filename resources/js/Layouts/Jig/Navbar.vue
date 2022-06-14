@@ -6,8 +6,15 @@
             <div class="flex justify-between h-16">
                 <div class="flex">
                     <!-- Logo -->
-                    <application-logo class="h-full px-8 bg-primary" />
+                    <!-- <application-logo class="h-full px-8 bg-primary" /> -->
                     <!-- Navigation Links -->
+                    <img
+                        :alt="$page.props.app.name"
+                        class="ml-4 max-h-full text-white"
+                        height="100"
+                        width="100"
+                        :src="logoUrl"
+                    />
                     <div
                         class="hidden  sm:-my-px text-gray-50 hover:text-gray-200 sm:ml-10 sm:flex"
                     >
@@ -443,6 +450,7 @@ export default defineComponent({
         return {
             showingNavigationDropdown: false,
             notificationsShown: true,
+            logoUrl: `${this.$page.props.app.url}/vendor/jig/images/logo.png`,
         };
     },
     methods: {

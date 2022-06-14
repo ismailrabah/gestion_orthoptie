@@ -8,7 +8,13 @@
                 <div class="container relative flex flex-wrap items-center justify-between h-24 mx-auto overflow-hidden font-medium border-b border-gray-200 md:overflow-visible lg:justify-center sm:px-4 md:px-2">
                     <div class="flex items-center justify-start w-1/4 h-full pr-4">
                         <a href="#_" class="inline-block py-4 md:py-0">
-                            <!-- <application-logo></application-logo> -->
+                              <img
+                                :alt="$page.props.app.name"
+                                class="max-h-full text-white"
+                                height="100"
+                                width="100"
+                                :src="logoUrl"
+                            />
                         </a>
                     </div>
                     <div class="top-0 left-0 items-start w-full h-full p-4 text-sm bg-gray-900 bg-opacity-50 md:items-center md:w-3/4 md:absolute lg:text-base md:bg-transparent md:p-0 md:relative md:flex" :class="{'flex fixed': showMenu, 'hidden': !showMenu }">
@@ -41,11 +47,11 @@
             <div class="container max-w-lg px-4 py-32 mx-auto text-left md:max-w-none md:text-center">
                 <h1 class="text-5xl font-extrabold leading-10 tracking-tight text-left text-gray-900 md:text-center sm:leading-none md:text-6xl lg:text-7xl"><span class="inline md:block">Gestion</span> 
                 <span class="relative mt-2 text-transparent bg-clip-text bg-gradient-to-br from-secondary to-primary-400 md:inline-block">Orthoptie</span></h1>
-                <div class="mx-auto mt-5 text-gray-500 md:mt-12 md:max-w-lg md:text-center lg:text-lg">Simplifying the management of your orthoptics!</div>
+                <div class="mx-auto mt-5 text-gray-500 md:mt-12 md:max-w-lg md:text-center lg:text-lg">Simplifier la gestion de votre orthoptique!</div>
                 <div class="flex flex-col items-center mt-12 text-center">
                     <span class="relative inline-flex w-full md:w-auto">
                         <inertia-link :href="route('dashboard')" type="button" class="inline-flex items-center justify-center w-full px-8 py-4 text-base font-bold leading-6 text-white bg-primary border border-transparent rounded-full md:w-auto hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">
-                            Go to App
+                            Aller à l'App
                         </inertia-link>
                     </span>
                 </div>
@@ -57,7 +63,6 @@
 </template>
 
 <script>
-// import ApplicationLogo from "@/JigComponents/ApplicationLogo.vue";
 export default {
     name: "LandingPage",
     components: {},
@@ -68,6 +73,7 @@ export default {
     data() {
         return {
             showMenu: false,
+            logoUrl: `${this.$page.props.app.url}/vendor/jig/images/logo.png`,
         }
     }
 }

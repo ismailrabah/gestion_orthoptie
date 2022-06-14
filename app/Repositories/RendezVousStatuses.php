@@ -20,8 +20,16 @@ class RendezVousStatuses
     public static function store(object $data): RendezVousStatus
     {
         $model = new RendezVousStatus((array) $data);
-                // Save Relationships
-                    
+        // Save Relationships
+        if($model->is_default){
+            $old_is_de = RendezVousStatus::where('is_default' , '=',1)->get();
+            if($old_is_de){
+                foreach( $old_is_de as $rvs){
+                    $rvs->is_default = false;
+                    $rvs->saveOrFail();
+                }
+            }
+        }
 
         $model->saveOrFail();
         return $model;
@@ -36,7 +44,15 @@ class RendezVousStatuses
         $this->model->update((array) $data);
         
         // Save Relationships
-                        
+        if($this->model->is_default){
+            $old_is_de = RendezVousStatus::where('is_default' , '=',1)->where('id' , '<>' , $this->model->id)->get();
+            if($old_is_de){
+                foreach( $old_is_de as $rvs){
+                    $rvs->is_default = false;
+                    $rvs->saveOrFail();
+                }
+            }
+        }  
 
         $this->model->saveOrFail();
         return $this->model;
@@ -50,6 +66,7 @@ class RendezVousStatuses
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
             Column::make("name")->className('all'),
+            Column::make("color")->className('all min-desktop-lg'),
             Column::make("is_default")->className('all min-desktop-lg'),
             Column::make('actions')->className('min-desktop text-right')->orderable(false)->searchable(false),
         ];
@@ -57,6 +74,11 @@ class RendezVousStatuses
     }
     public static function dt($query) {
         return DataTables::of($query)
+            ->editColumn('color' , function (RendezVousStatus $model){
+                if($model->color){
+                    return '<span class="border-gray-300 border p-2 px-3 focus:ring-0 focus:outline-none text-white" style="background-color:'.$model->color.'" title="color" >'.$model->color.'</span>';
+                }
+            })
             ->editColumn('actions', function (RendezVousStatus $model) {
                 $actions = '';
                 if (\Auth::user()->can('view',$model)) $actions .= '<button class="bg-primary hover:bg-primary-600 p-2 px-3 focus:ring-0 focus:outline-none text-white action-button" title="View Details" data-action="show-model" data-tag="button" data-id="'.$model->id.'"><i class="fas fa-eye"></i></button>';
@@ -64,7 +86,7 @@ class RendezVousStatuses
                 if (\Auth::user()->can('delete',$model)) $actions .= '<button class="bg-danger hover:bg-danger-600 p-2 px-3 text-white focus:ring-0 focus:outline-none action-button" title="Delete Record" data-action="delete-model" data-tag="button" data-id="'.$model->id.'"><i class="fas fa-trash"></i></button>';
                 return "<div class='gap-x-1 flex w-full justify-end'>".$actions."</div>";
             })
-            ->rawColumns(['actions'])
+            ->rawColumns(['actions','color'])
             ->make();
     }
 }

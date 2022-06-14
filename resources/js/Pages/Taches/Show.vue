@@ -7,7 +7,7 @@
                 <inertia-link
                     :href="route('admin.taches.index')"
                     class="text-2xl font-black text-white"
-                ><i class="fas fa-arrow-left"></i> Back | Details of Tach
+                ><i class="fas fa-arrow-left"></i> Retour| Details Du Tach
                     #{{ model.id }}</inertia-link>
             </div>
         </template>

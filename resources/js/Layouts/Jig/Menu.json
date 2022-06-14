@@ -11,9 +11,9 @@
         "children": []
     },
     "agenda": {
-        "route": "admin.rendez-vouses.agenda",
+        "route": "admin.agenda",
         "title": "Agenda",
-        "routePattern": "admin.rendez-vouses.agenda",
+        "routePattern": "admin.agenda",
         "faIcon": "fas fa-calendar-alt",
         "isTitle": false,
         "isParent": false,
@@ -29,20 +29,20 @@
         "isParent": false,
         "children": []
     },
-    "consultations": {
-        "route": "admin.consultations.index",
-        "title": "Consultations",
-        "routePattern": "admin.consultations.*",
-        "faIcon": "fas fa-stethoscope",
-        "isTitle": false,
-        "isParent": false,
-        "children": []
-    },
     "fichiers": {
         "route": "admin.fichiers.index",
         "title": "Fichiers",
         "routePattern": "admin.fichiers.*",
         "faIcon": "far fa-file-alt",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    },
+    "consultations": {
+        "route": "admin.consultations.index",
+        "title": "Consultations",
+        "routePattern": "admin.consultations.*",
+        "faIcon": "fas fa-stethoscope",
         "isTitle": false,
         "isParent": false,
         "children": []
@@ -94,7 +94,7 @@
     },
     "rendez-vous-statuses": {
         "route": "admin.rendez-vous-statuses.index",
-        "title": "Rendez Vous Status",
+        "title": "Status Rendez Vous ",
         "routePattern": "admin.rendez-vous-statuses.*",
         "faIcon": "fas fa-tag",
         "isTitle": false,
@@ -102,7 +102,7 @@
         "children": []
     },
     "settings": {
-        "title": "Settings",
+        "title": "Paramètres et sécurité",
         "faIcon": "fas fa-users-cog",
         "isTitle": true,
         "isParent": true,

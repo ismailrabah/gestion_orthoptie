@@ -32,9 +32,7 @@ class UpdateFichier extends FormRequest
             'atcd' => ['nullable', 'string'],
             'commentaire' => ['nullable', 'string'],
             'motif_de_bilan' => ['nullable', 'string'],
-                    
             'patient' => ['array', 'nullable'],
-            
         ];
     }
 

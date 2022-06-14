@@ -57,10 +57,15 @@ class Fichiers
     {
         return !!$this->model->delete();
     }
-    public static function dtColumns() {
+    public static function dtColumns($patient_id) {
+        $columns_ext = [];
+        if(!$patient_id){
+            $columns_ext = [
+                Column::make("patient")->className('all min-desktop-lg')->orderable(false)->searchable(false),
+            ];
+        }
         $columns = [
-            Column::make('id')->title('ID')->className('all text-right'),
-            Column::make("patient")->className('all min-desktop-lg'),
+            // Column::make('id')->title('ID')->className(' text-right')->visible(false),
             Column::make("titre")->className('all min-desktop-lg'),
             Column::make("medcin_traitant")->className('min-desktop-lg'),
             Column::make("atcd")->className('min-desktop-lg'),
@@ -70,6 +75,9 @@ class Fichiers
             // Column::make("updated_at")->className('min-tv'),
             Column::make('actions')->className('min-desktop text-right')->orderable(false)->searchable(false),
         ];
+        if(!$patient_id){
+            $columns = array_merge($columns_ext , $columns);
+        }
         return $columns;
     }
     public static function dt($query) {
@@ -88,7 +96,7 @@ class Fichiers
             })
             ->editColumn('patient' , function(Fichier $model){
                 if($model->patient){
-                    $link = '<a href="'.route('admin.patients.show', $model->patient).'" class="bg-primary-100 hover:bg-primary-200 focus:ring-0 focus:outline-none action-button" >'.$model->patient->title.' </a>';
+                    $link = '<a href="'.route('admin.patients.show', $model->patient).'" class="bg-primary-100 hover:bg-primary-200 focus:ring-0 focus:outline-none action-button" ><i class="mr-2 fas fa-user-injured"></i>'.$model->patient->title.' </a>';
                 }else{
                     $link = "#";
                 }

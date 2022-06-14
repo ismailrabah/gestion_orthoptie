@@ -7,7 +7,7 @@
                 <inertia-link
                     :href="route('admin.patients.index')"
                     class="text-2xl font-black text-white"
-                ><i class="fas fa-arrow-left"></i> Back | Details of Patient
+                ><i class="fas fa-arrow-left"></i> Retour| Détails du patient
                     #{{ model.id }}</inertia-link>
             </div>
         </template>

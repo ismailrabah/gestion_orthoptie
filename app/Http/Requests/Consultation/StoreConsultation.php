@@ -27,9 +27,9 @@ class StoreConsultation extends FormRequest
         return [
             'note' => ['nullable', 'string'],
             'date' => ['required', 'date'],
-                    
+            'commentaire' => ['nullable', 'string'],
             'orthoptiste' => ['array', 'nullable'],
-            'patient' => ['array', 'nullable'],
+            'fichier' => ['array', 'nullable'],
             'salle' => ['array', 'nullable'],
                 
         ];

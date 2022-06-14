@@ -7,7 +7,7 @@
                 <inertia-link
                     :href="route('admin.salles-d-examens.index')"
                     class="text-2xl font-black text-white"
-                ><i class="fas fa-arrow-left"></i> Back | Details of Salle d'examen
+                ><i class="fas fa-arrow-left"></i> Retour| Details Du Salle d'examen
                     #{{ model.id }}</inertia-link>
             </div>
         </template>

@@ -2,23 +2,15 @@
     <jig-layout>
         <template #header>
             <div class="flex flex-wrap items-center justify-between w-full px-4">
-                <inertia-link :href="route('admin.dashboard')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Back</inertia-link>
+                <inertia-link :href="route('admin.dashboard')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Retour</inertia-link>
                 <!-- <div v-if="message" class="notification is-success">{{ message }}</div> -->
                 
-                <div class="flex flex-wrap items-center justify-end w-full ">
-                    <inertia-button v-if="can.create" :href="route('admin.rendez-vouses.create')" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> NewRendez Vou</inertia-button>
-                    <inertia-button @click="agendaItems()" classes="bg-indigo-100 hover:bg-green-200 text-indigo m-2"><i class="fas fa-sync-alt"></i> Refresh</inertia-button>
-                </div>
-            </div>
-        </template>
-        <div v-if="can.viewAny" class="flex flex-wrap px-4">
-            <div class="z-10 flex-auto bg-white md:rounded-md md:shadow-md">
-                <h3 class="w-full p-4 mb-4 text-lg font-black sm:rounded-t-lg bg-primary-100 "><i class="mr-2 fas fa-bars"></i> 
-                    Agenda
-                    <div class="float-right -mt-4 h-sm">
+                <div class="flex gap-x-2">
+                    
+                    <div class="float-right  h-sm">
                         <select class="" v-model="displayPeriodUom" @change="onDisplayPeriodUomChange($event)">
-                            <option>month</option>
                             <option>week</option>
+                            <option>month</option>
                             <option>year</option>
                         </select>
                         <select class="" v-model="displayPeriodCount">
@@ -28,6 +20,15 @@
                             <option :value="4">4</option>
                         </select>
                     </div>
+                    <inertia-button v-if="can.create" :href="route('admin.rendez-vouses.create')" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Nouveau Rendez Vou</inertia-button>
+                    <inertia-button @click="agendaItems()" classes="bg-indigo-100 hover:bg-green-200 text-indigo "><i class="fas fa-sync-alt"></i> Refresh</inertia-button>
+                </div>
+            </div>
+        </template>
+        <div v-if="can.viewAny" class="flex flex-wrap px-4">
+            <div class="z-10 flex-auto bg-white md:rounded-md md:shadow-md">
+                <h3 class="w-full p-4 mb-8 text-lg font-black sm:rounded-t-lg bg-primary-100 "><i class="mr-2 fas fa-bars"></i> 
+                    Agenda
                 </h3>
                    
                 <div  class="w-full agenda-sec flex flex-wrap">
@@ -146,7 +147,7 @@
                 startingDayOfWeek: 1,
                 disablePast: false,
                 disableFuture: false,
-                displayPeriodUom: "month",
+                displayPeriodUom: "week",
                 displayPeriodCount: 1,
                 displayWeekNumbers: true,
                 showTimes: true,
@@ -212,7 +213,7 @@
                 }else{
                     sb_start_date = CalendarMath.addDays(sb_start_date , -7);
                 }
-                axios.get(route('api.rendez-vouses.agenda',{
+                axios.get(route('api.agenda',{
                             'displayPeriodUom': this.displayPeriodUom ,
                             'displayPeriodCount' : this.displayPeriodCount ,
                             'start_date': sb_start_date.toLocaleDateString(),
@@ -260,7 +261,8 @@
             },
             thisMonth(d, h, m) {
                 const t = new Date()
-                return new Date(t.getFullYear(), t.getMonth(), d, h || 0, m || 0)
+                // return new Date(t.getFullYear(), t.getMonth(), d, h || 0, m || 0)
+                return t;
             },
             onClickDay(d) {
                 this.selectionStart = null

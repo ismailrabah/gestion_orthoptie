@@ -69,7 +69,7 @@ Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], functi
 Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], function () {
     Route::get('/rendez-vouses/dt', [\App\Http\Controllers\API\RendezVouController::class,'dt'])->name('rendez-vouses.dt');
     Route::apiResource('/rendez-vouses', \App\Http\Controllers\API\RendezVouController::class)->parameters(["rendez-vouses" => "rendezVou"]);
-    Route::get('/agenda', [\App\Http\Controllers\API\RendezVouController::class , 'agenda' ] )->name('rendez-vouses.agenda');
+    Route::get('/agenda', [\App\Http\Controllers\API\RendezVouController::class , 'agenda' ] )->name('agenda');
 });
 
 

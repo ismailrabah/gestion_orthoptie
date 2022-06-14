@@ -2,8 +2,7 @@
     <jig-layout>
         <template #header>
             <div class="flex flex-wrap items-center justify-between w-full px-4">
-                <inertia-link :href="route('admin.salle-d-attentes.index')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Back | Edit
-                    Salle d'attente #{{model.id}}</inertia-link>
+                <inertia-link :href="route('admin.salle-d-attentes.index')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Retour| Éditer Salle d'attente #{{model.id}}</inertia-link>
             </div>
         </template>
         <div class="flex flex-wrap px-4">

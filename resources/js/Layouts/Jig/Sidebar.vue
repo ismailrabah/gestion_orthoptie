@@ -79,7 +79,7 @@
                 <ul class="flex flex-col list-none md:flex-col md:min-w-full">
                     <li v-for="(menuItem, idx) of menuItems" :key="idx" class="items-center">
                         <sidebar-link v-if="!menuItem.isParent && ($page.props.menu_permissions[idx] || menuItem.ignorePerm)"
-                            :href="route(menuItem.route)" :active="route().current(menuItem.route)">
+                            :href="route(menuItem.route)" :active="route().current(menuItem.route) || route().current(menuItem.routePattern) ">
                             <i :class="`mr-2 pl-4 text-sm text-gray-500 ${menuItem.faIcon}`"></i>
                             <span class="hover:visible">{{menuItem.title}}</span>
                         </sidebar-link>
@@ -95,12 +95,12 @@
                         <ul v-if="menuItem.isParent && ($page.props.menu_permissions[idx] || menuItem.ignorePerm) && expanded === idx" class="flex-col pl-2 list-none md:flex-col md:min-w-full">
                             <li v-for="(child,childIdx) of menuItem.children" :key="`${idx}-${childIdx}`" class="items-center">
                                 <sidebar-link v-if="!child.isParent && ($page.props.menu_permissions[childIdx] || child.ignorePerm)"
-                                    :href="route(child.route)" :active="route().current(child.route)">
+                                    :href="route(child.route)" :active="route().current(child.route) || route().current(child.routePattern)">
                                     <i :class="`mr-2 pl-4 text-sm text-gray-500 ${child.faIcon}`"></i>
                                     <span class="hover:visible">{{child.title}}</span>
                                 </sidebar-link>                                
                                 <jig-sidebar-link v-else-if="child.isParent && ($page.props.menu_permissions[childIdx] || !!child.ignorePerm)"  
-                                    class="flex flex-wrap items-center justify-between" @click.native.prevent="toggleExpanded2(idx+'-'+childIdx)" :active="false">
+                                    class="flex flex-wrap items-center justify-between" @click.native.prevent="toggleExpanded2(idx+'-'+childIdx)" :active="route().current(child.route)  ">
                                     <div class="text-md">
                                         <i :class="`mr-2 pl-4 text-gray-500 ${child.faIcon}`"></i>
                                         <span class="hover:visible" :class="{'invisible': minimized}">{{ child.title }}</span>
@@ -110,7 +110,7 @@
                                 <ul v-if="child.isParent && ($page.props.menu_permissions[childIdx] || child.ignorePerm) && expanded2 === idx+'-'+childIdx " class="flex-col pl-2 list-none md:flex-col md:min-w-full">
                                     <li v-for="(xchild,xchildIdx) of child.children" :key="`${idx}-${childIdx}-${xchildIdx}`" class="items-center">
                                         <jig-sidebar-link v-if="$page.props.menu_permissions[xchildIdx] || xchild.ignorePerm" :href="route(xchild.route)" 
-                                            class="flex flex-wrap items-center justify-between" :active="route().current(xchild.routePattern)">
+                                            class="flex flex-wrap items-center justify-between" :active="route().current(xchild.route) || route().current(xchild.routePattern) ">
                                             <div class="text-md">
                                                 <i :class="`mr-2 pl-4 text-gray-500 ${xchild.faIcon}`"></i>
                                                 {{ xchild.title }}

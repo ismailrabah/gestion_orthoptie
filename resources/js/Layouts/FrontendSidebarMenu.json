@@ -2,8 +2,8 @@
     "backend": {
         "route": "admin.dashboard",
         "routePattern": "admin.dashboard",
-        "title": "Backend",
-        "faIcon": "fas fa-cogs",
+        "title": "Tableau De Bord",
+        "faIcon": "fas fa-tv",
         "isTitle": false,
         "isParent": false,
         "ignorePerm": false,
@@ -12,8 +12,8 @@
     "my-profile": {
         "route": "profile.show",
         "routePattern": "case-files",
-        "title": "My Profile",
-        "faIcon": "fas fa-tv",
+        "title": "Mon Profile",
+        "faIcon": "fas fa-user",
         "isTitle": false,
         "isParent": false,
         "ignorePerm": true,

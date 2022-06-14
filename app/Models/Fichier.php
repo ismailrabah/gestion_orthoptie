@@ -17,9 +17,7 @@ class Fichier extends Model
         'commentaire',
         'motif_de_bilan',
         'patient_id',
-    
     ];
-    
     
     
     protected $dates = [
@@ -27,10 +25,10 @@ class Fichier extends Model
         'updated_at',
     ];
 
-    protected $appends = ["api_route", "can"];
+    protected $appends = ["api_route", "can" ];
 
     /* ************************ ACCESSOR ************************* */
-
+    
     public function getApiRouteAttribute() {
         return route("api.fichiers.index");
     }

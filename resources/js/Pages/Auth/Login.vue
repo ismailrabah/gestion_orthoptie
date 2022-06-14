@@ -2,8 +2,9 @@
     <Head title="Log in" />
 
     <jet-authentication-card>
-        <template #logo>
-            <jet-authentication-card-logo />
+       
+        <template #logo >
+            <application-logo></application-logo>
         </template>
 
         <jet-validation-errors class="mb-4" />
@@ -52,6 +53,7 @@
     import JetLabel from '@/Jetstream/Label.vue'
     import JetValidationErrors from '@/Jetstream/ValidationErrors.vue'
     import { Head, Link } from '@inertiajs/inertia-vue3';
+    import ApplicationLogo from "@/JigComponents/ApplicationLogo.vue";
 
     export default {
         components: {
@@ -63,6 +65,7 @@
             JetCheckbox,
             JetLabel,
             JetValidationErrors,
+            ApplicationLogo,
             Link,
         },
 

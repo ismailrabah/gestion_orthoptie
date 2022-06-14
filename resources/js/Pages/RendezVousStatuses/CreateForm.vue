@@ -16,6 +16,12 @@
             ></jet-checkbox>
             <jet-input-error :message="form.errors.is_default" class="mt-2" />
         </div>
+
+        <div class=" sm:col-span-4">
+            <jet-label for="color" value="Color" />
+            <color-picker v-model:pureColor="form.color" format="hex" />
+            <jet-input-error :message="form.errors.color" class="mt-2" />
+        </div>
                 
         <div class="mt-2 text-right">
             <inertia-button type="submit" class="font-semibold bg-success disabled:opacity-25" :disabled="form.processing">Submit</inertia-button>
@@ -31,6 +37,8 @@
     import JetInputError from "@/Jetstream/InputError.vue"
     import {useForm} from "@inertiajs/inertia-vue3";
     import { defineComponent } from "vue";
+    import { ColorPicker } from "vue3-colorpicker";
+    import "vue3-colorpicker/style.css"
 
     export default defineComponent({
         name: "CreateRendezVousStatusesForm",
@@ -38,16 +46,20 @@
             InertiaButton,
             JetInputError,
             JetLabel,
-                         JetInput,             JetCheckbox,                        
+            JetInput,
+            JetCheckbox,
+            ColorPicker,
         },
         data() {
             return {
                 form: useForm({
                     name: null,
+                    color: null,
                     is_default: false,
-                                                            
                 }, {remember: false}),
             }
+        },
+        setup() {
         },
         mounted() {
         },

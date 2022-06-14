@@ -1,27 +1,23 @@
 <template>
     <form @submit.prevent="updateModel">
-         
-        <div class=" sm:col-span-4">
-            <jet-label for="patient" value="Patient" />
-            <infinite-select class="w-full" :per-page="15" :api-url="route('api.patients.index')"
-                                id="patient" name="patient"
-                                v-model="form.patient" label="title"
-                                :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.patient}"
-            ></infinite-select>
-            <jet-input-error :message="form.errors.patient" class="mt-2" />
-        </div>       
+       
+        <div class=" sm:col-span-4" >
+            <jet-label for="fichier" value="Fichier De Patient" class="mb-2"/>
+            <inertia-button :href="route('admin.fichiers.show', form.fichier.id)" classes=" mb-6 bg-green-100 hover:bg-green-200 text-primary"><i class="mr-2 fas fa-file-alt"></i>{{form.fichier.patient.title}}</inertia-button>
+            <jet-input class="w-full" type="hidden" id="fichier" name="fichier" v-model="form.fichier"></jet-input>
+            <jet-input-error :message="form.errors.fichier" class="mt-2" />
+        </div>
 
-        <div class=" sm:col-span-4">
+        <div class=" sm:col-span-4 mt-2">
             <jet-label for="orthoptiste" value="Orthoptiste" />
             <infinite-select class="w-full" :per-page="15" :api-url="route('api.users.index')" :queryParams="{'role' : 'orthoptiste'}"
-                                id="orthoptiste" name="orthoptiste"
-                                v-model="form.orthoptiste" label="name"
-                                :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.orthoptiste}"
+                            id="orthoptiste" name="orthoptiste"
+                            v-model="form.orthoptiste" label="name"
+                            :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.orthoptiste}"
             ></infinite-select>
             <jet-input-error :message="form.errors.orthoptiste" class="mt-2" />
         </div>
         
-
         <div class=" sm:col-span-4">
             <jet-label for="note" value="Note" />
             <jet-input class="w-full" type="text" id="note" name="note" v-model="form.note"
@@ -48,16 +44,25 @@
         <div class=" sm:col-span-4">
             <jet-label for="salle" value="Salle" />
             <infinite-select class="w-full" :per-page="15" :api-url="route('api.salles-d-examens.index')"
-                                id="salle" name="salle"
-                                v-model="form.salle" label="name"
-                                :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.salle}"
+                            id="salle" name="salle"
+                            v-model="form.salle" label="name"
+                            :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.salle}"
             ></infinite-select>
             <jet-input-error :message="form.errors.salle" class="mt-2" />
+        </div>
+
+        <div class=" sm:col-span-4">
+            <jet-label for="commentaire" value="Commentaire" />
+            <jig-textarea class="w-full" id="commentaire" name="commentaire" v-model="form.commentaire"
+                          :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.commentaire}"
+            ></jig-textarea>
+            <jet-input-error :message="form.errors.commentaire" class="mt-2" />
         </div>
                                     
         <div class="mt-2 text-right">
             <inertia-button type="submit" class="font-semibold text-white bg-primary" :disabled="form.processing">Submit</inertia-button>
         </div>
+
     </form>
 </template>
 
@@ -68,9 +73,9 @@
     import {useForm} from "@inertiajs/inertia-vue3";
     import JigDatepicker from "@/JigComponents/JigDatepicker.vue";
     import JetInput from "@/Jetstream/Input.vue";
-        import InfiniteSelect from '@/JigComponents/InfiniteSelect.vue';
-
+    import InfiniteSelect from '@/JigComponents/InfiniteSelect.vue';
     import { defineComponent } from "vue";
+    import JigTextarea from "@/JigComponents/JigTextarea.vue";
 
     export default defineComponent({
         name: "EditConsultationForm",
@@ -83,8 +88,8 @@
             JetInputError,
             JetInput,
             JigDatepicker,
-                                    InfiniteSelect,
-
+            InfiniteSelect,
+            JigTextarea,
         },
         data() {
             return {

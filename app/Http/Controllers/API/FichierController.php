@@ -30,6 +30,10 @@ class FichierController  extends Controller
     public function index(IndexFichier $request)
     {
         $query = Fichier::query(); // You can extend this however you want.
+        $patient = $request->get('patient');
+        if($patient){
+            $query->where('patient_id' , '=' , $patient);
+        }
         $cols = [
             Column::name('id')->title('Id')->sort()->searchable(),
             Column::name('medcin_traitant')->title('Medcin Traitant')->sort()->searchable(),

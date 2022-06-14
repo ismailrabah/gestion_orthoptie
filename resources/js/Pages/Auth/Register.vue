@@ -2,9 +2,11 @@
     <Head title="Register" />
 
     <jet-authentication-card>
+       
         <template #logo>
-            <jet-authentication-card-logo />
+            <application-logo></application-logo>
         </template>
+
 
         <jet-validation-errors class="mb-4" />
 
@@ -56,6 +58,7 @@
 
 <script>
     import JetAuthenticationCard from '@/Jetstream/AuthenticationCard.vue'
+    import ApplicationLogo from "@/JigComponents/ApplicationLogo.vue";
     import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo.vue'
     import JetButton from '@/Jetstream/Button.vue'
     import JetInput from '@/Jetstream/Input.vue'
@@ -75,6 +78,7 @@
             JetLabel,
             JetValidationErrors,
             Link,
+            ApplicationLogo,
         },
 
         data() {

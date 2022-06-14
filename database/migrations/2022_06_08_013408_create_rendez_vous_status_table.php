@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('rendez_vous_status', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('color')->nullable();
             $table->boolean('is_default');
         });
     }

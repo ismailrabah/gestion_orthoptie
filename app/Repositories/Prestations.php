@@ -50,7 +50,7 @@ class Prestations
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
             Column::make("note")->className('all  min-desktop-lg'),
-            Column::make("traitement")->className('min-desktop-lg'),
+            Column::make("traitement")->className('all min-desktop-lg'),
             Column::make("montant")->className('all  min-desktop-lg'),
             Column::make('actions')->className('min-desktop text-right')->orderable(false)->searchable(false),
         ];
@@ -58,6 +58,9 @@ class Prestations
     }
     public static function dt($query) {
         return DataTables::of($query)
+            ->editColumn('traitement' , function(Prestation $model){
+                return substr($model->traitement, 0, 20) . "...";
+            })
             ->editColumn('actions', function (Prestation $model) {
                 $actions = '';
                 if (\Auth::user()->can('view',$model)) $actions .= '<button class="bg-primary hover:bg-primary-600 p-2 px-3 focus:ring-0 focus:outline-none text-white action-button" title="View Details" data-action="show-model" data-tag="button" data-id="'.$model->id.'"><i class="fas fa-eye"></i></button>';
