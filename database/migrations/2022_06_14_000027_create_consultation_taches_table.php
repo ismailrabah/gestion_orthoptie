@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('consultation_taches', function (Blueprint $table) {
-
+            $table->id();
             $table->double('remises' , 15 , 2)->default(0);
             $table->boolean('pourcentage_remises')->default(false);   
             $table->text('commentaire')->nullable();
@@ -24,8 +24,6 @@ return new class extends Migration
 
             $table->unsignedBigInteger('tache_id');
             $table->foreign('tache_id')->references('id')->on('taches');
-
-            $table->primary(['consultation_id' , 'tache_id']);
 
             $table->timestamps();
         });

@@ -45,7 +45,10 @@ Route::group(["prefix" => "admin","as" => "admin.","middleware"=>['auth:sanctum'
     /* consultations admin routes */
     Route::resource('consultations', \App\Http\Controllers\Admin\ConsultationController::class)->parameters(["consultations" => "consultation"]);
     Route::get('consultations/manage/{consultation}', [\App\Http\Controllers\Admin\ConsultationController::class,'manage'])->name('consultations.manage');
+});
 
-    /* consultation-taches admin routes */
-    Route::resource('consultation-taches', \App\Http\Controllers\Admin\ConsultationTachController::class)->parameters(["consultations" => "consultation" , "taches" => "tache"]);
+
+/* Auto-generated consultation-taches admin routes */
+Route::group(["prefix" => "admin","as" => "admin.","middleware"=>['auth:sanctum', 'verified']], function () {
+    Route::resource('consultation-taches', \App\Http\Controllers\Admin\ConsultationTachController::class)->parameters(["consultation-taches" => "consultationTach"]);
 });

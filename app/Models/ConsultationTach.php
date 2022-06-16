@@ -18,9 +18,9 @@ class ConsultationTach extends Model
         'tache_id',
     ];
     
+    
     protected $casts = [
         'pourcentage_remises' => 'boolean',
-    
     ];
     
     protected $dates = [

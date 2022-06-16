@@ -26,10 +26,12 @@ class StoreConsultationTach extends FormRequest
     {
         return [
             'commentaire' => ['nullable', 'string'],
-            'remises' => ['nullable', 'numeric'],
-            'pourcentage_remises' => ['nullable', 'boolean'],
+            'remises' => ['required', 'numeric'],
+            'pourcentage_remises' => ['required', 'boolean'],
+                    
             'consultation' => ['array', 'required'],
             'tache' => ['array', 'required'],
+                
         ];
     }
     /**

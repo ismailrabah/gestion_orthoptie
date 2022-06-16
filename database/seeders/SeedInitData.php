@@ -20,6 +20,11 @@ class SeedInitData extends Seeder
 
         //TODO add initial data seeders for remaining tables
 
+        $taches = DB::table('taches')->insertGetId([ "name" => "tache 01", "price" => 100]);
+
+        $rendez_vous_status = DB::table('rendez_vous_status')->insertGetId([ "name" => "New", "color" => "#fc7", "is_default" => true]);
+        
+        
 
     }
 }

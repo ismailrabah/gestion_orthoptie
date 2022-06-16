@@ -73,13 +73,11 @@ Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], functi
     Route::get('/consultations/dt', [\App\Http\Controllers\API\ConsultationController::class,'dt'])->name('consultations.dt');
     Route::apiResource('/consultations', \App\Http\Controllers\API\ConsultationController::class)->parameters(["consultations" => "consultation"]);
 
-    /* consultation-taches api routes */
+});
+
+
+/* Auto-generated consultation-taches api routes */
+Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], function () {
     Route::get('/consultation-taches/dt', [\App\Http\Controllers\API\ConsultationTachController::class,'dt'])->name('consultation-taches.dt');
-
-    Route::get('/consultation-taches',[\App\Http\Controllers\API\ConsultationTachController::class , 'index'])->name('consultation-taches.index');
-    Route::get('/consultation-taches/{consultation}/{tache}', [\App\Http\Controllers\API\ConsultationTachController::class , 'show'])->name('consultation-taches.show');
-    Route::post('/consultation-taches', [\App\Http\Controllers\API\ConsultationTachController::class , 'store'])->name('consultation-taches.store');
-    Route::put('/consultation-taches/{consultation}/{tache}', [\App\Http\Controllers\API\ConsultationTachController::class , 'update'])->name('consultation-taches.update');
-    Route::delete('/consultation-taches/{consultation}/{tache}', [\App\Http\Controllers\API\ConsultationTachController::class , 'destroy'])->name('consultation-taches.destroy');
-
+    Route::apiResource('/consultation-taches', \App\Http\Controllers\API\ConsultationTachController::class)->parameters(["consultation-taches" => "consultationTach"]);
 });

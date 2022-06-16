@@ -16,8 +16,7 @@ class UpdateConsultationTach extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
-        // return $this->user()->can('update', $this->consultationTach);
+        return $this->user()->can('update', $this->consultationTach);
     }
 
     /**
@@ -29,10 +28,12 @@ class UpdateConsultationTach extends FormRequest
     {
         return [
             'commentaire' => ['nullable', 'string'],
-            'remises' => ['nullable', 'numeric'],
-            'pourcentage_remises' => ['nullable', 'boolean'],
+            'remises' => ['sometimes', 'numeric'],
+            'pourcentage_remises' => ['sometimes', 'boolean'],
+                    
             'consultation' => ['array', 'sometimes'],
             'tache' => ['array', 'sometimes'],
+            
         ];
     }
 

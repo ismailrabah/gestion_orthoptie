@@ -82,13 +82,11 @@ class ConsultationTachController  extends Controller
     * @param ConsultationTach $consultationTach
     * @return \Inertia\Response|\Illuminate\Http\RedirectResponse
     */
-    public function show(Request $request, $consultation , $tache)
+    public function show(Request $request, ConsultationTach $consultationTach)
     {
         try {
-            $consultationTach = $this->repo::init($consultation , $tache)->model;
             $this->authorize('view', $consultationTach);
-            $ct = ConsultationTach::where('consultation_id' , '=' , $consultation )->where('tache_id' , '=' , $tache )->first();
-            $model = $this->repo::init($ct)->show($request);
+            $model = $this->repo::init($consultationTach)->show($request);
             return Inertia::render("ConsultationTaches/Show", ["model" => $model]);
         } catch (\Throwable $exception) {
             \Log::error($exception);
@@ -105,18 +103,20 @@ class ConsultationTachController  extends Controller
     * @param ConsultationTach $consultationTach
     * @return \Inertia\Response|\Illuminate\Http\RedirectResponse
     */
-    public function edit(Request $request, $consultation , $tache)
+    public function edit(Request $request, ConsultationTach $consultationTach)
     {
         try {
-            $ct = ConsultationTach::where('consultation_id' , '=' , $consultation )->where('tache_id' , '=' , $tache )->first();
-            $consultationTach = $this->repo::init($ct)->model;
             $this->authorize('update', $consultationTach);
             //Fetch relationships
-            $consultationTach->load([
-                'consultation',
-                'tache',
-            ]);
-            return Inertia::render("ConsultationTaches/Edit", ["model" => $consultationTach]);
+            
+
+
+
+        $consultationTach->load([
+            'consultation',
+            'tache',
+        ]);
+                        return Inertia::render("ConsultationTaches/Edit", ["model" => $consultationTach]);
         } catch (\Throwable $exception) {
             \Log::error($exception);
             return back()->with([
@@ -132,12 +132,11 @@ class ConsultationTachController  extends Controller
     * @param {$modelBaseName} $consultationTach
     * @return \Illuminate\Http\RedirectResponse
     */
-    public function update(UpdateConsultationTach $request, $consultation , $tache)
+    public function update(UpdateConsultationTach $request, ConsultationTach $consultationTach)
     {
         try {
             $data = $request->sanitizedObject();
-            $ct = ConsultationTach::where('consultation_id' , '=' , $consultation )->where('tache_id' , '=' , $tache )->first();
-            $res = $this->repo::init($ct)->update($data);
+            $res = $this->repo::init($consultationTach)->update($data);
             return back()->with(['success' => "The ConsultationTach was updated succesfully."]);
         } catch (\Throwable $exception) {
             \Log::error($exception);
@@ -153,10 +152,9 @@ class ConsultationTachController  extends Controller
     * @param ConsultationTach $consultationTach
     * @return \Illuminate\Http\RedirectResponse
     */
-    public function destroy(DestroyConsultationTach $request, $consultation , $tache)
+    public function destroy(DestroyConsultationTach $request, ConsultationTach $consultationTach)
     {
-        $ct = ConsultationTach::where('consultation_id' , '=' , $consultation )->where('tache_id' , '=' , $tache )->first();
-        $res = $this->repo::init( $ct)->destroy();
+        $res = $this->repo::init($consultationTach)->destroy();
         if ($res) {
             return back()->with(['success' => "The ConsultationTach was deleted succesfully."]);
         }

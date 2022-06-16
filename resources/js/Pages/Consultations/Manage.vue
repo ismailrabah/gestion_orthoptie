@@ -184,20 +184,14 @@
         },
         methods: {
             showTacheModel(model) {
-                let arr = model['id'].split(',');
-                let consultation_id = arr[0];
-                let tache_id = arr[1];
-                axios.get(route('api.consultation-taches.show',{consultation : consultation_id , tache : tache_id})).then(res => {
+                axios.get(route('api.consultation-taches.show',model)).then(res => {
                     this.currentTacheModel = res.data.payload;
                     this.showTacheModal = true;
                 })
                 // this.$inertia.visit(this.route('admin.consultations.show',model.id));
             },
             editTacheModel(model) {
-                let arr = model['id'].split(',');
-                let consultation_id = arr[0];
-                let tache_id = arr[1];
-                axios.get(route('api.consultation-taches.show',{consultation : consultation_id , tache : tache_id})).then(res => {
+                axios.get(route('api.consultation-taches.show',model.id)).then(res => {
                     this.currentTacheModel = res.data.payload;
                     this.showEditTacheModal = true;
                 })

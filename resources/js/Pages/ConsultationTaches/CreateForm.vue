@@ -1,21 +1,24 @@
 <template>
     <form class="w-full" @submit.prevent="storeModel">
+        
+        <div v-if="!form.consultation" class=" sm:col-span-4">
+            <jet-label for="consultation" value="Consultation" />
+            <infinite-select :per-page="15" :api-url="route('api.consultations.index')"
+                             id="consultation" name="consultation"
+                             v-model="form.consultation" label="note"
+                             :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.consultation}"
+            ></infinite-select>
+            <jet-input-error :message="form.errors.consultation" class="mt-2" />
+        </div>
+
         <div class=" sm:col-span-4">
             <jet-label for="tache" value="Tache" />
             <infinite-select :per-page="15" :api-url="route('api.taches.index')"
                              id="tache" name="tache"
-                             v-model="form.tache" label="title"
+                             v-model="form.tache" label="name"
                              :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.tache}"
             ></infinite-select>
             <jet-input-error :message="form.errors.tache" class="mt-2" />
-        </div>
-
-        <div class=" sm:col-span-4">
-            <jet-label for="commentaire" value="Commentaire" />
-            <jig-textarea class="w-full" id="commentaire" name="commentaire" v-model="form.commentaire"
-                          :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.commentaire}"
-            ></jig-textarea>
-            <jet-input-error :message="form.errors.commentaire" class="mt-2" />
         </div>
             
         <div class=" sm:col-span-4">
@@ -32,6 +35,15 @@
                           :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.pourcentage_remises}"
             ></jet-checkbox>
             <jet-input-error :message="form.errors.pourcentage_remises" class="mt-2" />
+        </div>
+
+
+        <div class=" sm:col-span-4">
+            <jet-label for="commentaire" value="Commentaire" />
+            <jig-textarea class="w-full" id="commentaire" name="commentaire" v-model="form.commentaire"
+                          :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.commentaire}"
+            ></jig-textarea>
+            <jet-input-error :message="form.errors.commentaire" class="mt-2" />
         </div>
 
         <div class="mt-2 text-right">

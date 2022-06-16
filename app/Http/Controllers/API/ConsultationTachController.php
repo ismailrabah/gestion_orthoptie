@@ -5,7 +5,6 @@ use App\Http\Requests\ConsultationTach\IndexConsultationTach;
 use App\Http\Requests\ConsultationTach\StoreConsultationTach;
 use App\Http\Requests\ConsultationTach\UpdateConsultationTach;
 use App\Http\Requests\ConsultationTach\DestroyConsultationTach;
-use App\Models\Consultation;
 use App\Models\ConsultationTach;
 use App\Repositories\ConsultationTaches;
 use Illuminate\Http\Request;
@@ -28,10 +27,14 @@ class ConsultationTachController  extends Controller
      * Display a listing of the resource (paginated).
      * @return columnsToQuery \Illuminate\Http\JsonResponse
      */
-    public function index(IndexConsultationTach $request)
-    {
+    public function index(IndexConsultationTach $request){
         $query = ConsultationTach::query(); // You can extend this however you want.
+        $consultation_id = $request->get('consultation_id');
+        if($consultation_id){
+            $query->where('consultation_id' , "=" , $consultation_id);
+        }
         $cols = [
+            Column::name('id')->title('Id')->sort()->searchable(),
             Column::name('remises')->title('Remises')->sort()->searchable(),
             Column::name('pourcentage_remises')->title('Pourcentage Remises')->sort()->searchable(),
             Column::name('updated_at')->title('Updated At')->sort()->searchable(),
@@ -44,6 +47,10 @@ class ConsultationTachController  extends Controller
 
     public function dt(Request $request) {
         $query = ConsultationTach::query()->select(ConsultationTach::getModel()->getTable().'.*'); // You can extend this however you want.
+        $consultation_id = $request->get('consultation_id');
+        if($consultation_id){
+            $query->where('consultation_id' , "=" , $consultation_id);
+        }
         return $this->repo::dt($query);
     }
     /**
@@ -71,13 +78,12 @@ class ConsultationTachController  extends Controller
      * @param ConsultationTach $consultationTach
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Request $request, $consultation , $tache)
+    public function show(Request $request, ConsultationTach $consultationTach)
     {
         try {
-            $ct = ConsultationTach::where('consultation_id' , '=' , $consultation )->where('tache_id' , '=' , $tache )->first();
-            $payload = $this->repo::init($ct)->show($request);
+            $payload = $this->repo::init($consultationTach)->show($request);
             return $this->api->success()
-                        ->message("Consultation Tach $consultation / $tache")
+                        ->message("Consultation Tach $consultationTach->id")
                         ->payload($payload)->send();
         } catch (\Throwable $exception) {
             \Log::error($exception);
@@ -92,12 +98,11 @@ class ConsultationTachController  extends Controller
      * @param {$modelBaseName} $consultationTach
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateConsultationTach $request, $consultation , $tache)
+    public function update(UpdateConsultationTach $request, ConsultationTach $consultationTach)
     {
         try {
             $data = $request->sanitizedObject();
-            $ct = ConsultationTach::where('consultation_id' , '=' , $consultation )->where('tache_id' , '=' , $tache )->first();
-            $res = $this->repo::init($ct)->update($data);
+            $res = $this->repo::init($consultationTach)->update($data);
             return $this->api->success()->message("Consultation Tach has been updated")->payload($res)->code(200)->send();
         } catch (\Throwable $exception) {
             \Log::error($exception);
@@ -112,10 +117,9 @@ class ConsultationTachController  extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function destroy(DestroyConsultationTach $request, $consultation , $tache)
+    public function destroy(DestroyConsultationTach $request, ConsultationTach $consultationTach)
     {
-        $ct = ConsultationTach::where('consultation_id' , '=' , $consultation )->where('tache_id' , '=' , $tache )->first();
-        $res = $this->repo::init($ct)->destroy();
+        $res = $this->repo::init($consultationTach)->destroy();
         return $this->api->success()->message("Consultation Tach has been deleted")->payload($res)->code(200)->send();
     }
 
