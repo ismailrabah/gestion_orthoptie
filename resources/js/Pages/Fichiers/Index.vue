@@ -4,17 +4,17 @@
             <div class="flex flex-wrap items-center justify-between w-full px-4">
                 <inertia-link :href="route('admin.dashboard')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Retour</inertia-link>
                 <div class="flex gap-x-2">
-                    <inertia-button v-if="can.create" :href="route('admin.fichiers.create')" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Nouveau Fichier</inertia-button>
+                    <!-- <inertia-button v-if="can.create" :href="route('admin.fichiers.create')" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Nouveau Fichier</inertia-button> -->
+                    <inertia-button v-if="can.create" @click="AppFichier" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Nouveau Fichier</inertia-button>
                     <inertia-button @click.native="$refreshDt(tableId)" classes="bg-indigo-100 hover:bg-green-200 text-indigo"><i class="fas fa-redo"></i> Refresh</inertia-button>
                 </div>
-
             </div>
         </template>
         <div v-if="can.viewAny" class="flex flex-wrap px-4">
             <div class="z-10 flex-auto bg-white md:rounded-md md:shadow-md">
                 <h3 class="w-full p-4 mb-2 text-lg font-black sm:rounded-t-lg bg-primary-100"><i class="mr-2 fas fa-bars"></i> List Des Fichiers 
                     <inertia-link v-if="patient" :href="route('admin.patients.show' , patient.id)"  class="text-xl font-black text-primary"> : {{patient.title}}</inertia-link>
-                    <button  v-if="patient" style="margin-top: -5px;"     type="button" @click="expandInfo()"
+                    <button  v-if="patient" style="margin-top: -5px;" type="button" @click="expandInfo()"
                         class="pl-2 pt-1 pb-1 pr-1  transition duration-150 ease-in-out" >
                         <i v-if="!extends_info" class="fas fa-angle-down"></i>
                         <i v-if="extends_info" class="fas fa-angle-up"></i>
@@ -98,6 +98,17 @@
                         </template>
                     </jig-modal>
                 </div>
+                <div v-if="addModal">
+                    <jig-modal
+                        :show="addModal"
+                        corner-class="rounded-lg"
+                        position-class="align-middle"
+                        @close="addModal = false">
+
+                        <template #title>Nouveau Fichier</template>
+                        <create-fichiers-form :patient="patient" @success="addSuccess" @error="addError"/>
+                    </jig-modal>
+                </div>
             </div>
         </div>
         <div v-else class="p-4 font-bold text-red-500 bg-red-100 rounded-md shadow-md ">
@@ -118,6 +129,7 @@
     import ShowFichiersForm from "@/Pages/Fichiers/ShowForm.vue";
     import { defineComponent } from "vue";
     import JigDd from "@/JigComponents/JigDd.vue";
+    import CreateFichiersForm from "./CreateForm.vue";
 
     export default defineComponent({
         name: "Index",
@@ -130,6 +142,7 @@
             JigModal,
             JigLayout,
             ShowFichiersForm,
+            CreateFichiersForm,
             JigDd,
         },
         props: {
@@ -147,6 +160,7 @@
                 currentModel: null,
                 withDisabled: false,
                 showModal: false,
+                addModal: false,
                 extends_info: false,
             }
         },
@@ -168,6 +182,9 @@
             }
         },
         methods: {
+            AppFichier(){
+                this.addModal = true;
+            },
             showModel(model) {
                 axios.get(route('api.fichiers.show',model)).then(res => {
                     this.currentModel = res.data.payload;
@@ -214,7 +231,16 @@
                     this.displayNotification('success', res.data.message);
                     this.$refreshDt(this.tableId);
                 })
-            }
+            },
+            addSuccess(msg){
+                this.displayNotification('success',msg);
+                this.addModal = false;
+                this.$refreshDt(this.tableId);
+            },
+            addError(msg){
+                this.displayNotification('error',msg);
+                this.$refreshDt(this.tableId);
+            },
         }
     });
 </script>

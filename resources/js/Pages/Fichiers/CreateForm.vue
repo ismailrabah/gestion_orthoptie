@@ -1,7 +1,7 @@
 <template>
     <form class="w-full" @submit.prevent="storeModel">
             
-        <div class=" sm:col-span-4">
+        <div v-if="!patient" class=" sm:col-span-4">
             <jet-label for="patient" value="Patient" />
             <infinite-select :per-page="15" :api-url="route('api.patients.index')"
                              id="patient" name="patient"
@@ -77,6 +77,9 @@
             JigTextarea,
             InfiniteSelect,
         },
+        props: {
+            patient: Object,
+        },
         data() {
             return {
                 form: useForm({
@@ -85,7 +88,7 @@
                     atcd: null,
                     commentaire: null,
                     motif_de_bilan: null,
-                    "patient": null,
+                    "patient": this.patient,
                 }, {remember: false}),
             }
         },

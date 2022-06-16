@@ -24,7 +24,13 @@ class SeedInitData extends Seeder
 
         $rendez_vous_status = DB::table('rendez_vous_status')->insertGetId([ "name" => "New", "color" => "#fc7", "is_default" => true]);
         
-        
+        $salle_d_attentes = DB::table('salle_d_attentes')->insertGetId([ "name" => "SALLE 1", "start_time" => "09:00:00", "end_time" => "18:00:00",
+         "max_numbers" => 25 , "status" => "Open" , "assaistante_id" => 2 ]);
+         
+        $taches = DB::table('salles_d_examens')->insertGetId([ "name" => "salles d'examens 01"]);
 
+        $taches = DB::table('prestations')->insertGetId([ "traitement" => "example of traitement",
+        "diagnostique" => "example of diagnostique","note" => "note example","montant" => "300",]);
+        
     }
 }

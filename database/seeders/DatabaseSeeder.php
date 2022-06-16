@@ -20,11 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call(GrantPermsToAssistanteRole::class);
         $this->call(SeedOrthoptisteRoleAndUser::class);
         $this->call(GrantPermsToOrthoptisteRole::class);
-
-        
         $this->call(SeedStagiaireRoleAndUser::class);
         $this->call(GrantPermsToStagiaireRole::class);
-
         $this->call(SeedInitData::class);
     }
 }

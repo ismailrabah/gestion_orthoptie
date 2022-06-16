@@ -1,7 +1,7 @@
 <template>
     <form class="w-full" @submit.prevent="storeModel">
         
-        <div v-if="!form.consultation" class=" sm:col-span-4">
+        <div v-if="!consultation" class=" sm:col-span-4">
             <jet-label for="consultation" value="Consultation" />
             <infinite-select :per-page="15" :api-url="route('api.consultations.index')"
                              id="consultation" name="consultation"
@@ -36,7 +36,6 @@
             ></jet-checkbox>
             <jet-input-error :message="form.errors.pourcentage_remises" class="mt-2" />
         </div>
-
 
         <div class=" sm:col-span-4">
             <jet-label for="commentaire" value="Commentaire" />
