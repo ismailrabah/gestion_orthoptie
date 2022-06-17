@@ -6,7 +6,8 @@ use App\Http\Requests\Consultation\StoreConsultation;
 use App\Http\Requests\Consultation\UpdateConsultation;
 use App\Http\Requests\Consultation\DestroyConsultation;
 use App\Models\Consultation;
-use App\Models\Patient;
+use App\Models\Fichier;
+use App\Repositories\ConsultationPrestations;
 use App\Repositories\Consultations;
 use App\Repositories\ConsultationTaches;
 use Illuminate\Http\Request;
@@ -18,10 +19,12 @@ class ConsultationController  extends Controller
 {
     private Consultations $repo;
     private ConsultationTaches $consultation_taches;
-    public function __construct(Consultations $repo , ConsultationTaches $consultation_taches)
+    private ConsultationPrestations $consultation_prestations ;
+    public function __construct(Consultations $repo , ConsultationTaches $consultation_taches ,ConsultationPrestations $consultation_prestations)
     {
         $this->repo = $repo;
         $this->consultation_taches = $consultation_taches;
+        $this->consultation_prestations = $consultation_prestations;
     }
 
     /**
@@ -33,11 +36,14 @@ class ConsultationController  extends Controller
     */
     public function index(Request $request): \Inertia\Response
     {
-        $patient_id = $request->get('patient_id');
-        if($patient_id){
-            $patient = Patient::findOrFail($patient_id);
+        $fichier_id = $request->get('fichier_id');
+        if($fichier_id){
+            $fichier = Fichier::findOrFail($fichier_id);
         }else{
-            $patient = null; 
+            $fichier = null; 
+        }
+        if($fichier){
+            $fichier->load(['patient']);
         }
         $this->authorize('viewAny', Consultation::class);
         return Inertia::render('Consultations/Index',[
@@ -45,8 +51,8 @@ class ConsultationController  extends Controller
                 "viewAny" => \Auth::user()->can('viewAny', Consultation::class),
                 "create" => \Auth::user()->can('create', Consultation::class),
             ],
-            "columns" => $this->repo::dtColumns($patient_id),
-            "patient" => $patient
+            "columns" => $this->repo::dtColumns($fichier_id),
+            "fichier" => $fichier
         ]);
     }
 
@@ -72,6 +78,7 @@ class ConsultationController  extends Controller
                 "create" => \Auth::user()->can('create', Consultation::class),
             ],
             "tachesColumns" => $this->consultation_taches::dtColumns(),
+            "prestationsColumns" => $this->consultation_prestations::dtColumns(),
             "consultation" => $consultation
         ]);
     }

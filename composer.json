@@ -4,14 +4,9 @@
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
-    "repositories": [
-        {
-            "type": "path",
-            "url": "./packages/laravel-pagetables-master"
-        }
-    ],    
     "require": {
         "php": "^7.3|^8.0",
+        "barryvdh/laravel-dompdf": "^1.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^v0.5.4",
@@ -20,7 +15,7 @@
         "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.5",
         "savannabits/jetstream-inertia-generator": "^3.2",
-        "savannabits/laravel-pagetables": "dev-main",
+        "savannabits/laravel-pagetables": "^1.1",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {

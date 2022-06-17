@@ -22,6 +22,7 @@ module.exports = {
                 'light-blue': colors.sky,
                 red: colors.rose,
                 info: {...colors.blue, DEFAULT:colors.blue["400"]},
+                indigo: {...colors.indigo, DEFAULT:colors.indigo[800]},
                 primary: {...colors.green, DEFAULT: colors.green[800]},
                 secondary: {
                     DEFAULT: '#F99119',

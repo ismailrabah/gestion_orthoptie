@@ -25,10 +25,14 @@ class Fichier extends Model
         'updated_at',
     ];
 
-    protected $appends = ["api_route", "can" ];
+    protected $appends = ["api_route", "can","count_consultations" ];
 
     /* ************************ ACCESSOR ************************* */
     
+    public function getCountConsultationsAttribute(){
+        return $this->consultations->count();
+    }
+
     public function getApiRouteAttribute() {
         return route("api.fichiers.index");
     }
@@ -54,4 +58,9 @@ class Fichier extends Model
     public function patient() {
         return $this->belongsTo(\App\Models\Patient::class,"patient_id","id");
     }
+
+    public function consultations(){
+        return $this->hasMany(\App\Models\Consultation::class , 'fichier_id' , 'id');
+    }
+
 }

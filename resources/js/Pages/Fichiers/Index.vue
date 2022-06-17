@@ -71,6 +71,7 @@
                         @show-model="showModel"
                         @edit-model="editModel"
                         @delete-model="confirmDeletion"
+                        @show-consultations="showConsultations"
                     />
                 </div>
                 <jet-confirmation-modal title="Confirm Deletion" :show="confirmDelete">
@@ -191,6 +192,9 @@
                     this.showModal = true;
                 })
                 // this.$inertia.visit(this.route('admin.fichiers.show',model.id));
+            },
+            showConsultations(model){
+                this.$inertia.visit(this.route('admin.consultations.index',{'fichier_id' : model ? model.id : null } ));
             },
             editModel(model) {
                 this.$inertia.visit(this.route('admin.fichiers.edit',model.id));

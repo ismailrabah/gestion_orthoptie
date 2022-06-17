@@ -12,6 +12,7 @@ use Savannabits\JetstreamInertiaGenerator\Helpers\ApiResponse;
 use Savannabits\Pagetables\Column;
 use Savannabits\Pagetables\Pagetables;
 use Yajra\DataTables\DataTables;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ConsultationTachController  extends Controller
 {
@@ -121,6 +122,35 @@ class ConsultationTachController  extends Controller
     {
         $res = $this->repo::init($consultationTach)->destroy();
         return $this->api->success()->message("Consultation Tach has been deleted")->payload($res)->code(200)->send();
+    }
+
+    /**
+     * Print Stock
+     */
+    public function print(Request $request){
+        try {
+            $consultation_tache_id = $request->get('consultation_tache_id');
+            $consultation_tache = ConsultationTach::findOrFail($consultation_tache_id);
+            if($consultation_tache){
+                $consultation_tache->load([
+                    'consultation',
+                    'consultation.orthoptiste',
+                    'tache',
+                    'consultation.fichier',
+                    'consultation.fichier.patient',
+                ]);
+                $data = ['ct' => $consultation_tache];
+                $pdf = PDF::loadView('pdf.consultation-tache', $data);
+                $pdf->setPaper('a4')->setWarnings(true);
+                return $pdf->stream('ConsultationTach.pdf');
+            }else{
+                return $this->api->failed()->message("Tache not found!")->payload([])->code(500)->send();
+            }
+           
+        } catch (\Throwable $exception) {
+            \Log::error($exception);
+            return $this->api->failed()->message($exception->getMessage())->payload([])->code(500)->send();
+        }
     }
 
 }

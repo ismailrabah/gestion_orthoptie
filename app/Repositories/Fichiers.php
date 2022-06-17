@@ -67,10 +67,11 @@ class Fichiers
         $columns = [
             // Column::make('id')->title('ID')->className(' text-right')->visible(false),
             Column::make("titre")->className('all min-desktop-lg'),
-            Column::make("medcin_traitant")->className('min-desktop-lg'),
-            Column::make("atcd")->className('min-desktop-lg'),
-            Column::make("commentaire")->className('min-desktop-lg'),
-            Column::make("motif_de_bilan")->className('min-desktop-lg'),
+            Column::make("medcin_traitant")->className('all min-desktop-lg'),
+            Column::make("atcd")->className('all min-desktop-lg'),
+            Column::make("commentaire")->className('all min-desktop-lg'),
+            Column::make("motif_de_bilan")->className('all min-desktop-lg'),
+            Column::make("count_consultations")->className('all min-desktop-lg')->title("Consultations")->orderable(false)->searchable(false),
             // Column::make("created_at")->className('min-tv'),
             // Column::make("updated_at")->className('min-tv'),
             Column::make('actions')->className('min-desktop text-right')->orderable(false)->searchable(false),
@@ -94,6 +95,9 @@ class Fichiers
             ->editColumn('motif_de_bilan' , function(Fichier $model){
                 return substr($model->motif_de_bilan, 0, 20) . "...";
             })
+            ->editColumn('count_consultations' , function(Fichier $model){
+                return '<button class="bg-purple-500 hover:bg-purple-500 p-2 px-3 focus:ring-0 focus:outline-none text-white action-button" title="Consultations" data-action="show-consultations" data-tag="button" data-id="'.$model->id.'"> '.$model->count_consultations.' <i class="fas fa-stethoscope"></i></button>';
+            })
             ->editColumn('patient' , function(Fichier $model){
                 if($model->patient){
                     $link = '<a href="'.route('admin.patients.show', $model->patient).'" class="bg-primary-100 hover:bg-primary-200 focus:ring-0 focus:outline-none action-button" ><i class="mr-2 fas fa-user-injured"></i>'.$model->patient->title.' </a>';
@@ -109,7 +113,7 @@ class Fichiers
                 if (\Auth::user()->can('delete',$model)) $actions .= '<button class="bg-danger hover:bg-danger-600 p-2 px-3 text-white focus:ring-0 focus:outline-none action-button" title="Delete Record" data-action="delete-model" data-tag="button" data-id="'.$model->id.'"><i class="fas fa-trash"></i></button>';
                 return "<div class='gap-x-1 flex w-full justify-end'>".$actions."</div>";
             })
-            ->rawColumns(['actions' , 'patient'])
+            ->rawColumns(['actions' , 'patient' , 'count_consultations'])
             ->make();
     }
 }

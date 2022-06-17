@@ -56,7 +56,6 @@ Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], functi
     Route::get('/fichiers/dt', [\App\Http\Controllers\API\FichierController::class,'dt'])->name('fichiers.dt');
     Route::apiResource('/fichiers', \App\Http\Controllers\API\FichierController::class)->parameters(["fichiers" => "fichier"]);
 
-
     /* prestations api routes */
     Route::get('/prestations/dt', [\App\Http\Controllers\API\PrestationController::class,'dt'])->name('prestations.dt');
     Route::apiResource('/prestations', \App\Http\Controllers\API\PrestationController::class)->parameters(["prestations" => "prestation"]);
@@ -72,12 +71,15 @@ Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], functi
     /* consultations api routes */
     Route::get('/consultations/dt', [\App\Http\Controllers\API\ConsultationController::class,'dt'])->name('consultations.dt');
     Route::apiResource('/consultations', \App\Http\Controllers\API\ConsultationController::class)->parameters(["consultations" => "consultation"]);
+    Route::get('/consultations-print', [\App\Http\Controllers\API\ConsultationController::class,'print'])->name('consultations.print');
 
-});
 
-
-/* Auto-generated consultation-taches api routes */
-Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], function () {
+    /* consultation-taches api routes */
     Route::get('/consultation-taches/dt', [\App\Http\Controllers\API\ConsultationTachController::class,'dt'])->name('consultation-taches.dt');
     Route::apiResource('/consultation-taches', \App\Http\Controllers\API\ConsultationTachController::class)->parameters(["consultation-taches" => "consultationTach"]);
+    Route::get('/consultation-taches-print', [\App\Http\Controllers\API\ConsultationTachController::class,'print'])->name('consultation-taches.print');
+
+    /* consultation-prestations api routes */
+    Route::get('/consultation-prestations/dt', [\App\Http\Controllers\API\ConsultationPrestationController::class,'dt'])->name('consultation-prestations.dt');
+    Route::apiResource('/consultation-prestations', \App\Http\Controllers\API\ConsultationPrestationController::class)->parameters(["consultation-prestations" => "consultationPrestation"]);
 });

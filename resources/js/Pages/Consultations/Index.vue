@@ -13,52 +13,54 @@
         <div v-if="can.viewAny" class="flex flex-wrap px-4">
             <div class="z-10 flex-auto bg-white md:rounded-md md:shadow-md">
                 <h3 class="w-full p-4 mb-2 text-lg font-black sm:rounded-t-lg bg-primary-100"><i class="mr-2 fas fa-bars"></i> List Des Consultations
-                    <inertia-link v-if="patient" :href="route('admin.patients.show' , patient.id)"  class="text-xl font-black text-primary"> : {{patient.title}}</inertia-link>
-                    <button  v-if="patient" style="margin-top: -5px;"     type="button" @click="expandInfo()"
-                        class="pl-2 pt-1 pb-1 pr-1  transition duration-150 ease-in-out" >
-                        <i v-if="!extends_info" class="fas fa-angle-down"></i>
-                        <i v-if="extends_info" class="fas fa-angle-up"></i>
-                    </button>
+                    <div class="inline-block" v-if="fichier">
+                        <inertia-link v-if="fichier.patient" :href="route('admin.patients.show' , fichier.patient.id)"  class="text-xl font-black text-primary"> : {{fichier.patient.title}}</inertia-link>
+                        <button  v-if="fichier.patient" style="margin-top: -5px;"     type="button" @click="expandInfo()"
+                            class="pl-2 pt-1 pb-1 pr-1  transition duration-150 ease-in-out" >
+                            <i v-if="!extends_info" class="fas fa-angle-down"></i>
+                            <i v-if="extends_info" class="fas fa-angle-up"></i>
+                        </button>
+                    </div>
                 </h3>
-                <dl class="gap-4 p-4 " v-if="patient && extends_info">
-                    <div class="flex">
+                <dl class="gap-4 p-4" v-if="fichier && extends_info" >
+                    <div class="flex" v-if="fichier.patient">
                         <jig-dd class="flex-1">
                             <template #dt>Nom:</template>
-                            {{ patient.nom }}
+                            {{ fichier.patient.nom }}
                         </jig-dd>
                         <jig-dd class="flex-1">
                             <template #dt>Prenom:</template>
-                            {{ patient.prenom }}
+                            {{ fichier.patient.prenom }}
                         </jig-dd>
                     </div>
                     <div class="flex">
                         <jig-dd class="flex-1">
                             <template #dt>Phone:</template>
-                            {{ patient.phone }}
+                            {{ fichier.patient.phone }}
                         </jig-dd>
                         <jig-dd class="flex-1">
                             <template #dt>Email:</template>
-                            {{ patient.email }}
+                            {{ fichier.patient.email }}
                         </jig-dd>
                     </div>
                     <div class="flex">
                         <jig-dd class="flex-1">
                             <template #dt>Cin:</template>
-                            {{ patient.cin }}
+                            {{ fichier.patient.cin }}
                         </jig-dd>
                         <jig-dd class="flex-1">
                             <template #dt>Ddn:</template>
-                            {{ patient.ddn }}
+                            {{ fichier.patient.ddn }}
                         </jig-dd>
                     </div>
                     <div class="flex">
                         <jig-dd class="flex-1">
                             <template #dt>Adresse:</template>
-                            {{ patient.adresse }}
+                            {{ fichier.patient.adresse }}
                         </jig-dd>
                         <jig-dd class="flex-1">
                             <template #dt>Fichiers:</template>
-                            {{ patient.count_fichiers }}
+                            {{ fichier.patient.count_fichiers }}
                         </jig-dd>
                     </div>
                 </dl>
@@ -72,6 +74,7 @@
                         @edit-model="editModel"
                         @delete-model="confirmDeletion"
                         @manage-model="manageModel"
+                        @print-report="printReport"
                     />
                 </div>
                 <jet-confirmation-modal title="Confirm Deletion" :show="confirmDelete">
@@ -137,7 +140,7 @@
         props: {
             can: Object,
             columns: Array,
-            patient: Object,
+            fichier: Object,
         },
         inject: ["$refreshDt","$dayjs"],
         data() {
@@ -163,8 +166,8 @@
                 /*if (this.withDisabled) {
                     url.searchParams.append('include-disabled',true);
                 }*/
-                if (this.patient) {
-                    url.searchParams.append('patient_id',this.patient.id);
+                if (this.fichier) {
+                    url.searchParams.append('fichier_id',this.fichier.id);
                 }
                 return url.href;
             }
@@ -219,7 +222,22 @@
                     this.displayNotification('success', res.data.message);
                     this.$refreshDt(this.tableId);
                 })
-            }
+            },            
+            async printReport(model){
+                await axios.get(this.route('api.consultations.print',{'consultation_id': model.id}), { responseType: "blob" }).then(res => {
+                    this.displayNotification('success', "Consultation Report Printed");
+                    const blob = new Blob([res.data], { type: "application/pdf" });
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'Consultation.pdf';
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                }).catch(err => {
+                    this.displayNotification('error', err.response?.data?.message || err.message || err);
+                }).finally(res => {
+                    // this.displayNotification('success', "finally");
+                });
+            },
         }
     });
 </script>

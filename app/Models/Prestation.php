@@ -15,14 +15,10 @@ class Prestation extends Model
         'traitement',
         'diagnostique',
         'montant',
-    
     ];
     
-    
-    
-    protected $dates = [
-        ];
-public $timestamps = false;
+    protected $dates = [];
+    public $timestamps = false;
     
     protected $appends = ["api_route", "can"];
 

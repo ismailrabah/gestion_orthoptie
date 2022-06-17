@@ -23,15 +23,16 @@
                 <dl class="gap-4 p-4 " v-if="consultation && extends_info">
                     <show-consultations-form :model="consultation"></show-consultations-form>
                 </dl>
-                <h3 class="w-full p-4 text-lg font-black sm:rounded-t-lg bg-primary-100">
+                <h3 class="w-full p-4 text-lg font-black bg-info-100">
                     <i class="mr-2 fas fa-tasks"></i> 
                     List des tâches
                     <button @click="extends_taches = !extends_taches"
-                        class="pl-2 pt-1 pb-1 pr-1  transition duration-150 ease-in-out" >
+                        class="pl-2 pt-1 pb-1 pr-1 transition duration-150 ease-in-out" >
                         <i v-if="!extends_taches" class="fas fa-angle-down"></i>
                         <i v-if="extends_taches" class="fas fa-angle-up"></i>
                     </button>
                 </h3>
+
                 <div class="p-4" v-if="extends_taches">
                     <dt-component
                         :table-id="tachesTableId"
@@ -41,8 +42,10 @@
                         @show-model="showTacheModel"
                         @edit-model="editTacheModel"
                         @delete-model="confirmTacheDeletion"
+                        @print-invoice="printInvoice"
                     />
                 </div>
+
                 <jet-confirmation-modal title="Confirm Deletion" :show="confirmTacheDelete">
                     <template v-slot:content>
                         <div>Are you sure you want to delete this record?</div>
@@ -54,6 +57,7 @@
                         </div>
                     </template>
                 </jet-confirmation-modal>
+
                 <div v-if="showTacheModal && currentTacheModel">
                     <jig-modal
                         :show="showTacheModal"
@@ -77,10 +81,7 @@
                         position-class="align-middle"
                         @close="currentTacheModel = null; showEditTacheModal = false">
                         <template #title>Edit Consultation Tach #{{currentTacheModel.consultation_id}} / {{currentTacheModel.tache_id}}</template>
-                        <edit-consultation-tach-form :model="currentTacheModel"></edit-consultation-tach-form>
-                        <template #footer>
-                            <inertia-button class="px-4 text-white bg-primary" style="display: inline;top: -55px;right: 80px;position: relative;" @click="showEditTacheModal = false; currentTacheModel = null">Close</inertia-button>
-                        </template>
+                        <edit-consultation-tach-form :model="currentTacheModel"  @success="onSuccessEditTache" @error="onErrorEditTache" ></edit-consultation-tach-form>
                     </jig-modal>
                 </div>
 
@@ -92,16 +93,67 @@
                         @close="showAddTacheModal = false">
                         <template #title>Ajouter une tâche </template>
                         <create-consultation-taches-form :consultation="consultation"  @success="onAddTacheSuccess" @error="onAddTacheError"></create-consultation-taches-form>
-                        <template #footer>
-                            <inertia-button class="px-4 text-white bg-warning" style="display: inline;top: -55px;right: 80px;position: relative;" @click="showAddTacheModal = false; currentTacheModel = null">Close</inertia-button>
-                        </template>
                     </jig-modal>
                 </div>
                 
-                <h3 class="w-full p-4 mb-2 text-lg font-black sm:rounded-t-lg bg-primary-100">
+                <h3 class="w-full p-4 mb-2 text-lg font-black bg-info-100">
                     <i class="mr-2 fas fa-hand-holding-heart"></i> 
                     List des prestations
+                    <button @click="extends_prestations = !extends_prestations"
+                        class="pl-2 pt-1 pb-1 pr-1 transition duration-150 ease-in-out" >
+                        <i v-if="!extends_prestations" class="fas fa-angle-down"></i>
+                        <i v-if="extends_prestations" class="fas fa-angle-up"></i>
+                    </button>
                 </h3>
+                
+                <div class="p-4" v-if="extends_prestations">
+                    <dt-component
+                        :table-id="prestationsTableId"
+                        :ajax-url="prestationsAjaxUrl"
+                        :columns="prestationsColumns"
+                        :ajax-params="prestationsTableParams"
+                        @show-model="showPrestationModel"
+                        @edit-model="showEditPrestationModel"
+                        @delete-model="confirmTacheDeletion"
+                    />
+                </div>
+
+                <div v-if="showPrestationModal && currentPrestationModel">
+                    <jig-modal
+                        :show="showPrestationModal"
+                        corner-class="rounded-lg"
+                        position-class="align-middle"
+                        @close="currentPrestationModel = null; showPrestationModal = false">
+
+                        <template #title>Show Consultation Tach #{{currentPrestationModel.id}}</template>
+                        <show-consultation-prestations-form :model="currentPrestationModel"></show-consultation-prestations-form>
+                        <template #footer>
+                            <inertia-button class="px-4 text-white bg-primary" @click="showPrestationModal = false; currentPrestationModel = null">Close</inertia-button>
+                        </template>
+                    </jig-modal>
+                </div>
+
+                <div v-if="showEditPrestationModal && currentPrestationModel">
+                    <jig-modal
+                        :show="showEditPrestationModal"
+                        corner-class="rounded-lg"
+                        position-class="align-middle"
+                        @close="currentPrestationModel = null; showEditPrestationModal = false">
+                        <template #title>Edit Consultation Prestation #{{currentPrestationModel.consultation_id}} / {{currentPrestationModel.prestation_id}}</template>
+                        <edit-consultation-prestations-form :model="currentPrestationModel" @success="onSuccessEditPrestation" @error="onErrorEditPrestation"/>
+                    </jig-modal>
+                </div>
+
+                <div v-if="showAddPrestationModal && consultation">
+                    <jig-modal
+                        :show="showAddPrestationModal"
+                        corner-class="rounded-lg"
+                        position-class="align-middle"
+                        @close="showAddPrestationModal = false">
+                        <template #title>Ajouter une Prestation </template>
+                        <create-consultation-prestations-form :consultation="consultation"  @success="onAddPrestationSuccess" @error="onAddPrestationError"></create-consultation-prestations-form>
+                    </jig-modal>
+                </div>
 
             </div>
         </div>
@@ -126,6 +178,9 @@
     import ShowConsultationsForm from "@/Pages/Consultations/ShowForm.vue";
     import CreateConsultationTachesForm from "@/Pages/ConsultationTaches/CreateForm.vue";
     import EditConsultationTachForm from "@/Pages/ConsultationTaches/EditForm.vue";
+    import CreateConsultationPrestationsForm from "@/Pages/ConsultationPrestations/CreateForm.vue";
+    import EditConsultationPrestationsForm from "@/Pages/ConsultationPrestations/EditForm.vue";
+    import ShowConsultationPrestationsForm from "@/Pages/ConsultationPrestations/ShowForm.vue"
 
     export default defineComponent({
         name: "Manage",
@@ -142,10 +197,14 @@
             ShowConsultationsForm,
             CreateConsultationTachesForm,
             EditConsultationTachForm,
+            CreateConsultationPrestationsForm,
+            EditConsultationPrestationsForm,
+            ShowConsultationPrestationsForm,
         },
         props: {
             can: Object,
             tachesColumns: Array,
+            prestationsColumns: Array,
             consultation: Object,
         },
         inject: ["$refreshDt","$dayjs"],
@@ -163,6 +222,12 @@
                 extends_info: false,
                 extends_taches: true,
                 extends_prestations: false,
+                prestationsTableId: 'consultation-prestations-dt',
+                prestationsTableParams: {},
+                currentPrestationModel: null,
+                showPrestationModal: false,
+                showAddPrestationModal: false,
+                showEditPrestationModal: false,
             }
         },
         mixins: [
@@ -173,14 +238,18 @@
         computed: {
             tachesAjaxUrl() {
                 const url = new URL(this.route('api.consultation-taches.dt'));
-                /*if (this.withDisabled) {
-                    url.searchParams.append('include-disabled',true);
-                }*/
                 if (this.consultation) {
                     url.searchParams.append('consultation_id',this.consultation.id);
                 }
                 return url.href;
-            }
+            }, 
+            prestationsAjaxUrl() {
+                const url = new URL(this.route('api.consultation-prestations.dt'));
+                if (this.consultation) {
+                    url.searchParams.append('consultation_id',this.consultation.id);
+                }
+                return url.href;
+            },
         },
         methods: {
             showTacheModel(model) {
@@ -188,20 +257,30 @@
                     this.currentTacheModel = res.data.payload;
                     this.showTacheModal = true;
                 })
-                // this.$inertia.visit(this.route('admin.consultations.show',model.id));
             },
             editTacheModel(model) {
                 axios.get(route('api.consultation-taches.show',model.id)).then(res => {
                     this.currentTacheModel = res.data.payload;
                     this.showEditTacheModal = true;
                 })
-                // this.$inertia.visit(this.route('admin.consultation-taches.edit',model.id));
             },
             AddTache(){
                 this.showAddTacheModal = true;
             },
-            AddPrestation(model){
-                
+            AddPrestation(){
+                this.showAddPrestationModal = true;
+            },
+            showPrestationModel(model) {
+                axios.get(route('api.consultation-prestations.show',model)).then(res => {
+                    this.currentPrestationModel = res.data.payload;
+                    this.showPrestationModal = true;
+                })
+            },
+            showEditPrestationModel(model) {
+                axios.get(route('api.consultation-prestations.show',model.id)).then(res => {
+                    this.currentPrestationModel = res.data.payload;
+                    this.showEditPrestationModal = true;
+                })
             },
             expandInfo(){
                 this.extends_info = ! this.extends_info;
@@ -246,7 +325,46 @@
             },
             onAddTacheError(msg) {
                 this.displayNotification('error',msg);
-            }
+            },
+            onSuccessEditTache(msg) {
+                this.displayNotification('success',msg);
+                this.showEditTacheModal = false;
+                this.$refreshDt(this.tachesTableId);
+            },
+            onErrorEditTache(msg) {
+                this.displayNotification('error',msg);
+            },
+            onAddPrestationSuccess(msg) {
+                this.displayNotification('success',msg);
+                this.showAddPrestationModal = false;
+                this.$refreshDt(this.prestationsTableId);
+            },
+            onAddPrestationError(msg) {
+                this.displayNotification('error',msg);
+            },
+            onSuccessEditPrestation(msg) {
+                this.displayNotification('success',msg);
+                this.showEditPrestationModal = false;
+                this.$refreshDt(this.prestationsTableId);
+            },
+            onErrorEditPrestation(msg) {
+                this.displayNotification('error',msg);
+            },
+            async printInvoice(model){
+                await axios.get(this.route('api.consultation-taches.print',{'consultation_tache_id': model.id}), { responseType: "blob" }).then(res => {
+                    this.displayNotification('success', "Consultation Tache Printed");
+                    const blob = new Blob([res.data], { type: "application/pdf" });
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'consultation-tache.pdf';
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                }).catch(err => {
+                    this.displayNotification('error', err.response?.data?.message || err.message || err);
+                }).finally(res => {
+                    // this.displayNotification('success', "finally");
+                });
+            },
         }
     });
 </script>

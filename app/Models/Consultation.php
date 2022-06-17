@@ -76,7 +76,7 @@ class Consultation extends Model
     }
 
     public function taches(){
-        return $this->belongsToMany(Taches::class, 'consultation_taches', 'tache_id', 'consultation_id')->withPivot('commentaire' , 'remises' , 'pourcentage_remises');
+        return $this->belongsToMany(Tach::class, 'consultation_taches', 'tache_id', 'consultation_id')->withPivot('commentaire' , 'remises' , 'pourcentage_remises');
     }
 
     public function prestations(){

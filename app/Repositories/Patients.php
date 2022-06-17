@@ -70,7 +70,7 @@ class Patients
                 return Carbon::parse($model->ddn)->age;
             })
             ->editColumn('count_fichiers' , function(Patient $model){
-                return '<button class="bg-purple-500 hover:bg-purple-500 p-2 px-3 focus:ring-0 focus:outline-none text-white action-button" title="Fichiers" data-action="show-fichiers" data-tag="button" data-id="'.$model->id.'"> '.$model->count_fichiers.' <i class="fas fa-folder-open"></i></button>';
+                return '<button class="bg-purple-500 hover:bg-purple-500 p-2 px-3 focus:ring-0 focus:outline-none text-white action-button" title="Fichiers" data-action="show-fichiers" data-tag="button" data-id="'.$model->id.'"> '.$model->count_fichiers.' <i class="fas fa-file-alt"></i></button>';
             })
             ->editColumn('actions', function (Patient $model) {
                 $actions = '';

@@ -12,6 +12,7 @@ use Savannabits\JetstreamInertiaGenerator\Helpers\ApiResponse;
 use Savannabits\Pagetables\Column;
 use Savannabits\Pagetables\Pagetables;
 use Yajra\DataTables\DataTables;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ConsultationController  extends Controller
 {
@@ -30,9 +31,9 @@ class ConsultationController  extends Controller
     public function index(IndexConsultation $request)
     {
         $query = Consultation::query(); // You can extend this however you want.
-        $patient = $request->get('patient');
-        if($patient){
-            $query->with('fichier')->where('fichier.patient_id' ,"=",$patient);
+        $fichier = $request->get('fichier');
+        if($fichier){
+            $query->with('fichier')->where('fichier.fichier_id' ,"=",$fichier);
         }
         $cols = [
             Column::name('id')->title('Id')->sort()->searchable(),
@@ -48,20 +49,20 @@ class ConsultationController  extends Controller
 
     public function dt(Request $request) {
         $query = Consultation::query()->select(Consultation::getModel()->getTable().'.*'); // You can extend this however you want.
-        $patient_id = $request->get('patient_id');
-        if($patient_id){
-            $query->join('fichiers' , "consultations.fichier_id" , "fichiers.id")->where('fichiers.patient_id' ,"=",$patient_id);
+        $fichier_id = $request->get('fichier_id');
+        if($fichier_id){
+            $query->where('fichier_id' ,"=",$fichier_id);
         }
         return $this->repo::dt($query);
     }
+    
     /**
      * Store a newly created resource in storage.
      *
      * @param StoreConsultation $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreConsultation $request)
-    {
+    public function store(StoreConsultation $request){
         try {
             $data = $request->sanitizedObject();
             $consultation = $this->repo::store($data);
@@ -124,4 +125,32 @@ class ConsultationController  extends Controller
         return $this->api->success()->message("Consultation has been deleted")->payload($res)->code(200)->send();
     }
 
+    
+    /**
+     * Print Stock
+     */
+    public function print(Request $request){
+        try {
+            $consultation_id = $request->get('consultation_id');
+            $consultation = Consultation::findOrFail($consultation_id);
+            if($consultation){
+                $consultation->load([
+                    // 'taches',
+                    // 'prestations',
+                    'fichier',
+                    'fichier.patient',
+                ]);
+                $data = ['consultation' => $consultation];
+                $pdf = PDF::loadView('pdf.consultation', $data);
+                $pdf->setPaper('a4')->setWarnings(true);
+                return $pdf->stream('Consultation.pdf');
+            }else{
+                return $this->api->failed()->message("Consultation not found!")->payload([])->code(500)->send();
+            }
+           
+        } catch (\Throwable $exception) {
+            \Log::error($exception);
+            return $this->api->failed()->message($exception->getMessage())->payload([])->code(500)->send();
+        }
+    }
 }

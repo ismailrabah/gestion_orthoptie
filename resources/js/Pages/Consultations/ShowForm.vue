@@ -37,6 +37,9 @@
             <template #dt>Commentaire:</template>
             {{ model.commentaire }}
         </jig-dd>
+        <div class="mt-2 text-right">
+            <inertia-button @click="print" class="font-semibold text-white bg-indigo-600 mt-2"> <i class="fas fa-print"></i> Imprimer le compte rendu</inertia-button>
+        </div>
     </dl>
 </template>
 
@@ -68,7 +71,11 @@
                 return this.$page.props.flash || {}
             }
         },
-        methods: {}
+        methods: {
+            print(){
+
+            }
+        }
     });
 </script>
 
