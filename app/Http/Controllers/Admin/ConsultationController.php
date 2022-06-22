@@ -19,12 +19,10 @@ class ConsultationController  extends Controller
 {
     private Consultations $repo;
     private ConsultationTaches $consultation_taches;
-    private ConsultationPrestations $consultation_prestations ;
-    public function __construct(Consultations $repo , ConsultationTaches $consultation_taches ,ConsultationPrestations $consultation_prestations)
+    public function __construct(Consultations $repo , ConsultationTaches $consultation_taches)
     {
         $this->repo = $repo;
         $this->consultation_taches = $consultation_taches;
-        $this->consultation_prestations = $consultation_prestations;
     }
 
     /**
@@ -78,7 +76,6 @@ class ConsultationController  extends Controller
                 "create" => \Auth::user()->can('create', Consultation::class),
             ],
             "tachesColumns" => $this->consultation_taches::dtColumns(),
-            "prestationsColumns" => $this->consultation_prestations::dtColumns(),
             "consultation" => $consultation
         ]);
     }

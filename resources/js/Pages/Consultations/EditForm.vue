@@ -19,14 +19,6 @@
         </div>
         
         <div class=" sm:col-span-4">
-            <jet-label for="note" value="Note" />
-            <jet-input class="w-full" type="text" id="note" name="note" v-model="form.note"
-                       :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.note}"
-            ></jet-input>
-            <jet-input-error :message="form.errors.note" class="mt-2" />
-        </div>
-        
-        <div class=" sm:col-span-4">
             <jet-label for="date" value="Date" />
             <jig-datepicker
                 class="w-full"
@@ -49,6 +41,30 @@
                             :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.salle}"
             ></infinite-select>
             <jet-input-error :message="form.errors.salle" class="mt-2" />
+        </div>
+            
+        <div class=" sm:col-span-4">
+            <jet-label for="diagnostique" value="Diagnostique" />
+            <jig-textarea class="w-full" id="diagnostique" name="diagnostique" v-model="form.diagnostique"
+                          :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.diagnostique}"
+            ></jig-textarea>
+            <jet-input-error :message="form.errors.diagnostique" class="mt-2" />
+        </div>
+        
+        <div class=" sm:col-span-4">
+            <jet-label for="traitement" value="Traitement" />
+            <jig-textarea class="w-full" id="traitement" name="traitement" v-model="form.traitement"
+                          :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.traitement}"
+            ></jig-textarea>
+            <jet-input-error :message="form.errors.traitement" class="mt-2" />
+        </div>
+        
+        <div class=" sm:col-span-4">
+            <jet-label for="note" value="Note" />
+            <jet-input class="w-full" type="text" id="note" name="note" v-model="form.note"
+                       :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.note}"
+            ></jet-input>
+            <jet-input-error :message="form.errors.note" class="mt-2" />
         </div>
 
         <div class=" sm:col-span-4">

@@ -33,9 +33,6 @@ Route::group(["prefix" => "admin","as" => "admin.","middleware"=>['auth:sanctum'
     /* fichiers admin routes */
     Route::resource('fichiers', \App\Http\Controllers\Admin\FichierController::class)->parameters(["fichiers" => "fichier"]);
 
-    /* prestations admin routes */
-    Route::resource('prestations', \App\Http\Controllers\Admin\PrestationController::class)->parameters(["prestations" => "prestation"]);
-
     /* salles-d-examens admin routes */
     Route::resource('salles-d-examens', \App\Http\Controllers\Admin\SallesDExamenController::class)->parameters(["salles-d-examens" => "sallesDExaman"]);
 
@@ -45,16 +42,8 @@ Route::group(["prefix" => "admin","as" => "admin.","middleware"=>['auth:sanctum'
     /* consultations admin routes */
     Route::resource('consultations', \App\Http\Controllers\Admin\ConsultationController::class)->parameters(["consultations" => "consultation"]);
     Route::get('consultations/manage/{consultation}', [\App\Http\Controllers\Admin\ConsultationController::class,'manage'])->name('consultations.manage');
-});
 
-
-/* Auto-generated consultation-taches admin routes */
-Route::group(["prefix" => "admin","as" => "admin.","middleware"=>['auth:sanctum', 'verified']], function () {
+    /* Consultation-taches admin routes */
     Route::resource('consultation-taches', \App\Http\Controllers\Admin\ConsultationTachController::class)->parameters(["consultation-taches" => "consultationTach"]);
-});
 
-
-/* Auto-generated consultation-prestations admin routes */
-Route::group(["prefix" => "admin","as" => "admin.","middleware"=>['auth:sanctum', 'verified']], function () {
-    Route::resource('consultation-prestations', \App\Http\Controllers\Admin\ConsultationPrestationController::class)->parameters(["consultation-prestations" => "consultationPrestation"]);
 });

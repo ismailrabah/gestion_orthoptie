@@ -4,10 +4,9 @@
             <div class="flex flex-wrap items-center justify-between w-full px-4">
                 <inertia-link :href="route('admin.dashboard')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Retour</inertia-link>
                 <div class="flex gap-x-2">
-                    <inertia-button v-if="can.create" :href="route('admin.consultations.create')" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Nouveau Consultation</inertia-button>
+                    <inertia-button v-if="can.create" @click="addConsultation" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Nouveau Consultation</inertia-button>
                     <inertia-button @click.native="$refreshDt(tableId)" classes="bg-indigo-100 hover:bg-green-200 text-indigo"><i class="fas fa-redo"></i> Refresh</inertia-button>
                 </div>
-
             </div>
         </template>
         <div v-if="can.viewAny" class="flex flex-wrap px-4">
@@ -103,6 +102,17 @@
                         </template>
                     </jig-modal>
                 </div>
+                
+                <div v-if="addConsultationModal">
+                    <jig-modal
+                        :show="addConsultationModal"
+                        corner-class="rounded-lg"
+                        position-class="align-middle"
+                        @close="addConsultationModal = false">
+                        <template #title>Nouveau Consultation</template>
+                        <create-consultations-form :fichier="fichier" @success="onSuccess" @error="onError"/>
+                    </jig-modal>
+                </div>
             </div>
         </div>
         <div v-else class="p-4 font-bold text-red-500 bg-red-100 rounded-md shadow-md ">
@@ -123,6 +133,7 @@
     import ShowConsultationsForm from "@/Pages/Consultations/ShowForm.vue";
     import { defineComponent } from "vue";
     import JigDd from "@/JigComponents/JigDd.vue";
+    import CreateConsultationsForm from "./CreateForm.vue";
 
     export default defineComponent({
         name: "Index",
@@ -136,6 +147,7 @@
             JigLayout,
             ShowConsultationsForm,
             JigDd,
+            CreateConsultationsForm,
         },
         props: {
             can: Object,
@@ -153,6 +165,7 @@
                 withDisabled: false,
                 showModal: false,
                 extends_info: false,
+                addConsultationModal:false,
             }
         },
         mixins: [
@@ -173,6 +186,9 @@
             }
         },
         methods: {
+            addConsultation(){
+                this.addConsultationModal = true;
+            },
             showModel(model) {
                 axios.get(route('api.consultations.show',model)).then(res => {
                     this.currentModel = res.data.payload;
@@ -196,6 +212,14 @@
             cancelDelete() {
                 this.currentModel = false;
                 this.confirmDelete = false;
+            },
+            addSuccess(){
+                this.displayNotification('success',msg);
+                this.addConsultationModal = false;
+                this.$refreshDt(this.tableId);
+            },
+            addError(msg){
+                this.displayNotification('error',msg);
             },
             async deleteModel() {
                 const vm = this;

@@ -5,7 +5,6 @@
                 <inertia-link :href="route('admin.consultations.index')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Retour</inertia-link>
                 <div class="flex gap-x-2">
                     <inertia-button v-if="can.create" @click="AddTache" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Ajouter une tâche </inertia-button>
-                    <inertia-button v-if="can.create" @click="AddPrestation" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Ajouter une prestation </inertia-button>
                     <!-- <inertia-button @click.native="$refreshDt(tableId)" classes="bg-indigo-100 hover:bg-green-200 text-indigo"><i class="fas fa-redo"></i> Refresh</inertia-button> -->
                 </div>
             </div>
@@ -95,66 +94,6 @@
                         <create-consultation-taches-form :consultation="consultation"  @success="onAddTacheSuccess" @error="onAddTacheError"></create-consultation-taches-form>
                     </jig-modal>
                 </div>
-                
-                <h3 class="w-full p-4 mb-2 text-lg font-black bg-info-100">
-                    <i class="mr-2 fas fa-hand-holding-heart"></i> 
-                    List des prestations
-                    <button @click="extends_prestations = !extends_prestations"
-                        class="pl-2 pt-1 pb-1 pr-1 transition duration-150 ease-in-out" >
-                        <i v-if="!extends_prestations" class="fas fa-angle-down"></i>
-                        <i v-if="extends_prestations" class="fas fa-angle-up"></i>
-                    </button>
-                </h3>
-                
-                <div class="p-4" v-if="extends_prestations">
-                    <dt-component
-                        :table-id="prestationsTableId"
-                        :ajax-url="prestationsAjaxUrl"
-                        :columns="prestationsColumns"
-                        :ajax-params="prestationsTableParams"
-                        @show-model="showPrestationModel"
-                        @edit-model="showEditPrestationModel"
-                        @delete-model="confirmTacheDeletion"
-                    />
-                </div>
-
-                <div v-if="showPrestationModal && currentPrestationModel">
-                    <jig-modal
-                        :show="showPrestationModal"
-                        corner-class="rounded-lg"
-                        position-class="align-middle"
-                        @close="currentPrestationModel = null; showPrestationModal = false">
-
-                        <template #title>Show Consultation Tach #{{currentPrestationModel.id}}</template>
-                        <show-consultation-prestations-form :model="currentPrestationModel"></show-consultation-prestations-form>
-                        <template #footer>
-                            <inertia-button class="px-4 text-white bg-primary" @click="showPrestationModal = false; currentPrestationModel = null">Close</inertia-button>
-                        </template>
-                    </jig-modal>
-                </div>
-
-                <div v-if="showEditPrestationModal && currentPrestationModel">
-                    <jig-modal
-                        :show="showEditPrestationModal"
-                        corner-class="rounded-lg"
-                        position-class="align-middle"
-                        @close="currentPrestationModel = null; showEditPrestationModal = false">
-                        <template #title>Edit Consultation Prestation #{{currentPrestationModel.consultation_id}} / {{currentPrestationModel.prestation_id}}</template>
-                        <edit-consultation-prestations-form :model="currentPrestationModel" @success="onSuccessEditPrestation" @error="onErrorEditPrestation"/>
-                    </jig-modal>
-                </div>
-
-                <div v-if="showAddPrestationModal && consultation">
-                    <jig-modal
-                        :show="showAddPrestationModal"
-                        corner-class="rounded-lg"
-                        position-class="align-middle"
-                        @close="showAddPrestationModal = false">
-                        <template #title>Ajouter une Prestation </template>
-                        <create-consultation-prestations-form :consultation="consultation"  @success="onAddPrestationSuccess" @error="onAddPrestationError"></create-consultation-prestations-form>
-                    </jig-modal>
-                </div>
-
             </div>
         </div>
         <div v-else class="p-4 font-bold text-red-500 bg-red-100 rounded-md shadow-md ">
@@ -178,9 +117,6 @@
     import ShowConsultationsForm from "@/Pages/Consultations/ShowForm.vue";
     import CreateConsultationTachesForm from "@/Pages/ConsultationTaches/CreateForm.vue";
     import EditConsultationTachForm from "@/Pages/ConsultationTaches/EditForm.vue";
-    import CreateConsultationPrestationsForm from "@/Pages/ConsultationPrestations/CreateForm.vue";
-    import EditConsultationPrestationsForm from "@/Pages/ConsultationPrestations/EditForm.vue";
-    import ShowConsultationPrestationsForm from "@/Pages/ConsultationPrestations/ShowForm.vue"
 
     export default defineComponent({
         name: "Manage",
@@ -197,14 +133,10 @@
             ShowConsultationsForm,
             CreateConsultationTachesForm,
             EditConsultationTachForm,
-            CreateConsultationPrestationsForm,
-            EditConsultationPrestationsForm,
-            ShowConsultationPrestationsForm,
         },
         props: {
             can: Object,
             tachesColumns: Array,
-            prestationsColumns: Array,
             consultation: Object,
         },
         inject: ["$refreshDt","$dayjs"],
@@ -221,13 +153,6 @@
                 showEditTacheModal: false,
                 extends_info: false,
                 extends_taches: true,
-                extends_prestations: false,
-                prestationsTableId: 'consultation-prestations-dt',
-                prestationsTableParams: {},
-                currentPrestationModel: null,
-                showPrestationModal: false,
-                showAddPrestationModal: false,
-                showEditPrestationModal: false,
             }
         },
         mixins: [
@@ -242,14 +167,7 @@
                     url.searchParams.append('consultation_id',this.consultation.id);
                 }
                 return url.href;
-            }, 
-            prestationsAjaxUrl() {
-                const url = new URL(this.route('api.consultation-prestations.dt'));
-                if (this.consultation) {
-                    url.searchParams.append('consultation_id',this.consultation.id);
-                }
-                return url.href;
-            },
+            }
         },
         methods: {
             showTacheModel(model) {
@@ -266,21 +184,6 @@
             },
             AddTache(){
                 this.showAddTacheModal = true;
-            },
-            AddPrestation(){
-                this.showAddPrestationModal = true;
-            },
-            showPrestationModel(model) {
-                axios.get(route('api.consultation-prestations.show',model)).then(res => {
-                    this.currentPrestationModel = res.data.payload;
-                    this.showPrestationModal = true;
-                })
-            },
-            showEditPrestationModel(model) {
-                axios.get(route('api.consultation-prestations.show',model.id)).then(res => {
-                    this.currentPrestationModel = res.data.payload;
-                    this.showEditPrestationModal = true;
-                })
             },
             expandInfo(){
                 this.extends_info = ! this.extends_info;
@@ -332,22 +235,6 @@
                 this.$refreshDt(this.tachesTableId);
             },
             onErrorEditTache(msg) {
-                this.displayNotification('error',msg);
-            },
-            onAddPrestationSuccess(msg) {
-                this.displayNotification('success',msg);
-                this.showAddPrestationModal = false;
-                this.$refreshDt(this.prestationsTableId);
-            },
-            onAddPrestationError(msg) {
-                this.displayNotification('error',msg);
-            },
-            onSuccessEditPrestation(msg) {
-                this.displayNotification('success',msg);
-                this.showEditPrestationModal = false;
-                this.$refreshDt(this.prestationsTableId);
-            },
-            onErrorEditPrestation(msg) {
                 this.displayNotification('error',msg);
             },
             async printInvoice(model){

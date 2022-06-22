@@ -31,7 +31,8 @@ class StoreConsultation extends FormRequest
             'orthoptiste' => ['array', 'nullable'],
             'fichier' => ['array', 'nullable'],
             'salle' => ['array', 'nullable'],
-                
+            'traitement' => ['nullable', 'string'],
+            'diagnostique' => ['nullable', 'string'],
         ];
     }
     /**

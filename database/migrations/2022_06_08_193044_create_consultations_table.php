@@ -20,6 +20,9 @@ return new class extends Migration
             $table->text('commentaire')->nullable();
             $table->date('date')->require();
             
+            $table->text('traitement')->nullable();
+            $table->text('diagnostique')->nullable();
+            
             $table->unsignedBigInteger('fichier_id')->nullable();
             $table->foreign('fichier_id')->references('id')->on('fichiers')->onDelete('set null');
             

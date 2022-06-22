@@ -5,7 +5,7 @@
                 <inertia-link :href="route('admin.dashboard')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Retour</inertia-link>
                 <div class="flex gap-x-2">
                     <!-- <inertia-button v-if="can.create" :href="route('admin.fichiers.create')" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Nouveau Fichier</inertia-button> -->
-                    <inertia-button v-if="can.create" @click="AppFichier" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Nouveau Fichier</inertia-button>
+                    <inertia-button v-if="can.create" @click="AddFichier" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Nouveau Fichier</inertia-button>
                     <inertia-button @click.native="$refreshDt(tableId)" classes="bg-indigo-100 hover:bg-green-200 text-indigo"><i class="fas fa-redo"></i> Refresh</inertia-button>
                 </div>
             </div>
@@ -183,7 +183,7 @@
             }
         },
         methods: {
-            AppFichier(){
+            AddFichier(){
                 this.addModal = true;
             },
             showModel(model) {

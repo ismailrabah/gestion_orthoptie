@@ -55,6 +55,14 @@
                     <td>{{$consultation->fichier->medcin_traitant}}</td>
                 </tr>
                 <tr>
+                    <td style="width: 120px">Traitement:</td>
+                    <td>{{$consultation->traitement}}</td>
+                </tr> 
+                <tr>
+                    <td style="width: 120px">Diagnostique:</td>
+                    <td>{{$consultation->diagnostique}}</td>
+                </tr> 
+                <tr>
                     <td style="width: 120px">Commentaire:</td>
                     <td>{{$consultation->fichier->commentaire}}</td>
                 </tr>
@@ -86,25 +94,6 @@
                             <td>{{$tach->price}} DH</td>
                             <td>{{$tach->pivot->remises}} @if ($tach->pivot->pourcentage_remises) % @else DH  @endif </td>
                             <td>{{ substr($tach->pivot->commentaire, 0, 30) }}...</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            <p><B>List des prestations</B> </p>
-            <table class="table"> 
-                <thead>
-                    <tr>
-                        <th>Prestation</th>
-                        <th>Montant</th>
-                        <th>Commentaire</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($consultation->prestations as $prestation)
-                        <tr>
-                            <td>{{$prestation->note}}</td>
-                            <td>{{$prestation->montant}} DH</td>
-                            <td>{{ substr($prestation->pivot->commentaire, 0, 30) }}...</td>
                         </tr>
                     @endforeach
                 </tbody>

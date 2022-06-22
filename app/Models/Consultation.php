@@ -19,6 +19,8 @@ class Consultation extends Model
         'fichier_id',
         'salle_id',
         'commentaire',
+        'traitement',
+        'diagnostique',
     ];
     
     
@@ -78,9 +80,4 @@ class Consultation extends Model
     public function taches(){
         return $this->belongsToMany(Tach::class, 'consultation_taches', 'tache_id', 'consultation_id')->withPivot('commentaire' , 'remises' , 'pourcentage_remises');
     }
-
-    public function prestations(){
-        return $this->belongsToMany(Prestation::class, 'consultation_prestations', 'prestation_id', 'consultation_id')->withPivot('commentaire');
-    }
-
 }

@@ -56,15 +56,6 @@
         "isParent": false,
         "children": []
     },
-    "prestations": {
-        "route": "admin.prestations.index",
-        "title": "Prestations",
-        "routePattern": "admin.prestations.*",
-        "faIcon": "fas fa-hand-holding-heart",
-        "isTitle": false,
-        "isParent": false,
-        "children": []
-    },
     "taches": {
         "route": "admin.taches.index",
         "title": "Taches",

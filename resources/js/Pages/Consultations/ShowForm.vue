@@ -22,16 +22,24 @@
             {{ model.orthoptiste ? model.orthoptiste.name : '-' }} {{ model.orthoptiste ? model.orthoptiste.last_name : '-' }}
         </jig-dd>
         <jig-dd>
-            <template #dt>Note:</template>
-            {{ model.note }}
-        </jig-dd>
-        <jig-dd>
             <template #dt>Date:</template>
             {{ model.date }}
         </jig-dd>
         <jig-dd>
             <template #dt>Salle:</template>
             {{ model.salle ? model.salle.name : '-' }}
+        </jig-dd>
+        <jig-dd>
+            <template #dt>Diagnostique:</template>
+            {{ model.diagnostique }}
+        </jig-dd>
+        <jig-dd>
+            <template #dt>Traitement:</template>
+            {{ model.traitement }}
+        </jig-dd>
+        <jig-dd>
+            <template #dt>Note:</template>
+            {{ model.note }}
         </jig-dd>
         <jig-dd>
             <template #dt>Commentaire:</template>
@@ -46,11 +54,9 @@
 <script>
     import JigDd from "@/JigComponents/JigDd.vue";
     import InertiaButton from "@/JigComponents/InertiaButton.vue";
-
     import { defineComponent } from "vue";
     import ShowFichiersForm from "@/Pages/Fichiers/ShowForm.vue";
     import ShowPatientsForm from "@/Pages/Patients/ShowForm.vue";
-
     export default defineComponent({
         name: "ShowConsultationsForm",
         props: {

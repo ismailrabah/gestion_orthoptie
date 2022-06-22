@@ -29,8 +29,5 @@ class SeedInitData extends Seeder
          
         $taches = DB::table('salles_d_examens')->insertGetId([ "name" => "salles d'examens 01"]);
 
-        $taches = DB::table('prestations')->insertGetId([ "traitement" => "example of traitement",
-        "diagnostique" => "example of diagnostique","note" => "note example","montant" => "300",]);
-        
     }
 }

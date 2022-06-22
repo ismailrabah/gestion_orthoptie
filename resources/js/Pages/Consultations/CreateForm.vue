@@ -1,7 +1,7 @@
 <template>
     <form class="w-full" @submit.prevent="storeModel">
         
-        <div class=" sm:col-span-4">
+        <div v-if="!fichier" class="sm:col-span-4">
             <jet-label for="patient" value="Patient" />
             <infinite-select :per-page="15" :api-url="route('api.patients.index')"
                              id="patient" name="patient"
@@ -30,14 +30,6 @@
             ></infinite-select>
             <jet-input-error :message="form.errors.orthoptiste" class="mt-2" />
         </div>
-        
-        <div class=" sm:col-span-4">
-            <jet-label for="note" value="Note" />
-            <jet-input class="w-full" type="text" id="note" name="note" v-model="form.note"
-                       :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.note}"
-            ></jet-input>
-            <jet-input-error :message="form.errors.note" class="mt-2" />
-        </div>
                 
         <div class=" sm:col-span-4">
             <jet-label for="date" value="Date" />
@@ -62,6 +54,30 @@
                              :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.salle}"
             ></infinite-select>
             <jet-input-error :message="form.errors.salle" class="mt-2" />
+        </div>
+            
+        <div class=" sm:col-span-4">
+            <jet-label for="diagnostique" value="Diagnostique" />
+            <jig-textarea class="w-full" id="diagnostique" name="diagnostique" v-model="form.diagnostique"
+                          :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.diagnostique}"
+            ></jig-textarea>
+            <jet-input-error :message="form.errors.diagnostique" class="mt-2" />
+        </div>
+        
+        <div class=" sm:col-span-4">
+            <jet-label for="traitement" value="Traitement" />
+            <jig-textarea class="w-full" id="traitement" name="traitement" v-model="form.traitement"
+                          :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.traitement}"
+            ></jig-textarea>
+            <jet-input-error :message="form.errors.traitement" class="mt-2" />
+        </div>
+        
+        <div class=" sm:col-span-4">
+            <jet-label for="note" value="Note" />
+            <jet-input class="w-full" type="text" id="note" name="note" v-model="form.note"
+                       :class="{'border-red-500 sm:focus:border-red-300 sm:focus:ring-red-100': form.errors.note}"
+            ></jet-input>
+            <jet-input-error :message="form.errors.note" class="mt-2" />
         </div>
 
         <div class=" sm:col-span-4">
@@ -100,6 +116,9 @@
             InfiniteSelect,
             JigTextarea,
         },
+        props: {
+            fichier: Object,
+        },
         data() {
             return {
                 form: useForm({
@@ -107,9 +126,11 @@
                     date: null,
                     "orthoptiste": null,
                     "patient": null,
-                    "fichier": null,
+                    "fichier": this.fichier,
                     "salle": null,
                     commentaire: null,
+                    traitement: null,
+                    diagnostique: null,
                 }, {remember: false}),
             }
         },
