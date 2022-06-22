@@ -127,7 +127,7 @@ class ConsultationTachController  extends Controller
     /**
      * Print Stock
      */
-    public function print(Request $request){
+    public function printInvoice(Request $request){
         try {
             $consultation_tache_id = $request->get('consultation_tache_id');
             $consultation_tache = ConsultationTach::findOrFail($consultation_tache_id);
@@ -140,11 +140,41 @@ class ConsultationTachController  extends Controller
                     'consultation.fichier.patient',
                 ]);
                 $data = ['ct' => $consultation_tache];
-                $pdf = PDF::loadView('pdf.consultation-tache', $data);
+                $pdf = PDF::loadView('pdf.consultation-tache-invoice', $data);
                 $pdf->setPaper('a4')->setWarnings(true);
-                return $pdf->stream('ConsultationTach.pdf');
+                return $pdf->stream('ConsultationTachInvoice.pdf');
             }else{
-                return $this->api->failed()->message("Tache not found!")->payload([])->code(500)->send();
+                return $this->api->failed()->message("Consultation Tache not found!")->payload([])->code(500)->send();
+            }
+           
+        } catch (\Throwable $exception) {
+            \Log::error($exception);
+            return $this->api->failed()->message($exception->getMessage())->payload([])->code(500)->send();
+        }
+    }
+
+    
+    /**
+     * Print Stock
+     */
+    public function printReport(Request $request){
+        try {
+            $consultation_tache_id = $request->get('consultation_tache_id');
+            $consultation_tache = ConsultationTach::findOrFail($consultation_tache_id);
+            if($consultation_tache){
+                $consultation_tache->load([
+                    'consultation',
+                    'consultation.orthoptiste',
+                    'tache',
+                    'consultation.fichier',
+                    'consultation.fichier.patient',
+                ]);
+                $data = ['ct' => $consultation_tache];
+                $pdf = PDF::loadView('pdf.consultation-tache-report', $data);
+                $pdf->setPaper('a4')->setWarnings(true);
+                return $pdf->stream('ConsultationTachReport.pdf');
+            }else{
+                return $this->api->failed()->message("Consultation Tache not found!")->payload([])->code(500)->send();
             }
            
         } catch (\Throwable $exception) {

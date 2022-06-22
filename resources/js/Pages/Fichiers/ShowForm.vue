@@ -32,6 +32,11 @@
             <template #dt>Updated at:</template>
             {{ model.updated_at }}
         </jig-dd>
+        <div class="pt-2 my-2"  v-if="!is_consul">
+            
+            <inertia-button :href="route('admin.consultations.index',{'patient_id' : model.patient ? model.patient.id : null })" classes="bg-green-100 hover:bg-green-200 text-primary mr-7"><i class="mr-2 fas fa-stethoscope"></i>List des consultations</inertia-button>
+
+        </div>
     </dl>
 </template>
 

@@ -73,7 +73,6 @@
                         @edit-model="editModel"
                         @delete-model="confirmDeletion"
                         @manage-model="manageModel"
-                        @print-report="printReport"
                     />
                 </div>
                 <jet-confirmation-modal title="Confirm Deletion" :show="confirmDelete">
@@ -187,7 +186,9 @@
         },
         methods: {
             addConsultation(){
-                this.addConsultationModal = true;
+                // this.addConsultationModal = true;
+                
+                this.$inertia.visit(this.route('admin.consultations.create',{'fichier_id' : this.fichier? this.fichier.id : null}));
             },
             showModel(model) {
                 axios.get(route('api.consultations.show',model)).then(res => {
@@ -246,22 +247,7 @@
                     this.displayNotification('success', res.data.message);
                     this.$refreshDt(this.tableId);
                 })
-            },            
-            async printReport(model){
-                await axios.get(this.route('api.consultations.print',{'consultation_id': model.id}), { responseType: "blob" }).then(res => {
-                    this.displayNotification('success', "Consultation Report Printed");
-                    const blob = new Blob([res.data], { type: "application/pdf" });
-                    const link = document.createElement("a");
-                    link.href = URL.createObjectURL(blob);
-                    link.download = 'Consultation.pdf';
-                    link.click();
-                    URL.revokeObjectURL(link.href);
-                }).catch(err => {
-                    this.displayNotification('error', err.response?.data?.message || err.message || err);
-                }).finally(res => {
-                    // this.displayNotification('success', "finally");
-                });
-            },
+            }
         }
     });
 </script>

@@ -67,12 +67,11 @@ Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], functi
     /* consultations api routes */
     Route::get('/consultations/dt', [\App\Http\Controllers\API\ConsultationController::class,'dt'])->name('consultations.dt');
     Route::apiResource('/consultations', \App\Http\Controllers\API\ConsultationController::class)->parameters(["consultations" => "consultation"]);
-    Route::get('/consultations-print', [\App\Http\Controllers\API\ConsultationController::class,'print'])->name('consultations.print');
-
 
     /* consultation-taches api routes */
     Route::get('/consultation-taches/dt', [\App\Http\Controllers\API\ConsultationTachController::class,'dt'])->name('consultation-taches.dt');
     Route::apiResource('/consultation-taches', \App\Http\Controllers\API\ConsultationTachController::class)->parameters(["consultation-taches" => "consultationTach"]);
-    Route::get('/consultation-taches-print', [\App\Http\Controllers\API\ConsultationTachController::class,'print'])->name('consultation-taches.print');
+    Route::get('/consultations-taches-print-report', [\App\Http\Controllers\API\ConsultationTachController::class,'printReport'])->name('consultations-taches.print-report');
+    Route::get('/consultation-taches-print-invoice', [\App\Http\Controllers\API\ConsultationTachController::class,'printInvoice'])->name('consultation-taches.print-invoice');
 
   });

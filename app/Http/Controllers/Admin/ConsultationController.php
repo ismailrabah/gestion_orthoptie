@@ -7,6 +7,7 @@ use App\Http\Requests\Consultation\UpdateConsultation;
 use App\Http\Requests\Consultation\DestroyConsultation;
 use App\Models\Consultation;
 use App\Models\Fichier;
+use App\Models\Patient;
 use App\Repositories\ConsultationPrestations;
 use App\Repositories\Consultations;
 use App\Repositories\ConsultationTaches;
@@ -40,6 +41,15 @@ class ConsultationController  extends Controller
         }else{
             $fichier = null; 
         }
+        
+        $patient_id = $request->get('patient_id');
+        if($patient_id && $fichier == null){
+            $patient = Patient::findOrFail($patient_id);
+            $fichier = $patient->fichiers->last();
+        }else{
+            $patient = null; 
+        }
+
         if($fichier){
             $fichier->load(['patient']);
         }
@@ -85,14 +95,23 @@ class ConsultationController  extends Controller
     *
     * @return  \Inertia\Response
     */
-    public function create()
+    public function create(Request $request)
     {
         $this->authorize('create', Consultation::class);
+        
+        $fichier_id = $request->get('fichier_id');
+        if($fichier_id){
+            $fichier = Fichier::findOrFail($fichier_id);
+            $fichier->load('patient');
+        }else{
+            $fichier = null; 
+        }
         return Inertia::render("Consultations/Create",[
             "can" => [
-            "viewAny" => \Auth::user()->can('viewAny', Consultation::class),
-            "create" => \Auth::user()->can('create', Consultation::class),
-            ]
+                "viewAny" => \Auth::user()->can('viewAny', Consultation::class),
+                "create" => \Auth::user()->can('create', Consultation::class),
+            ],
+            "fichier" => $fichier,
         ]);
     }
 

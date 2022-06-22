@@ -42,6 +42,7 @@
                         @edit-model="editTacheModel"
                         @delete-model="confirmTacheDeletion"
                         @print-invoice="printInvoice"
+                        @print-report="printReport"
                     />
                 </div>
 
@@ -238,12 +239,27 @@
                 this.displayNotification('error',msg);
             },
             async printInvoice(model){
-                await axios.get(this.route('api.consultation-taches.print',{'consultation_tache_id': model.id}), { responseType: "blob" }).then(res => {
-                    this.displayNotification('success', "Consultation Tache Printed");
+                await axios.get(this.route('api.consultation-taches.print-invoice',{'consultation_tache_id': model.id}), { responseType: "blob" }).then(res => {
+                    this.displayNotification('success', "Consultation Tache Invoice Printed");
                     const blob = new Blob([res.data], { type: "application/pdf" });
                     const link = document.createElement("a");
                     link.href = URL.createObjectURL(blob);
-                    link.download = 'consultation-tache.pdf';
+                    link.download = 'consultation-tache-invoice.pdf';
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                }).catch(err => {
+                    this.displayNotification('error', err.response?.data?.message || err.message || err);
+                }).finally(res => {
+                    // this.displayNotification('success', "finally");
+                });
+            },         
+            async printReport(model){
+                await axios.get(this.route('api.consultations-taches.print-report',{'consultation_tache_id': model.id}), { responseType: "blob" }).then(res => {
+                    this.displayNotification('success', "Consultation Tache Report Printed");
+                    const blob = new Blob([res.data], { type: "application/pdf" });
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'consultation-tache-report.pdf';
                     link.click();
                     URL.revokeObjectURL(link.href);
                 }).catch(err => {

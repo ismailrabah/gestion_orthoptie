@@ -28,6 +28,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::get('/consultation-taches-print', [\App\Http\Controllers\API\ConsultationTachController::class,'print'])->name('consultation-taches.print');
-Route::get('/consultations-print', [\App\Http\Controllers\API\ConsultationController::class,'print'])->name('consultations.print');
+Route::get('/consultations-taches-print-report', [\App\Http\Controllers\API\ConsultationTachController::class,'printReport'])->name('consultation-taches.printr');
+Route::get('/consultations-taches-print-invoice', [\App\Http\Controllers\API\ConsultationTachController::class,'printInvoice'])->name('consultations.printi');
 

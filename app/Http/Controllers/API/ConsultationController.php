@@ -12,7 +12,6 @@ use Savannabits\JetstreamInertiaGenerator\Helpers\ApiResponse;
 use Savannabits\Pagetables\Column;
 use Savannabits\Pagetables\Pagetables;
 use Yajra\DataTables\DataTables;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class ConsultationController  extends Controller
 {
@@ -125,32 +124,4 @@ class ConsultationController  extends Controller
         return $this->api->success()->message("Consultation has been deleted")->payload($res)->code(200)->send();
     }
 
-    
-    /**
-     * Print Stock
-     */
-    public function print(Request $request){
-        try {
-            $consultation_id = $request->get('consultation_id');
-            $consultation = Consultation::findOrFail($consultation_id);
-            if($consultation){
-                $consultation->load([
-                    // 'taches',
-                    // 'prestations',
-                    'fichier',
-                    'fichier.patient',
-                ]);
-                $data = ['consultation' => $consultation];
-                $pdf = PDF::loadView('pdf.consultation', $data);
-                $pdf->setPaper('a4')->setWarnings(true);
-                return $pdf->stream('Consultation.pdf');
-            }else{
-                return $this->api->failed()->message("Consultation not found!")->payload([])->code(500)->send();
-            }
-           
-        } catch (\Throwable $exception) {
-            \Log::error($exception);
-            return $this->api->failed()->message($exception->getMessage())->payload([])->code(500)->send();
-        }
-    }
 }
