@@ -26,11 +26,9 @@ class StoreRendezVou extends FormRequest
     {
         return [
             'date' => ['required', 'date'],
-                    
-            'patient' => ['array', 'nullable'],
+            'patient' => ['required','array', 'nullable'],
             'salle_d_attente' => ['array', 'nullable'],
             'status' => ['array', 'nullable'],
-                
         ];
     }
     /**

@@ -59,8 +59,7 @@
     import JetInputError from "@/Jetstream/InputError.vue";
     import {useForm} from "@inertiajs/inertia-vue3";
     import JigDatepicker from "@/JigComponents/JigDatepicker.vue";
-            import InfiniteSelect from '@/JigComponents/InfiniteSelect.vue';
-
+    import InfiniteSelect from '@/JigComponents/InfiniteSelect.vue';
     import { defineComponent } from "vue";
 
     export default defineComponent({
@@ -74,7 +73,6 @@
             JetInputError,
             JigDatepicker,
             InfiniteSelect,
-
         },
         data() {
             return {

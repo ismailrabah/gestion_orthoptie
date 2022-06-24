@@ -127,17 +127,16 @@ class RendezVouses
     public static function agenda_event($start_date, $end_date){
         $items = [];
         $rendez_vouss = RendezVou::where(function($query) use ($start_date, $end_date){
-            $query->where('date' , '<' , $end_date)
-                ->where('date' , '>=' , $start_date);
-            
+            $query->where('date' , '<' , $end_date)->where('date' , '>=' , $start_date);
         })->get();
         foreach ($rendez_vouss as $rendz) {
-            $color = !$rendz->status ? 'bg-teal' : (!$rendz->status->name ? 'bg-teal' : $rendz->status->name);
+            $title = $rendz->patient ? $rendz->patient->title : "";
+            $title .= $rendz->status ? " <small> ".$rendz->status->name."</small>" : "";
             $items[] = [
-                'id' => 's_'.$rendz->id,
+                'id' => $rendz->id,
                 'startDate' => $rendz->date,
                 'endDate' =>  $rendz->date,
-                'title' => $rendz->patient ? $rendz->patient->title  : "",
+                'title' => $title,
                 'classes' => [],
                 "sale" => $rendz->salleDAttente ? $rendz->salleDAttente->name : '',
                 "patient_id"=> $rendz->patient_id,

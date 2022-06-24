@@ -30,11 +30,11 @@ class SeedInitData extends Seeder
         $taches = DB::table('taches')->insertGetId([ "name" => "Refraction", "price" => 100]);
 
 
-        $rendez_vous_status = DB::table('rendez_vous_status')->insertGetId([ "name" => "Pas encore arrive", "color" => "#fc7", "is_default" =>true]);
+        $rendez_vous_status = DB::table('rendez_vous_status')->insertGetId([ "name" => "Pas encore arrive", "color" => "#05a045", "is_default" =>true]);
         $rendez_vous_status = DB::table('rendez_vous_status')->insertGetId([ "name" => "Arrive", "color" => "#1f87e8", "is_default" => false]);
         $rendez_vous_status = DB::table('rendez_vous_status')->insertGetId([ "name" => "En retard", "color" => "#f67c01", "is_default" => false]);
-        $rendez_vous_status = DB::table('rendez_vous_status')->insertGetId([ "name" => "Annule", "color" => "#000000", "is_default" => false]);
-        $rendez_vous_status = DB::table('rendez_vous_status')->insertGetId([ "name" => "Vu", "color" => "#05a045", "is_default" => false]);
+        $rendez_vous_status = DB::table('rendez_vous_status')->insertGetId([ "name" => "Annule", "color" => "#d81b43", "is_default" => false]);
+        $rendez_vous_status = DB::table('rendez_vous_status')->insertGetId([ "name" => "Vu", "color" => "#9c28b1", "is_default" => false]);
 
         $salle_d_attentes = DB::table('salle_d_attentes')->insertGetId([ "name" => "SALLE 1", "start_time" => "09:00:00", "end_time" => "18:00:00",
          "max_numbers" => 25 , "status" => "Open" , "assaistante_id" => 2 ]);

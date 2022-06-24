@@ -4,9 +4,7 @@
             <div class="flex flex-wrap items-center justify-between w-full px-4">
                 <inertia-link :href="route('admin.dashboard')" class="text-xl font-black text-white"><i class="fas fa-arrow-left"></i> Retour</inertia-link>
                 <!-- <div v-if="message" class="notification is-success">{{ message }}</div> -->
-                
                 <div class="flex gap-x-2">
-                    
                     <div class="float-right  h-sm">
                         <select class="" v-model="displayPeriodUom" @change="onDisplayPeriodUomChange($event)">
                             <option>week</option>
@@ -20,17 +18,17 @@
                             <option :value="4">4</option>
                         </select>
                     </div>
-                    <inertia-button v-if="can.create" :href="route('admin.rendez-vouses.create')" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Nouveau Rendez Vou</inertia-button>
+                    <inertia-button v-if="can.create" @click="AddAgendaItem" classes="bg-green-100 hover:bg-green-200 text-primary"><i class="fas fa-plus"></i> Nouveau Rendez Vous</inertia-button>
                     <inertia-button @click="agendaItems()" classes="bg-indigo-100 hover:bg-green-200 text-indigo "><i class="fas fa-sync-alt"></i> Refresh</inertia-button>
                 </div>
             </div>
         </template>
         <div v-if="can.viewAny" class="flex flex-wrap px-4">
             <div class="z-10 flex-auto bg-white md:rounded-md md:shadow-md">
-                <h3 class="w-full p-4 mb-8 text-lg font-black sm:rounded-t-lg bg-primary-100 "><i class="mr-2 fas fa-bars"></i> 
+                <h3 class="w-full p-4 mb-8 text-lg font-black sm:rounded-t-lg bg-primary-100 ">
+                    <i class="mr-2 fas fa-bars"></i> 
                     Agenda
                 </h3>
-                   
                 <div  class="w-full agenda-sec flex flex-wrap">
                     <div class="calendar-parent">
                         <calendar-view
@@ -66,6 +64,7 @@
                         </calendar-view>
                     </div>
                 </div>
+                
                 <jet-confirmation-modal title="Confirm Deletion" :show="confirmDelete">
                     <template v-slot:content>
                         <div>Are you sure you want to delete this record?</div>
@@ -77,20 +76,34 @@
                         </div>
                     </template>
                 </jet-confirmation-modal>
+
                 <div v-if="showModal && currentModel">
                     <jig-modal
                         :show="showModal"
                         corner-class="rounded-lg"
                         position-class="align-middle"
                         @close="currentModel = null; showModal = false">
-
                         <template #title>Show Rendez Vou #{{currentModel.id}}</template>
-                        <show-rendez-vous-form :model="currentModel"></show-rendez-vous-form>
+                        <show-rendez-vous-form :model="currentModel" @success="onSuccess" @error="onError"></show-rendez-vous-form>
                         <template #footer>
                             <inertia-button class="px-4 text-white bg-primary" @click="showModal = false; currentModel = null">Close</inertia-button>
+                            <inertia-button class="px-4 text-white bg-danger" @click="deleteItem">Supprimer</inertia-button>
                         </template>
                     </jig-modal>
                 </div>
+                
+                <!-- Add New Rendez Vous Modal -->
+                <vue-final-modal v-model="addModal" :drag="true" :resize="true"
+                    :resize-directions="['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl']" classes="modal-container" content-class="modal-content">
+                    <button class="modal__close" @click="addModal = false">
+                        <span>X</span>
+                    </button>
+                    <span class="modal__title">Nouveau Rendez Vous {{this.selected_date.toLocaleDateString()}}</span>
+                    <div class="modal__content">
+                        <create-rendez-vous-form :form="newItemForm" @success="onSuccess" @error="onError"/>
+                    </div>
+                </vue-final-modal>
+
             </div>
         </div>
         <div v-else class="p-4 font-bold text-red-500 bg-red-100 rounded-md shadow-md ">
@@ -113,6 +126,7 @@
     import moment from 'moment';
     import {useForm} from "@inertiajs/inertia-vue3";
     import { CalendarView, CalendarViewHeader, CalendarMath } from "vue-simple-calendar";
+    import CreateRendezVousForm from "./CreateForm.vue";
     import { $vfm, VueFinalModal, ModalsContainer } from 'vue-final-modal';
 
     export default defineComponent({
@@ -131,6 +145,7 @@
             VueFinalModal,
             ModalsContainer,
             InfiniteSelect,
+            CreateRendezVousForm,
         },
         props: {
             can: Object,
@@ -141,7 +156,7 @@
                 confirmDelete: false,
                 currentModel: null,
                 showModal: false,
-
+                addModal: false,
                 showDate: this.thisMonth(1),
                 message: "",
                 startingDayOfWeek: 1,
@@ -153,18 +168,22 @@
                 showTimes: true,
                 selectionStart: null,
                 selectionEnd: null,
-
                 newItemTitle: "",
                 newItemStartDate: "",
                 newItemEndDate: "",
                 useDefaultTheme: true,
                 useHolidayTheme: true,
                 useTodayIcons: false,
-
                 items: [],
-
                 selected_date:new Date(),
                 selectedItem: null,
+                newItemForm: useForm({
+                        date: null,
+                        patient: null,
+                        salleDAttente: null,
+                        status: null
+                    },{remember: false}
+                ),
             }
         },
         mixins: [
@@ -235,6 +254,10 @@
             editModel(model) {
                 this.$inertia.visit(this.route('admin.rendez-vouses.edit',model.id));
             },
+            deleteItem(){
+                this.showModal = false;
+                this.confirmDelete = true;
+            },
             confirmDeletion(model) {
                 this.currentModel = model;
                 this.confirmDelete = true;
@@ -250,7 +273,7 @@
                     this.$inertia.delete(route('admin.rendez-vouses.destroy', vm.currentModel),{
                         onFinish: res => {
                             this.displayNotification('success', "Item deleted.");
-                            vm.$refreshDt(vm.tableId);
+                            this.agendaItems()
                         },
                         onError: err => {
                             console.log(err);
@@ -270,6 +293,7 @@
                 console.log("onClickDay");
             },
             onClickItem(e) {
+                this.showModel(e)
                 console.log("onClickItem");
             },
             setShowDate(d,elff) {
@@ -302,6 +326,18 @@
                 })
                 console.log("clickTestAddItem");
             },
+            AddAgendaItem(){
+                this.addModal = true;
+            },
+            onSuccess(msg) {
+                this.displayNotification('success',msg);
+                this.addModal = false;
+                this.showModal = false;
+                this.agendaItems();
+            },
+            onError(msg) {
+                this.displayNotification('error',msg);
+            }
         }
     });
 </script>
