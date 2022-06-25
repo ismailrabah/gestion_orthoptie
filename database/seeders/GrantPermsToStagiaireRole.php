@@ -19,7 +19,7 @@ class GrantPermsToStagiaireRole extends Seeder
         if ($stage) {
             $stage->givePermissionTo(Permission::where('id' ,'>' , 18)->whereNotIn('id' , 
             [
-               19,20,21,22,23,24,25            ]
+               19,20,21,22,23,24,25,37,       ]
             )->get());
         }
     }

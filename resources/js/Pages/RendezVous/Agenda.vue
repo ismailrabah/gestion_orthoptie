@@ -157,7 +157,7 @@
                 currentModel: null,
                 showModal: false,
                 addModal: false,
-                showDate: this.thisMonth(1),
+                showDate: this.thisDate(1),
                 message: "",
                 startingDayOfWeek: 1,
                 disablePast: false,
@@ -284,7 +284,11 @@
             },
             thisMonth(d, h, m) {
                 const t = new Date()
-                // return new Date(t.getFullYear(), t.getMonth(), d, h || 0, m || 0)
+                return new Date(t.getFullYear(), t.getMonth(), d, h || 0, m || 0)
+                return t;
+            },
+            thisDate(d, h, m) {
+                const t = new Date()
                 return t;
             },
             onClickDay(d) {

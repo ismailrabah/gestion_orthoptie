@@ -18,7 +18,7 @@ class GrantPermsToAssistanteRole extends Seeder
         $admin = Role::query()->where("name","=", "assistante")->first();
         if ($admin) {
             $admin->givePermissionTo(Permission::where('id' ,'>' , 18)->whereNotIn('id' , [
-               
+               37,
                 ])->get());
         }
     }

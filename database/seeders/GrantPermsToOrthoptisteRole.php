@@ -19,7 +19,7 @@ class GrantPermsToOrthoptisteRole extends Seeder
         if ($admin) {
             $admin->givePermissionTo(Permission::where('id' ,'>' , 18)->whereNotIn('id' , 
             [
-               
+                37,
             ]
             )->get());
         }
