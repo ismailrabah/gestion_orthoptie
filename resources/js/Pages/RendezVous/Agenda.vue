@@ -232,10 +232,11 @@
                 }else{
                     sb_start_date = CalendarMath.addDays(sb_start_date , -7);
                 }
+                console.log(sb_start_date);
                 axios.get(route('api.agenda',{
                             'displayPeriodUom': this.displayPeriodUom ,
                             'displayPeriodCount' : this.displayPeriodCount ,
-                            'start_date': sb_start_date.toLocaleDateString(),
+                            'start_date': sb_start_date.getMonth()+"/"+sb_start_date.getDate()+"/"+sb_start_date.getFullYear(),
                         }
                     )).then(res => {
                         this.items = res.data.payload.items;

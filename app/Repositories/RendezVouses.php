@@ -151,6 +151,8 @@ class RendezVouses
         $end_date = Carbon::createFromFormat('m/d/Y',  $start_date);
         if(!$displayPeriodCount)
             $displayPeriodCount = 1;
+        
+        $end_date->addMonths(1);
         switch ($displayPeriodUom){
             case "month":
                 $end_date->addMonths($displayPeriodCount);
