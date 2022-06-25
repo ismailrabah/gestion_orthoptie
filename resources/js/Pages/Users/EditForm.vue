@@ -158,6 +158,7 @@
                 form: useForm({
                     ...this.model,
                     assigned_roles: this.roles,
+                    "password": null,
                     "password_confirmation": null,
                 },{remember:false}),
                 activeTab: 'basic-info',

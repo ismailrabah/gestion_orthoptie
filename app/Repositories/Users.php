@@ -22,7 +22,7 @@ class Users
     {
         $model = new User((array) $data);
                 // Save Relationships
-        if (isset($password) && $data->password) {
+        if ($data->password) {
             $model->password = \Hash::make($data->password);
         }
         $model->saveOrFail();
@@ -65,10 +65,10 @@ class Users
         return $this->model;
     }
 
-    public function destroy(): bool
-    {
+    public function destroy(): bool{
         return !!$this->model->delete();
     }
+
     public static function dtColumns() {
         $columns = [
             Column::make('id')->title('ID')->className('all text-right'),
@@ -119,8 +119,7 @@ class Users
         return $this->model->hasRole($role->name);
     }
     
-    public function updateProfilePhoto(object $photo): User
-    {
+    public function updateProfilePhoto(object $photo): User{
         if (isset($photo)) {
             $this->model->updateProfilePhoto($photo);
         }
